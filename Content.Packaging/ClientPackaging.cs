@@ -15,32 +15,34 @@ public static class ClientPackaging
     /// Be advised this can be called from server packaging during a HybridACZ build.
     /// Be also advised this goes against god and nature
     /// </summary>
-    public static async Task PackageClient(bool skipBuild, string configuration, IPackageLogger logger, string path = ".")
+    public static async Task PackageClient(bool skipBuild, bool logBuild, string configuration, IPackageLogger logger)
     {
         logger.Info("Building client...");
 
         if (!skipBuild)
         {
-            var clientProjects = GetClientModules(path);
-
-            foreach (var project in clientProjects)
+            var startInfo = new ProcessStartInfo
             {
                 await ProcessHelpers.RunCheck(new ProcessStartInfo
                 {
-                    FileName = "dotnet",
-                    ArgumentList =
-                    {
-                        "build",
-                        project,
-                        "-c", configuration,
-                        "--nologo",
-                        "/v:m",
-                        "/t:Rebuild",
-                        "/p:FullRelease=true",
-                        "/m",
-                    },
-                });
+                    "build",
+                    Path.Combine("Content.Client", "Content.Client.csproj"),
+                    "-c", configuration,
+                    "--nologo",
+                    "/v:m",
+                    "/t:Rebuild",
+                    "/p:FullRelease=true",
+                    "/m"
+                }
+            };
+
+            if (logBuild)
+            {
+                startInfo.ArgumentList.Add($"/bl:{Path.Combine("release", "client.binlog")}");
+                startInfo.ArgumentList.Add("/p:ReportAnalyzer=true");
             }
+
+            await ProcessHelpers.RunCheck(startInfo);
         }
 
         logger.Info("Packaging client...");
