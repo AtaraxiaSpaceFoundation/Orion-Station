@@ -45,19 +45,19 @@ jobs:
           branch: "master"
           allowlist: GoobAutomatedBot
           create-file-commit-message: "[Tweak] Update CLA Signs"
-          signed-commit-message: "$contributorName принял CLA в $owner/$repo#$pullRequestNo"
+          signed-commit-message: >-
+            $contributorName принял CLA в
+            $owner/$repo#${{ github.event.pull_request.number || github.event.issue.number }}
           custom-pr-sign-comment: "Я прочитал Contributor License Agreement и принимаю его условия"
           custom-notsigned-prcomment: |
             Спасибо за вклад в Orion Station!
 
             Перед объединением Pull Request все его участники должны принять Contributor License Agreement Ataraxia Space Foundation.
 
-            Ознакомьтесь с документом CLA:
-            $pathToCLADocument
+            Ознакомьтесь с документом:
+            [Contributor License Agreement](https://github.com/AtaraxiaSpaceFoundation/Orion-Station/blob/master/CLA.md)
 
-            Чтобы принять соглашение, оставьте отдельный комментарий с точным текстом:
-
-            Я прочитал Contributor License Agreement и принимаю его условия
+            Чтобы принять соглашение, скопируйте текст ниже и отправьте его отдельным комментарием.
           custom-allsigned-prcomment: |
             ✅ Все участники этого Pull Request приняли Contributor License Agreement.
           lock-pullrequest-aftermerge: false
