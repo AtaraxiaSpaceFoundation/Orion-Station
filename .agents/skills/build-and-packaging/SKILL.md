@@ -3,6 +3,12 @@ name: build-and-packaging
 description: Work with solution structure, CI configurations, generated content, packaging, and release outputs.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Build And Packaging
 
 Use this skill when changing project files, solution membership, build targets, CI jobs, packaging rules, or generated assets.

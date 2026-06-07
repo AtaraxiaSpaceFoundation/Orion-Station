@@ -3,6 +3,12 @@ name: yaml-and-schema
 description: Diagnose and author YAML, prototype schemas, workflow files, module manifests, and structured configuration safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Yaml And Schema
 
 YAML syntax validity is only the first layer. Confirm the file's domain schema and runtime loader.

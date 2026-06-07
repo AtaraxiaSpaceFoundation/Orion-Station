@@ -3,6 +3,12 @@ name: chemistry-and-reagents
 description: Modify reagents, solutions, reactions, transfers, metabolism, effects, containers, and chemistry UI safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Chemistry And Reagents
 
 Chemistry is data-driven and frequently crosses prototypes, server simulation, Shared solution state, UI, and localized effects.

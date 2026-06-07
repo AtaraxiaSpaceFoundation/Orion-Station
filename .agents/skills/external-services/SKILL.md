@@ -3,6 +3,12 @@ name: external-services
 description: Integrate HTTP APIs, webhooks, external processes, retries, timeouts, caching, and secret-backed configuration safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # External Services
 
 External systems are unreliable and untrusted. Keep gameplay resilient when they are slow or unavailable.

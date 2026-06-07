@@ -3,6 +3,12 @@ name: round-and-game-rules
 description: Implement round lifecycle, game rules, objectives, announcements, win conditions, and restart-safe cleanup.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Round And Game Rules
 
 Round systems coordinate global state and must remain deterministic, authority-safe, and restart-safe.

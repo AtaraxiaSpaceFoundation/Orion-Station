@@ -3,6 +3,12 @@ name: maps-and-mapping
 description: Edit map files, map prototypes, grids, placements, entity references, and map compatibility safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Maps And Mapping
 
 Maps are serialized compatibility artifacts, not ordinary hand-written YAML.

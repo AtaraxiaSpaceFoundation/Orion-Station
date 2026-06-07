@@ -3,6 +3,12 @@ name: ecs-basics
 description: Read and reason about an unfamiliar SS14 ECS subsystem before changing it.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # ECS Basics
 
 Use this when entering an unfamiliar feature or reviewing a cross-system bug.

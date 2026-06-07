@@ -3,6 +3,12 @@ name: containers-and-inventory
 description: Move entities through containers, hands, slots, storage, equipment, and inventories without corrupting ownership or transforms.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Containers And Inventory
 
 Containers and inventories define entity ownership, visibility, transform parenting, and interaction availability.

@@ -3,6 +3,12 @@ name: forms-and-input-validation
 description: Validate UI, command, text, numeric, entity, and configuration input consistently across client feedback and server authority.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Forms And Input Validation
 
 Validation has two layers: client feedback and authoritative server enforcement.

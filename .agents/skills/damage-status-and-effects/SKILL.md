@@ -3,6 +3,12 @@ name: damage-status-and-effects
 description: Implement damage, healing, status effects, alerts, movement modifiers, and timed gameplay effects consistently.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Damage Status And Effects
 
 Use the owning damage, status, movement, and alert systems instead of mutating several components independently.

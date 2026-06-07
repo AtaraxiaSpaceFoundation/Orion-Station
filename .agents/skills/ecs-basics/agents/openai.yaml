@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 interface:
   display_name: "ECS Basics"
   short_description: "Read and reason about an unfamiliar SS14 ECS subsystem before changing it."

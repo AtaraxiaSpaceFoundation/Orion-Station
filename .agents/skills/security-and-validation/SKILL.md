@@ -3,6 +3,12 @@ name: security-and-validation
 description: Review trust boundaries, input validation, permissions, abuse resistance, secrets, and safe failure behavior.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Security And Validation
 
 Treat all client, command, file, network, and external-service input as untrusted until validated by the authoritative owner.

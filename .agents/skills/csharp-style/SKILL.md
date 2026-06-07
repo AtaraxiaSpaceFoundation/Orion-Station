@@ -3,6 +3,12 @@ name: csharp-style
 description: Write repository-consistent C# with clear APIs, nullability, ownership, and minimal incidental complexity.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Csharp Style
 
 Follow nearby code and project analyzers. Style supports correctness and searchability.

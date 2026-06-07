@@ -3,6 +3,12 @@ name: ai-workflow
 description: Plan, delegate, verify, and report complex repository work without losing evidence or scope.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # AI Workflow
 
 Use this skill for broad audits, multi-layer features, migrations, or tasks delegated to subagents.

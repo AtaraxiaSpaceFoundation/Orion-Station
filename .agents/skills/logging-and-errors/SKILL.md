@@ -3,6 +3,12 @@ name: logging-and-errors
 description: Add useful diagnostics, choose log levels, preserve context, and handle player-facing failures safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Logging And Errors
 
 Logs should help operators locate a failure without flooding normal operation or exposing sensitive information.

@@ -3,6 +3,12 @@ name: localization-in-code
 description: Use LocId, Loc.GetString, variables, entity grammar, popups, and messages safely in C#.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Localization In Code
 
 Use localization APIs at the presentation boundary. Keep internal logic typed and language-independent.

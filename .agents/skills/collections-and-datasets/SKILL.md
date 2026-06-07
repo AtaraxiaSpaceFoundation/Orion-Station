@@ -3,6 +3,12 @@ name: collections-and-datasets
 description: Maintain weighted collections, datasets, groups, selectors, and random content tables.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Collections And Datasets
 
 Collections are data-driven selection APIs. Preserve their statistical and compatibility behavior.

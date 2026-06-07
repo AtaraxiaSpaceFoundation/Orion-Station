@@ -3,6 +3,12 @@ name: admin-and-permissions
 description: Implement privileged commands, admin UI, role checks, audit logs, and safe operational controls.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Admin And Permissions
 
 Privileged tooling must fail closed and remain server-authoritative.

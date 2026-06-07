@@ -3,6 +3,12 @@ name: entity-relations-and-links
 description: Maintain entity references, ownership links, target relationships, deletion cleanup, and network-safe relation state.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Entity Relations And Links
 
 Entity references are temporary relationships, not permanent object references.

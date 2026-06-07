@@ -3,6 +3,12 @@ name: git-workflow
 description: Inspect, stage, commit, rebase, merge, and deliver changes without losing user work or polluting scope.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Git Workflow
 
 Start every write task with `git status --short --branch` and inspect the branch relationship to its remote.

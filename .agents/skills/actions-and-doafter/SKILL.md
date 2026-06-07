@@ -3,6 +3,12 @@ name: actions-and-doafter
 description: Implement actions, cooldowns, DoAfter flows, interruption, cancellation, and authoritative completion safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Actions And DoAfter
 
 Use actions for reusable player abilities and DoAfter flows for interruptible, time-based completion.

@@ -3,6 +3,12 @@ name: serialization-and-datafields
 description: Design prototype DataFields, generated component state, custom serializers, and compatibility-safe data contracts.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Serialization And DataFields
 
 Serialized data is a compatibility surface shared by prototypes, maps, network state, configuration, or saves.

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Resource and locale naming
 
 Keep directory names and asset states stable after release. Match case exactly because Linux CI and clients may be case-sensitive.

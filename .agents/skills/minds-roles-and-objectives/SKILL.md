@@ -3,6 +3,12 @@ name: minds-roles-and-objectives
 description: Work with minds, sessions, bodies, roles, antagonists, objectives, ownership, and transfers safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Minds Roles And Objectives
 
 A session, mind, and controlled entity are related but not interchangeable.

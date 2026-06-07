@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name = "reviewer"
 description = "Reviews a diff for correctness, authority, networking, compatibility, resources, performance, and tests."
 model = "gpt-5.5-codex"
