@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name = "ss14_explorer"
 description = "Read-only SS14 code mapper for finding the correct assembly, system, prototype, localization, and test touchpoints before editing."
 model = "gpt-5.4-mini"
