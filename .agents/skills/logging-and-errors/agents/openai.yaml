@@ -1,0 +1,4 @@
+interface:
+  display_name: "Logging And Errors"
+  short_description: "Add useful diagnostics and handle failures without noise or data leaks."
+  default_prompt: "Use $logging-and-errors for diagnostics and error handling."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Review correctness, regressions, authority, architecture, compatibility, and tests."
+  default_prompt: "Use $code-review and report concrete findings ordered by severity."

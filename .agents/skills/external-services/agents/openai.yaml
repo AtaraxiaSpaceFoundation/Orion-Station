@@ -1,0 +1,4 @@
+interface:
+  display_name: "External Services"
+  short_description: "Integrate HTTP APIs, webhooks, retries, timeouts, caching, and secrets safely."
+  default_prompt: "Use $external-services for networked or external process integrations."

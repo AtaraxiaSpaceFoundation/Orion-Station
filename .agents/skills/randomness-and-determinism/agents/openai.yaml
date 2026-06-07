@@ -1,0 +1,4 @@
+interface:
+  display_name: "Randomness And Determinism"
+  short_description: "Use authoritative, deterministic, weighted, and testable randomness."
+  default_prompt: "Use $randomness-and-determinism for random selection or predicted outcomes."

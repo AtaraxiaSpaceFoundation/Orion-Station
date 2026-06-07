@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chemistry And Reagents"
+  short_description: "Modify reagents, solutions, reactions, transfers, metabolism, effects, and chemistry UI."
+  default_prompt: "Use $chemistry-and-reagents for chemistry changes."

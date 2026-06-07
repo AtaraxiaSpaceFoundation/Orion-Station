@@ -1,0 +1,4 @@
+interface:
+  display_name: "Save Data And Configuration"
+  short_description: "Read, validate, migrate, and write persistent files and configuration safely."
+  default_prompt: "Use $save-data-and-configuration for file-backed persistence and config."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Deliver changes without losing work, rewriting history, or polluting scope."
+  default_prompt: "Use $git-workflow for staging, commits, conflicts, and delivery."

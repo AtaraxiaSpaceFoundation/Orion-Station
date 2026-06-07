@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for module ownership and dependency direction
+globs: Modules/**/*
+alwaysApply: false
+---
+
+Read the module manifest, nearest scoped AGENTS.md, module-architecture skill, and dependency reference before editing. Keep module-specific work in its owner and avoid base-to-module references.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Localization In Code"
+  short_description: "Use LocId, variables, entity grammar, popups, and messages safely in C#."
+  default_prompt: "Use $localization-in-code for player-visible C# text."

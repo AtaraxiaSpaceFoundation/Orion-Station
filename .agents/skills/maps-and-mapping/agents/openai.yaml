@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maps And Mapping"
+  short_description: "Edit maps, map prototypes, grids, placements, and compatibility safely."
+  default_prompt: "Use $maps-and-mapping for map and serialized placement work."

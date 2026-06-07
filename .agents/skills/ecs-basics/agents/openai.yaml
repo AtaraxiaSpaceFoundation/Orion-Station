@@ -1,0 +1,4 @@
+interface:
+  display_name: "ECS Basics"
+  short_description: "Read and reason about an unfamiliar SS14 ECS subsystem before changing it."
+  default_prompt: "Use $ecs-basics to map the subsystem before editing it."

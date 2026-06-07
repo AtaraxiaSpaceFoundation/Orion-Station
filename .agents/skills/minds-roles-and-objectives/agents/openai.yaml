@@ -1,0 +1,4 @@
+interface:
+  display_name: "Minds Roles And Objectives"
+  short_description: "Work with minds, sessions, bodies, roles, antagonists, and objectives safely."
+  default_prompt: "Use $minds-roles-and-objectives for player identity and role work."

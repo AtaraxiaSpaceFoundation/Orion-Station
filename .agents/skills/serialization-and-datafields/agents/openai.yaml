@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serialization And DataFields"
+  short_description: "Design DataFields, generated state, serializers, and compatibility-safe data contracts."
+  default_prompt: "Use $serialization-and-datafields for prototype, map, network, or saved data changes."

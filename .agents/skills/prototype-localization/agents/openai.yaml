@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prototype Localization"
+  short_description: "Connect prototypes, names, descriptions, markings, datasets, and selectors to FTL."
+  default_prompt: "Use $prototype-localization for prototype and FTL changes."

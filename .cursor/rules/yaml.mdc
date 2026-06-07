@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for YAML, prototypes, maps, workflows, and manifests
+globs: **/*.yml,**/*.yaml
+alwaysApply: false
+---
+
+Load yaml-and-schema plus the relevant prototype, map, resource, localization, or build skill. Generic YAML validity does not replace domain validation.

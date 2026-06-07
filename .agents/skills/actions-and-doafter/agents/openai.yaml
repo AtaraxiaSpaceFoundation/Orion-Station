@@ -1,0 +1,4 @@
+interface:
+  display_name: "Actions And DoAfter"
+  short_description: "Implement actions, cooldowns, interruption, cancellation, and authoritative completion."
+  default_prompt: "Use $actions-and-doafter for action and timed interaction work."

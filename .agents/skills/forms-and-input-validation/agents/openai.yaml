@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forms And Input Validation"
+  short_description: "Validate UI, command, text, numeric, entity, and config input consistently."
+  default_prompt: "Use $forms-and-input-validation for parsing and validation flows."

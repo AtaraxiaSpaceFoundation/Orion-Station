@@ -1,0 +1,4 @@
+interface:
+  display_name: "Damage Status And Effects"
+  short_description: "Implement damage, status effects, alerts, modifiers, and timed effects consistently."
+  default_prompt: "Use $damage-status-and-effects for health and status gameplay."

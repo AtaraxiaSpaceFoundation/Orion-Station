@@ -1,0 +1,4 @@
+interface:
+  display_name: "Collections And Datasets"
+  short_description: "Maintain weighted collections, datasets, selectors, and random content tables."
+  default_prompt: "Use $collections-and-datasets for data-driven selection content."

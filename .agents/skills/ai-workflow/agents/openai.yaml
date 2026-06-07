@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Workflow"
+  short_description: "Plan, delegate, verify, and report complex repository work without losing evidence or scope."
+  default_prompt: "Use $ai-workflow to decompose the task, collect evidence, and verify the final result."

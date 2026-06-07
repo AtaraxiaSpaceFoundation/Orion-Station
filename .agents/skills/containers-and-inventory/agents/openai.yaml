@@ -1,0 +1,4 @@
+interface:
+  display_name: "Containers And Inventory"
+  short_description: "Move entities through containers, hands, slots, storage, and equipment safely."
+  default_prompt: "Use $containers-and-inventory for inventory and containment changes."

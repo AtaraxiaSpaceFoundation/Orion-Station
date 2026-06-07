@@ -1,0 +1,4 @@
+interface:
+  display_name: "Naming Conventions"
+  short_description: "Name symbols, prototypes, FTL keys, resources, and migrations consistently."
+  default_prompt: "Use $naming-conventions when introducing or reviewing identifiers."

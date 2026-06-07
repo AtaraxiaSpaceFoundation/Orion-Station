@@ -1,0 +1,4 @@
+interface:
+  display_name: "Admin And Permissions"
+  short_description: "Implement privileged commands, admin UI, role checks, and audit logs safely."
+  default_prompt: "Use $admin-and-permissions for privileged operations."

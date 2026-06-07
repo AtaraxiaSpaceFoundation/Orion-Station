@@ -1,0 +1,4 @@
+interface:
+  display_name: "Entity Relations And Links"
+  short_description: "Maintain entity references, ownership links, deletion cleanup, and network-safe relations."
+  default_prompt: "Use $entity-relations-and-links for cross-entity relationship state."

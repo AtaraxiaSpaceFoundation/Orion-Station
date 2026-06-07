@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tests Authoring"
+  short_description: "Design deterministic focused and integration regression tests."
+  default_prompt: "Use $tests-authoring to add or review tests."
