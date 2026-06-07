@@ -30,6 +30,12 @@
     <Project Path="Modules/Lavaland/Content.Lavaland.Shared/Content.Lavaland.Shared.csproj" />
     <File Path="Modules/Lavaland/module.yml" />
   </Folder>
+  <Folder Name="/Modules/Orion/">
+    <Project Path="Modules/Orion/Content.Orion.Client/Content.Orion.Client.csproj" />
+    <Project Path="Modules/Orion/Content.Orion.Common/Content.Orion.Common.csproj" />
+    <Project Path="Modules/Orion/Content.Orion.Server/Content.Orion.Server.csproj" />
+    <Project Path="Modules/Orion/Content.Orion.Shared/Content.Orion.Shared.csproj" />
+  </Folder>
   <Folder Name="/MSBuild/">
     <File Path="MSBuild/Content.props" />
     <File Path="MSBuild/ClientModules.targets" />

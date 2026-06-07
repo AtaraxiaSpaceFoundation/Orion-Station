@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\MSBuild\Content.props" />
+
+  <Import Project="..\..\..\RobustToolbox\Imports\Lidgren.props" />
+  <Import Project="..\..\..\RobustToolbox\Imports\Shared.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Content.Common\Content.Common.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\RobustToolbox\MSBuild\Robust.Properties.targets" />
+</Project>
