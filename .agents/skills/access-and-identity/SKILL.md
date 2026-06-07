@@ -3,6 +3,12 @@ name: access-and-identity
 description: Implement access checks, identity sources, ID cards, credentials, ownership, and authorization without trusting presentation state.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Access And Identity
 
 Access is an authoritative gameplay decision. Determine which identity source the subsystem actually uses before adding another check.
