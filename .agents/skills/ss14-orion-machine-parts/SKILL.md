@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
-
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
-
 ---
 name: ss14-orion-machine-parts
 description: Load for Orion machine parts, part rating/quality, part exchangers, machine upgrade events, machine frame construction graphs, multipart machine interactions, and TG parity requests for parts.

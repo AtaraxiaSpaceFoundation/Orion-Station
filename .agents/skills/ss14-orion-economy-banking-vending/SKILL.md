@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
-
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
-
 ---
 name: ss14-orion-economy-banking-vending
 description: Load for Orion economy, banking, Paydex, vending sales, station accounts, payday, pricing, discounts, and financial UI flows.
