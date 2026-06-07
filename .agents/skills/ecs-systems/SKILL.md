@@ -3,6 +3,12 @@ name: ecs-systems
 description: Implement entity behavior, subscriptions, lifecycle handling, and reusable action APIs.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Ecs Systems
 
 Systems own behavior and state mutation.

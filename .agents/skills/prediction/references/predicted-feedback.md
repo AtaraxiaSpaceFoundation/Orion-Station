@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Predicted feedback
 
 For local actions, prefer the repository's predicted popup and audio helpers instead of a client-only call plus an authoritative call.

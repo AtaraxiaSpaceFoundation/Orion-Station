@@ -3,6 +3,12 @@ name: gameplay-feature
 description: Plan and implement a complete SS14 feature across ownership, ECS, networking, resources, UI, and tests.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Gameplay Feature
 
 Use this as the routing skill for multi-layer work.

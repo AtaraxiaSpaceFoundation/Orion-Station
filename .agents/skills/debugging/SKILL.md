@@ -3,6 +3,12 @@ name: debugging
 description: Investigate SS14 behavior using reproduction, event tracing, logs, VV, breakpoints, and targeted regression tests.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Debugging
 
 Debug before redesigning.

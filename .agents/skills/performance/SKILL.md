@@ -3,6 +3,12 @@ name: performance
 description: Review hot paths, allocations, iteration, caching, event frequency, and correctness-preserving optimization.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Performance
 
 Do not optimize from intuition alone. Identify a measured or clearly high-frequency path.

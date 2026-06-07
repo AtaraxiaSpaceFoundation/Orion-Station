@@ -3,6 +3,12 @@ name: appearance-and-visualizers
 description: Implement replicated appearance data, GenericVisualizer mappings, sprite layers, overlays, and client visual systems.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Appearance And Visualizers
 
 Appearance data describes presentation state. It must not become a second authoritative gameplay model.

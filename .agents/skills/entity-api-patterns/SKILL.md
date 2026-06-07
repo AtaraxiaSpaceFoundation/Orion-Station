@@ -3,6 +3,12 @@ name: entity-api-patterns
 description: Use common EntitySystem helpers, prototype APIs, spawning, deletion, audio, popup, and random patterns.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Entity Api Patterns
 
 Prefer the highest-level existing helper that expresses the operation.

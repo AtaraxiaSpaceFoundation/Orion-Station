@@ -3,6 +3,12 @@ name: eui
 description: Implement EUI sessions, shared state and messages, server lifecycle, and client presentation.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Eui
 
 Use EUI for session-oriented interfaces that are not naturally bound to one world entity or an existing BUI owner.

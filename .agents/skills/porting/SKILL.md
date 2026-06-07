@@ -3,6 +3,12 @@ name: porting
 description: Port one complete feature family into the modular repository with provenance, adaptation, dependencies, and validation.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Porting
 
 Use one destination PR per feature family.

@@ -3,6 +3,12 @@ name: interaction-flow
 description: Implement reusable interactions, verbs, in-hand use, actions, and BUI requests with clear validation and mutation.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Interaction Flow
 
 Use a consistent flow:

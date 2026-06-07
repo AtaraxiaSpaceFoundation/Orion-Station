@@ -3,6 +3,12 @@ name: prototypes
 description: Create, inherit, compose, localize, and validate YAML prototypes in the correct resource root.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Prototypes
 
 ## Workflow

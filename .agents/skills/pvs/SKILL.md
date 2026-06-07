@@ -3,6 +3,12 @@ name: pvs
 description: Work with visibility, network interest, PVS filters, and PVS-sensitive entity behavior.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Pvs
 
 PVS determines which entities and events a client receives. It is a bandwidth and visibility mechanism, not authorization.

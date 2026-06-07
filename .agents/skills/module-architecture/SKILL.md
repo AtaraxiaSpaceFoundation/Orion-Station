@@ -3,6 +3,12 @@ name: module-architecture
 description: Choose the correct base project or module, assembly role, resource root, and dependency direction.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Module Architecture
 
 Use this before placing a new feature or moving code.

@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Orion Agent Guidance
 
 This repository is a modular Space Station 14 codebase based on Goob Reforged. Read this file first, then load the nearest scoped `AGENTS.md`, the relevant files in `.agents/rules/`, and only the skills needed for the current task.

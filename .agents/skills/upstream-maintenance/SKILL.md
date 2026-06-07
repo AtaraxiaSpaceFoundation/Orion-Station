@@ -3,6 +3,12 @@ name: upstream-maintenance
 description: Keep inherited changes narrow, traceable, and easy to compare with Goob Reforged or other owners.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Upstream Maintenance
 
 Before editing inherited code, determine whether the change is:

@@ -3,6 +3,12 @@ name: atmos
 description: Modify atmos simulation, gases, fire, pressure, pipes, devices, UI, and hot paths safely.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Atmos
 
 Atmos is authoritative simulation and often performance-sensitive.

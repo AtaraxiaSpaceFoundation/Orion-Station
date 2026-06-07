@@ -3,6 +3,12 @@ name: ecs-components
 description: Design SS14 components as serialized state in the correct assembly.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Ecs Components
 
 Components are data attached to entities. Keep behavior in systems.

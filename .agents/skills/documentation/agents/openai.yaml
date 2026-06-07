@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 interface:
   display_name: "Documentation"
   short_description: "Write concise technical documentation, PR notes, architecture explanations, and verification reports."

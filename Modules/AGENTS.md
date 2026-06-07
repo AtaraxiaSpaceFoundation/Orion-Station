@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Module guidance
 
 Each direct child of `Modules/` with a `module.yml` is an independent owner. Read the manifest before editing code or resources.

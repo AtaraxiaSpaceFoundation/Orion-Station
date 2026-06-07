@@ -3,6 +3,12 @@ name: resources-and-assets
 description: Add and validate module resources, RSI sprites, textures, audio, maps, paths, attribution, and asset licenses.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Resources And Assets
 
 Use the owning resource root. Orion-only assets belong in `Modules/Orion/Resources`.

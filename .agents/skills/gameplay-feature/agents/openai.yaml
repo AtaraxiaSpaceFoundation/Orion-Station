@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 interface:
   display_name: "Gameplay Feature"
   short_description: "Plan and implement a complete SS14 feature across ownership, ECS, networking, resources, UI, and tests."

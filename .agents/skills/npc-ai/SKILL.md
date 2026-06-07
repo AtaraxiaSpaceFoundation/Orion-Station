@@ -3,6 +3,12 @@ name: npc-ai
 description: Modify NPC behavior, HTN tasks, navigation, steering, prototypes, and AI debugging.
 ---
 
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Npc Ai
 
 Trace the current AI stack before adding a new behavior.
