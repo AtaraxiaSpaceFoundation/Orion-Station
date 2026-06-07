@@ -1,4 +1,0 @@
-interface:
-  display_name: "Fork Change Markers"
-  short_description: "Detect the active fork and mark inherited edits with exact fork comments."
-  default_prompt: "Use $fork-change-markers for every change outside the active fork's owned directories."
