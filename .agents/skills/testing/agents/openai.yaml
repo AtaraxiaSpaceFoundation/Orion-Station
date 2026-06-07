@@ -1,0 +1,4 @@
+interface:
+  display_name: "Testing"
+  short_description: "Select and write focused tests, integration tests, YAML linting, RSI validation, and packaging checks."
+  default_prompt: "Use $testing and the nearest scoped AGENTS.md for this task."

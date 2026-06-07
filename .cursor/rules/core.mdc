@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for core
+globs: **/*
+alwaysApply: true
+---
+
+Read `AGENTS.md`, the nearest scoped `AGENTS.md`, `.agents/rules`, and task-specific `.agents/skills`.

@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for resources
+globs: Resources/**/*,Modules/*/Resources/**/*
+alwaysApply: false
+---
+
+Use the owning resource root and validate references, localization, RSI, and licenses.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transform And Physics"
+  short_description: "Work with maps, grids, coordinates, anchoring, movement, fixtures, collisions, and physics safely."
+  default_prompt: "Use $transform-and-physics and the nearest scoped AGENTS.md for this task."

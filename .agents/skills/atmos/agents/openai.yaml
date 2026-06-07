@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atmos"
+  short_description: "Modify atmos simulation, gases, fire, pressure, pipes, devices, UI, and hot paths safely."
+  default_prompt: "Use $atmos and the nearest scoped AGENTS.md for this task."

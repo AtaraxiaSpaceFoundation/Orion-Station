@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ecs Events"
+  short_description: "Choose and implement local, directed, broadcast, cancellable, and network events."
+  default_prompt: "Use $ecs-events and the nearest scoped AGENTS.md for this task."

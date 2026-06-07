@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation"
+  short_description: "Write concise technical documentation, PR notes, architecture explanations, and verification reports."
+  default_prompt: "Use $documentation and the nearest scoped AGENTS.md for this task."

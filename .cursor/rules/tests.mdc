@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for tests
+globs: Content.Tests/**/*.cs,Content.IntegrationTests/**/*.cs
+alwaysApply: false
+---
+
+Use deterministic focused or integration tests matching the failure mode.

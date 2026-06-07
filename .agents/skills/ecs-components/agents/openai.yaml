@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ecs Components"
+  short_description: "Design SS14 components as serialized state in the correct assembly."
+  default_prompt: "Use $ecs-components and the nearest scoped AGENTS.md for this task."

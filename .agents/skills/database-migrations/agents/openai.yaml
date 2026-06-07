@@ -1,0 +1,4 @@
+interface:
+  display_name: "Database Migrations"
+  short_description: "Change persistent models and SQLite/PostgreSQL migrations without breaking existing servers."
+  default_prompt: "Use $database-migrations and the nearest scoped AGENTS.md for this task."

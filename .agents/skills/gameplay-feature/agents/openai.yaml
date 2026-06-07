@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gameplay Feature"
+  short_description: "Plan and implement a complete SS14 feature across ownership, ECS, networking, resources, UI, and tests."
+  default_prompt: "Use $gameplay-feature and the nearest scoped AGENTS.md for this task."

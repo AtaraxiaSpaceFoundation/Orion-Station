@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for client-ui
+globs: Content.Client/**/*.cs,Modules/*/Content.*.Client*/**/*.cs,**/*.xaml
+alwaysApply: false
+---
+
+Keep presentation client-side and authority server-side. Review UI lifecycle.

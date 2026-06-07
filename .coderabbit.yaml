@@ -1,0 +1,26 @@
+language: "ru-RU"
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_instructions:
+    - path: "**/*.cs"
+      instructions: |
+        Prioritize logical errors, runtime failures, regressions, server-authority mistakes,
+        prediction duplication, missing validation, stale network state, forgotten Dirty/DirtyField,
+        wrong Common/Shared/Server/Client placement, unnecessary APIs, dead methods, and missing tests.
+        Check module ownership before suggesting base or inherited changes.
+    - path: "**/*.{yml,yaml}"
+      instructions: |
+        Check prototype schema, IDs, inheritance, stale source-fork fields, references, localization,
+        module resource ownership, and missing assets.
+    - path: "**/*.{xaml,md,mdc,toml,json}"
+      instructions: |
+        Check frontmatter or syntax, broken links and paths, duplicated guidance, UI lifetime,
+        hardcoded player-facing strings, and invalid tool configuration.
+    - path: "Modules/Orion/**"
+      instructions: |
+        Prefer Orion-local implementation. Flag Orion-only behavior placed in base, GoobStation,
+        or Lavaland without a clear extension-point reason.

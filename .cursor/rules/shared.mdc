@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for shared
+globs: Content.Shared/**/*.cs,Modules/*/Content.*.Shared/**/*.cs
+alwaysApply: false
+---
+
+Keep shared logic prediction-safe and free of hidden server authority or client-only dependencies.

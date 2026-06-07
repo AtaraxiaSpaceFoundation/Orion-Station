@@ -1,0 +1,4 @@
+interface:
+  display_name: "Resources And Assets"
+  short_description: "Add and validate module resources, RSI sprites, textures, audio, maps, paths, attribution, and asset licenses."
+  default_prompt: "Use $resources-and-assets and the nearest scoped AGENTS.md for this task."

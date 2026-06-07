@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prediction"
+  short_description: "Design responsive shared interactions that reconcile with server authority without duplicated side effects."
+  default_prompt: "Use $prediction and the nearest scoped AGENTS.md for this task."

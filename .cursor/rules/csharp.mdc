@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for csharp
+globs: **/*.cs,**/*.csproj
+alwaysApply: false
+---
+
+Follow module ownership, ECS API design, networking, and verification guidance.

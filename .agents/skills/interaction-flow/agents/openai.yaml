@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interaction Flow"
+  short_description: "Implement reusable interactions, verbs, in-hand use, actions, and BUI requests with clear validation and mutation."
+  default_prompt: "Use $interaction-flow and the nearest scoped AGENTS.md for this task."

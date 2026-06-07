@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debugging"
+  short_description: "Investigate SS14 behavior using reproduction, event tracing, logs, VV, breakpoints, and targeted regression tests."
+  default_prompt: "Use $debugging and the nearest scoped AGENTS.md for this task."

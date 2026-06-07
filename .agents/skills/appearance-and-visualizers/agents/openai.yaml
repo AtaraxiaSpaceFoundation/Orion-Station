@@ -1,0 +1,4 @@
+interface:
+  display_name: "Appearance And Visualizers"
+  short_description: "Implement replicated appearance data, GenericVisualizer mappings, sprite layers, overlays, and client visual systems."
+  default_prompt: "Use $appearance-and-visualizers and the nearest scoped AGENTS.md for this task."

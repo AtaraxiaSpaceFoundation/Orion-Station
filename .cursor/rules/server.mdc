@@ -1,0 +1,7 @@
+---
+description: Orion guidance adapter for server
+globs: Content.Server/**/*.cs,Modules/*/Content.*.Server*/**/*.cs
+alwaysApply: false
+---
+
+Validate client input and keep protected state authoritative.

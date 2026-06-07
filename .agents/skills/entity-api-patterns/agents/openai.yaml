@@ -1,0 +1,4 @@
+interface:
+  display_name: "Entity Api Patterns"
+  short_description: "Use common EntitySystem helpers, prototype APIs, spawning, deletion, audio, popup, and random patterns."
+  default_prompt: "Use $entity-api-patterns and the nearest scoped AGENTS.md for this task."

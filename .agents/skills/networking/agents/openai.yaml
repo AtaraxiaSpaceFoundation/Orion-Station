@@ -1,0 +1,4 @@
+interface:
+  display_name: "Networking"
+  short_description: "Implement network events, networked components, state generation, conversion, and dirtying."
+  default_prompt: "Use $networking and the nearest scoped AGENTS.md for this task."

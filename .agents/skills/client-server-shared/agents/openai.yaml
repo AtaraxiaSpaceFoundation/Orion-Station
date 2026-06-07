@@ -1,0 +1,4 @@
+interface:
+  display_name: "Client Server Shared"
+  short_description: "Place contracts and behavior correctly across trust, prediction, presentation, and authority boundaries."
+  default_prompt: "Use $client-server-shared and the nearest scoped AGENTS.md for this task."

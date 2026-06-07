@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pvs"
+  short_description: "Work with visibility, network interest, PVS filters, and PVS-sensitive entity behavior."
+  default_prompt: "Use $pvs and the nearest scoped AGENTS.md for this task."

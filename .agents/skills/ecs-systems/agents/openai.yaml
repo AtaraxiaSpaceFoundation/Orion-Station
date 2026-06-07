@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ecs Systems"
+  short_description: "Implement entity behavior, subscriptions, lifecycle handling, and reusable action APIs."
+  default_prompt: "Use $ecs-systems and the nearest scoped AGENTS.md for this task."

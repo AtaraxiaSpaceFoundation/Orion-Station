@@ -1,0 +1,4 @@
+interface:
+  display_name: "Npc Ai"
+  short_description: "Modify NPC behavior, HTN tasks, navigation, steering, prototypes, and AI debugging."
+  default_prompt: "Use $npc-ai and the nearest scoped AGENTS.md for this task."
