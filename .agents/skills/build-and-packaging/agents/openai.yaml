@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Build And Packaging"
+  short_description: "Work with solution structure, CI, generated content, packaging, and release outputs."
+  default_prompt: "Use $build-and-packaging for project, workflow, and packaging changes."

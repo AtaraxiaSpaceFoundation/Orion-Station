@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Entity Lifecycle And Spawning"
+  short_description: "Spawn, initialize, replace, transfer, and delete entities safely."
+  default_prompt: "Use $entity-lifecycle-and-spawning for spawn and lifecycle work."

@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "python3 .codex/hooks/session_start.py",
+        "commandWindows": "py -3 .codex/hooks/session_start.py"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Shell|Bash|PowerShell|Terminal",
+        "command": "python3 .codex/hooks/command_guard.py",
+        "commandWindows": "py -3 .codex/hooks/command_guard.py"
+      }
+    ],
+    "Stop": [
+      {
+        "command": "python3 .codex/hooks/stop_check.py",
+        "commandWindows": "py -3 .codex/hooks/stop_check.py"
+      }
+    ]
+  }
+}

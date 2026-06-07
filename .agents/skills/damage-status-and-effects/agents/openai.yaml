@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Damage Status And Effects"
+  short_description: "Implement damage, status effects, alerts, modifiers, and timed effects consistently."
+  default_prompt: "Use $damage-status-and-effects for health and status gameplay."

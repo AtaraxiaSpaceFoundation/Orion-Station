@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Porting"
+  short_description: "Port one complete feature family into the modular repository with provenance, adaptation, dependencies, and validation."
+  default_prompt: "Use $porting and the nearest scoped AGENTS.md for this task."

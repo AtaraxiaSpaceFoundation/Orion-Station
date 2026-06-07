@@ -1,0 +1,13 @@
+---
+description: Orion guidance adapter for core
+globs: **/*
+alwaysApply: true
+---
+
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+Read `AGENTS.md`, the nearest scoped `AGENTS.md`, `.agents/rules`, and task-specific `.agents/skills`.

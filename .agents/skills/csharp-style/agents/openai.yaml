@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Csharp Style"
+  short_description: "Write repository-consistent C# with clear APIs, nullability, and ownership."
+  default_prompt: "Use $csharp-style when adding or reviewing C# APIs."

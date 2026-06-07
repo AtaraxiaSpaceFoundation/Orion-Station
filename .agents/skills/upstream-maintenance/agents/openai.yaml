@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Upstream Maintenance"
+  short_description: "Keep inherited changes narrow, traceable, and easy to compare with Goob Reforged or other owners."
+  default_prompt: "Use $upstream-maintenance and the nearest scoped AGENTS.md for this task."

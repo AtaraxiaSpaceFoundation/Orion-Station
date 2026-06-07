@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+[features]
+hooks = true
+
+[agents]
+max_threads = 5
+max_depth = 1
+job_max_runtime_seconds = 1800

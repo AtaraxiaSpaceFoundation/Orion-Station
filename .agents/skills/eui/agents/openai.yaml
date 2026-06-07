@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Eui"
+  short_description: "Implement EUI sessions, shared state and messages, server lifecycle, and client presentation."
+  default_prompt: "Use $eui and the nearest scoped AGENTS.md for this task."

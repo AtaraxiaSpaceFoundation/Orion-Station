@@ -1,0 +1,13 @@
+---
+description: Orion guidance adapter for YAML, prototypes, maps, workflows, and manifests
+globs: **/*.yml,**/*.yaml
+alwaysApply: false
+---
+
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+Load yaml-and-schema plus the relevant prototype, map, resource, localization, or build skill. Generic YAML validity does not replace domain validation.

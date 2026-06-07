@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+interface:
+  display_name: "Entity Relations And Links"
+  short_description: "Maintain entity references, ownership links, deletion cleanup, and network-safe relations."
+  default_prompt: "Use $entity-relations-and-links for cross-entity relationship state."
