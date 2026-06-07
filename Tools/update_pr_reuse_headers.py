@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 
 import argparse
 import re
@@ -236,24 +240,52 @@ def parse_header(content, style):
             index += 1
         if saw_spdx:
             end = index
-    elif start < len(lines) and lines[start].strip() == prefix:
-        index = start + 1
-        saw_spdx = False
-        while index < len(lines) and lines[index].strip() != suffix:
-            value = lines[index].strip()
-            copyright_match = COPYRIGHT_RE.match(value)
-            if copyright_match:
-                first = int(copyright_match.group(1))
-                last = int(copyright_match.group(2) or copyright_match.group(1))
-                authors[copyright_match.group(3)] = (first, last)
-                saw_spdx = True
-            license_match = LICENSE_RE.match(value)
-            if license_match:
-                license_id = license_match.group(1)
-                saw_spdx = True
-            index += 1
-        if saw_spdx and index < len(lines):
-            end = index + 1
+    elif start < len(lines):
+            first_line = lines[start].strip()
+
+            if first_line == prefix:
+                index = start + 1
+                saw_spdx = False
+                while index < len(lines) and lines[index].strip() != suffix:
+                    value = lines[index].strip()
+                    copyright_match = COPYRIGHT_RE.match(value)
+                    if copyright_match:
+                        first = int(copyright_match.group(1))
+                        last = int(copyright_match.group(2) or copyright_match.group(1))
+                        authors[copyright_match.group(3)] = (first, last)
+                        saw_spdx = True
+                    license_match = LICENSE_RE.match(value)
+                    if license_match:
+                        license_id = license_match.group(1)
+                        saw_spdx = True
+                    index += 1
+                if saw_spdx and index < len(lines):
+                    end = index + 1
+            elif first_line.startswith(prefix) and first_line.endswith(suffix):
+                index = start
+                saw_spdx = False
+                while index < len(lines):
+                    line = lines[index].strip()
+                    if not line.startswith(prefix) or not line.endswith(suffix):
+                        break
+
+                    value = line[len(prefix):-len(suffix)].strip()
+                    copyright_match = COPYRIGHT_RE.match(value)
+                    license_match = LICENSE_RE.match(value)
+                    if not copyright_match and not license_match:
+                        break
+
+                    if copyright_match:
+                        first = int(copyright_match.group(1))
+                        last = int(copyright_match.group(2) or copyright_match.group(1))
+                        authors[copyright_match.group(3)] = (first, last)
+                    if license_match:
+                        license_id = license_match.group(1)
+
+                    saw_spdx = True
+                index += 1
+            if saw_spdx:
+                end = index
     return authors, license_id, start, end
 
 
