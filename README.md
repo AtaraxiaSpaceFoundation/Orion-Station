@@ -71,6 +71,10 @@
 
 Мы всегда рады помощи в разработке, если вы хотите внести свой вклад, присоединяйтесь к [серверу разработки в Discord](https://discord.gg/zXk2cyhzPN). Вы можете помочь нам, решая проблемы из [списка открытых проблем](https://github.com/Goob-Station/Goob-Reforged/issues) или предлагая свои идеи. Не стесняйтесь задавать вопросы — мы всегда готовы помочь!
 
+Перед отправкой изменений ознакомьтесь с [Contributor License Agreement](CLA.md). Для принятия Pull Request все его участники должны принять CLA через комментарий, предложенный автоматическим CLA-ботом.
+
+Отправляя изменения и принимая CLA, участник сохраняет авторские права на собственный вклад, но предоставляет Ataraxia Space Foundation права, перечисленные в соглашении.
+
 ---
 <div align="center">
 
@@ -127,15 +131,17 @@ Scripts/bat/runQuickAll.bat
 
 </div>
 
-All code in this codebase is released under the [AGPL-3.0](LICENSES/AGPL-3.0-or-later.txt)-or-later license. Each file includes REUSE Specification headers or separate .license files that specify a dual license option. This dual licensing is provided to simplify the process for projects that are not using AGPL, allowing them to adopt the relevant portions of the code under an alternative license.
+Основной лицензией для оригинального кода Orion Station является [GNU Affero General Public License 3.0 или более поздней версии](LICENSES/AGPL-3.0-or-later.txt).
 
-Most media assets are licensed under [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) unless stated otherwise. Assets have their license and the copyright in the metadata file. [Example](https://github.com/space-wizards/space-station-14/blob/master/Resources/Textures/Objects/Tools/crowbar.rsi/meta.json).
+Конкретная лицензия каждого файла определяется его заголовком `SPDX-License-Identifier`, отдельным файлом `.license` или другой сопровождающей лицензионной информацией. Некоторые файлы, унаследованные или перенесённые из других проектов, могут распространяться под MPL, MIT или другими совместимыми лицензиями.
 
-Most MPL-licensed files can also be relicensed under stronger copyleft licenses, such as GPL or AGPL, if desired. Exception: files licensed under MPL-2.0-no-copyleft-exception cannot be ported to heavier copyleft licenses.
+Большинство медиафайлов распространяется под лицензией [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), если в метаданных ресурса не указано иное.
+
+Условия внесения изменений в проект определены в [Contributor License Agreement](CLA.md).
 
 </div>
 
 > [!NOTE]
-> Some assets are licensed under the non-commercial [CC-BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/) or similar non-commercial licenses and will need to be removed if you wish to use this project commercially.
+> Некоторые ресурсы могут распространяться под некоммерческими лицензиями, включая CC BY-NC-SA 3.0. Такие материалы необходимо удалить или заменить при коммерческом использовании проекта.
 
 <h1 align="right"> <img alt="Orion Station" src="https://raw.githubusercontent.com/AtaraxiaSpaceFoundation/asset-dump/refs/heads/master/OrionStation/Orion-Banner-Small.png" />  </h1>

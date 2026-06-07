@@ -30,7 +30,7 @@ jobs:
       - name: "CLA Assistant"
         if: >-
           (github.event.comment.body == 'recheck' ||
-          github.event.comment.body == 'I have read the CLA Document and I hereby sign the CLA') ||
+          github.event.comment.body == 'Я прочитал Contributor License Agreement и принимаю его условия') ||
           github.event_name == 'pull_request_target'
         uses: contributor-assistant/github-action@v2.6.1
         env:
@@ -44,6 +44,23 @@ jobs:
           # branch should not be protected
           branch: "master"
           allowlist: GoobAutomatedBot
+          create-file-commit-message: "[Tweak] Update CLA Signs"
+          signed-commit-message: "$contributorName принял CLA в $owner/$repo#$pullRequestNo"
+          custom-pr-sign-comment: "Я прочитал Contributor License Agreement и принимаю его условия"
+          custom-notsigned-prcomment: |
+            Спасибо за вклад в Orion Station!
+
+            Перед объединением Pull Request все его участники должны принять Contributor License Agreement Ataraxia Space Foundation.
+
+            Ознакомьтесь с документом CLA:
+            $pathToCLADocument
+
+            Чтобы принять соглашение, оставьте отдельный комментарий с точным текстом:
+
+            Я прочитал Contributor License Agreement и принимаю его условия
+          custom-allsigned-prcomment: |
+            ✅ Все участники этого Pull Request приняли Contributor License Agreement.
+          lock-pullrequest-aftermerge: false
 
          # the followings are the optional inputs - If the optional inputs are not given, then default values will be taken
           #remote-organization-name: enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository)
