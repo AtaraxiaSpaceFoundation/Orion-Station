@@ -1,37 +1,28 @@
 #!/usr/bin/env python3
 
-import subprocess
-import os
-import sys
-import re
 import argparse
-import json
-import fnmatch
+import re
+import subprocess
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from collections import defaultdict
+from pathlib import Path
+
+# Orion-Edit: Heavily
 
 LICENSE_CONFIG = {
+    "agpl": {"id": "AGPL-3.0-or-later", "path": "LICENSES/AGPL-3.0-or-later.txt"},
     "mit-wizards": {"id": "MIT-WIZARDS", "path": "LICENSES/MIT-WIZARDS.txt"},
-    "mit": {"id": "MIT-GOOB", "path": "LICENSES/MIT-WIZARDS.txt"},
+    "mit": {"id": "MIT-GOOB", "path": "LICENSES/MIT-GOOB.txt"},
     "mpl": {"id": "MPL-2.0", "path": "LICENSES/MPL-2.0.txt"},
-    "mpl-no-copyleft": {"id": "MPL-2.0-no-copyleft-exception", "path": "LICENSES/MPL-2.0-no-copyleft-exception.txt"},
+    "mpl-no-copyleft": {
+        "id": "MPL-2.0-no-copyleft-exception",
+        "path": "LICENSES/MPL-2.0-no-copyleft-exception.txt",
+    },
 }
 
-DEFAULT_LICENSE_LABEL = "mit-wizards"
-DEFAULT_AUTHOR = "Space Station 14 Contributors"
-
-DIRECTORY_RULES = [
-    {
-        "pattern": "Content.Goobstation.*/",
-        "author": "Goob Station Contributors",
-        "license": "mpl"
-    },
-    {
-        "pattern": "_Goobstation",
-        "author": "Goob Station Contributors",
-        "license": "mpl"
-    },
-]
+DEFAULT_LICENSE_LABEL = "agpl"
+BROKEN_AUTOMATION_AUTHOR = "Space Station 14 Contributors"
+BROKEN_AUTOMATION_LICENSE = "MIT-WIZARDS"
 
 COMMENT_STYLES = {
     # C-style single-line comments
@@ -114,242 +105,251 @@ COMMENT_STYLES = {
     ".md": ("<!--", "-->"),
     ".markdown": ("<!--", "-->"),
 }
-REPO_PATH = "."
 
-def matches_pattern(file_path, pattern):
-    if '*' in pattern or '?' in pattern:
-        if fnmatch.fnmatch(file_path, f"*{pattern}*"):
-            return True
-        path_parts = file_path.split('/')
-        for i in range(len(path_parts)):
-            partial_path = '/'.join(path_parts[i:]) + '/'
-            if fnmatch.fnmatch(partial_path, pattern + '*'):
-                return True
-        return False
-    else:
-        return pattern in file_path
+AUTOMATED_COMMIT_SUBJECTS = {"chore: automatically update reuse headers"}
+BOT_MARKERS = (
+    "[bot]",
+    "github actions",
+    "github-actions",
+    "dependabot",
+    "renovate",
+    "coderabbit",
+    "codex",
+    "copilot",
+    "devin",
+    "orion-github",
+    "automation",
+    " ci ",
+    "token",
+)
+CO_AUTHOR_RE = re.compile(r"^Co-authored-by:\s*(.+?)\s*<([^>]+)>\s*$", re.IGNORECASE | re.MULTILINE)
+COPYRIGHT_RE = re.compile(r"^SPDX-FileCopyrightText:\s*(\d{4})(?:-(\d{4}))?\s+(.+?)\s*$")
+LICENSE_RE = re.compile(r"^SPDX-License-Identifier:\s*(.+?)\s*$")
 
-def get_author_and_license_for_file(file_path):
-    normalized_path = file_path.replace("\\", "/")
 
-    for rule in DIRECTORY_RULES:
-        pattern = rule["pattern"]
-        if matches_pattern(normalized_path, pattern):
-            author = rule["author"]
-            license_label = rule.get("license", DEFAULT_LICENSE_LABEL)
-            print(f"  Matched pattern '{pattern}' -> Author: {author}, License: {license_label}")
-            return author, license_label
+@dataclass(frozen=True)
+class Author:
+    name: str
+    email: str
 
-    print(f"  No pattern match, using defaults -> Author: {DEFAULT_AUTHOR}, License: {DEFAULT_LICENSE_LABEL}")
-    return DEFAULT_AUTHOR, DEFAULT_LICENSE_LABEL
+    def spdx(self):
+        return f"{self.name} <{self.email}>" if self.email else self.name
 
-def get_current_year():
-    """Returns the current year."""
-    return datetime.now(timezone.utc).year
 
-def parse_existing_header(content, comment_style):
-    prefix, suffix = comment_style
+def run_git(repo, *args, check=True):
+    result = subprocess.run(
+        ["git", *args], cwd=repo, text=True, encoding="utf-8", errors="replace",
+        capture_output=True, check=False,
+    )
+    if check and result.returncode:
+        raise RuntimeError(result.stderr.strip() or f"git {' '.join(args)} failed")
+    return result.stdout
+
+
+def is_bot(author):
+    value = f" {author.name} {author.email} ".lower()
+    return not author.name.strip() or author.name.strip().lower() == "unknown" or any(marker in value for marker in BOT_MARKERS)
+
+
+def add_author(authors, author, year):
+    if is_bot(author):
+        return
+    key = author.spdx()
+    first, last = authors.get(key, (year, year))
+    authors[key] = (min(first, year), max(last, year))
+
+
+def authors_from_git(repo, file_path, base_sha, head_sha, fallback=None):
+    authors = {}
+    if base_sha and head_sha:
+        output = run_git(
+            repo, "log", f"{base_sha}..{head_sha}", "--follow", "--format=%x1e%aI%x1f%an%x1f%ae%x1f%B", "--", file_path,
+            check=False,
+        )
+        for record in output.split("\x1e"):
+            fields = record.strip().split("\x1f", 3)
+            if len(fields) != 4:
+                continue
+            date, name, email, body = fields
+            if body.splitlines()[0].strip().lower() in AUTOMATED_COMMIT_SUBJECTS:
+                continue
+            try:
+                year = int(date[:4])
+            except ValueError:
+                continue
+            add_author(authors, Author(name.strip(), email.strip()), year)
+            for co_name, co_email in CO_AUTHOR_RE.findall(body):
+                add_author(authors, Author(co_name.strip(), co_email.strip()), year)
+    if not authors and fallback:
+        add_author(authors, fallback, datetime.now(timezone.utc).year)
+    return authors
+
+def merge_authors(existing, added):
+    merged = dict(existing)
+    for author, (first, last) in added.items():
+        old_first, old_last = merged.get(author, (first, last))
+        merged[author] = (min(first, old_first), max(last, old_last))
+    return merged
+
+def format_years(first, last):
+    return str(first) if first == last else f"{first}-{last}"
+
+def comment_style(file_path):
+    return COMMENT_STYLES.get(Path(file_path).suffix.lower())
+
+def preamble_end(lines, style):
+    index = 0
+    if style[1] and lines and lines[0].lstrip().startswith("<?xml"):
+        index = 1
+    elif style[0] == "#" and lines and lines[0].startswith("#!"):
+        index = 1
+    return index
+
+def parse_header(content, style):
     lines = content.splitlines()
+    start = preamble_end(lines, style)
+    prefix, suffix = style
     authors = {}
     license_id = None
-    header_lines = []
+    end = start
 
     if suffix is None:
-        copyright_regex = re.compile(f"^{re.escape(prefix)} SPDX-FileCopyrightText: (\\d{{4}}) (.+)$")
-        license_regex = re.compile(f"^{re.escape(prefix)} SPDX-License-Identifier: (.+)$")
-
-        in_header = True
-        for i, line in enumerate(lines):
-            if in_header:
-                header_lines.append(line)
-
-                copyright_match = copyright_regex.match(line)
-                if copyright_match:
-                    year = int(copyright_match.group(1))
-                    author = copyright_match.group(2).strip()
-                    authors[author] = (year, year)
-                    continue
-
-                license_match = license_regex.match(line)
-                if license_match:
-                    license_id = license_match.group(1).strip()
-                    continue
-
-                if line.strip() == prefix:
-                    continue
-
-                if i > 0:
-                    header_lines.pop()
-                    in_header = False
-            else:
+        index = start
+        saw_spdx = False
+        while index < len(lines):
+            line = lines[index]
+            if not line.startswith(prefix):
                 break
-    else:
-        copyright_regex = re.compile(r"^SPDX-FileCopyrightText: (\d{4}) (.+)$")
-        license_regex = re.compile(r"^SPDX-License-Identifier: (.+)$")
-
-        in_comment = False
-        for i, line in enumerate(lines):
-            stripped_line = line.strip()
-
-            if stripped_line == prefix:
-                in_comment = True
-                header_lines.append(line)
-                continue
-
-            if stripped_line == suffix and in_comment:
-                header_lines.append(line)
+            value = line[len(prefix):].strip()
+            copyright_match = COPYRIGHT_RE.match(value)
+            if copyright_match:
+                first = int(copyright_match.group(1))
+                last = int(copyright_match.group(2) or copyright_match.group(1))
+                authors[copyright_match.group(3)] = (first, last)
+                saw_spdx = True
+            license_match = LICENSE_RE.match(value)
+            if license_match:
+                license_id = license_match.group(1)
+                saw_spdx = True
+            if value and not license_match and not copyright_match:
                 break
+            index += 1
+        if saw_spdx:
+            end = index
+    elif start < len(lines) and lines[start].strip() == prefix:
+        index = start + 1
+        saw_spdx = False
+        while index < len(lines) and lines[index].strip() != suffix:
+            value = lines[index].strip()
+            copyright_match = COPYRIGHT_RE.match(value)
+            if copyright_match:
+                first = int(copyright_match.group(1))
+                last = int(copyright_match.group(2) or copyright_match.group(1))
+                authors[copyright_match.group(3)] = (first, last)
+                saw_spdx = True
+            license_match = LICENSE_RE.match(value)
+            if license_match:
+                license_id = license_match.group(1)
+                saw_spdx = True
+            index += 1
+        if saw_spdx and index < len(lines):
+            end = index + 1
+    return authors, license_id, start, end
 
-            if in_comment:
-                header_lines.append(line)
 
-                copyright_match = copyright_regex.match(stripped_line)
-                if copyright_match:
-                    year = int(copyright_match.group(1))
-                    author = copyright_match.group(2).strip()
-                    authors[author] = (year, year)
-                    continue
-
-                license_match = license_regex.match(stripped_line)
-                if license_match:
-                    license_id = license_match.group(1).strip()
-                    continue
-
-    return authors, license_id, header_lines
-
-def create_header(authors, license_id, comment_style):
-    prefix, suffix = comment_style
-    lines = []
-
+def create_header(authors, license_id, style):
+    prefix, suffix = style
+    copyright_lines = [
+        f"SPDX-FileCopyrightText: {format_years(first, last)} {author}"
+        for author, (first, last) in sorted(authors.items(), key=lambda item: (item[1][0], item[0].casefold()))
+    ]
     if suffix is None:
-        if authors:
-            for author, (_, year) in sorted(authors.items(), key=lambda x: (x[1][1], x[0])):
-                lines.append(f"{prefix} SPDX-FileCopyrightText: {year} {author}")
-        else:
-            lines.append(f"{prefix} SPDX-FileCopyrightText: {get_current_year()} {DEFAULT_AUTHOR}")
+        return "\n".join([*(f"{prefix} {line}" for line in copyright_lines), prefix, f"{prefix} SPDX-License-Identifier: {license_id}"])
+    return "\n".join([prefix, *copyright_lines, "", f"SPDX-License-Identifier: {license_id}", suffix])
 
-        lines.append(f"{prefix}")
-
-        lines.append(f"{prefix} SPDX-License-Identifier: {license_id}")
+def update_content(content, style, authors, license_id):
+    _, _, start, end = parse_header(content, style)
+    lines = content.splitlines()
+    header_lines = create_header(authors, license_id, style).splitlines()
+    if end > start:
+        new_lines = lines[:start] + header_lines + lines[end:]
     else:
-        lines.append(f"{prefix}")
+        separator = [""] if start < len(lines) and lines[start:] else []
+        new_lines = lines[:start] + header_lines + separator + lines[start:]
+    return "\n".join(new_lines) + ("\n" if content.endswith("\n") or not content else "")
 
-        if authors:
-            for author, (_, year) in sorted(authors.items(), key=lambda x: (x[1][1], x[0])):
-                lines.append(f"SPDX-FileCopyrightText: {year} {author}")
-        else:
-            lines.append(f"SPDX-FileCopyrightText: {get_current_year()} {DEFAULT_AUTHOR}")
+def validate_license_files(repo):
+    for config in LICENSE_CONFIG.values():
+        if not (Path(repo) / config["path"]).is_file():
+            raise RuntimeError(f"Missing license file: {config['path']}")
 
-        lines.append("")
-
-        lines.append(f"SPDX-License-Identifier: {license_id}")
-
-        lines.append(f"{suffix}")
-
-    return "\n".join(lines)
-
-def process_file(file_path, pr_license_override=None, pr_base_sha=None, pr_head_sha=None):
-
-    _, ext = os.path.splitext(file_path)
-    comment_style = COMMENT_STYLES.get(ext)
-    if not comment_style:
-        print(f"Skipping unsupported file type: {file_path}")
+def process_file(repo, file_path, explicit_license, base_sha, head_sha, fallback):
+    style = comment_style(file_path)
+    path = Path(repo) / file_path
+    if not style or not path.is_file() or path.is_symlink():
         return False
 
-    full_path = os.path.join(REPO_PATH, file_path)
-    if not os.path.exists(full_path):
-        print(f"File not found: {file_path}")
+    content = path.read_text(encoding="utf-8-sig", errors="replace")
+    existing_authors, existing_license, _, _ = parse_header(content, style)
+    git_authors = authors_from_git(repo, file_path, base_sha, head_sha, fallback)
+
+    broken_header = existing_license == BROKEN_AUTOMATION_LICENSE and set(existing_authors) == {BROKEN_AUTOMATION_AUTHOR}
+    if broken_header:
+        existing_authors = {}
+        existing_license = None
+
+    authors = merge_authors(existing_authors, git_authors)
+    if not authors:
+        print(f"Skipping {file_path}: no real author found")
         return False
 
-    with open(full_path, 'r', encoding='utf-8-sig', errors='ignore') as f:
-        content = f.read()
-
-    existing_authors, existing_license, header_lines = parse_existing_header(content, comment_style)
-
-    if existing_license:
-        print(f"Skipping {file_path} - already has REUSE header (License: {existing_license})")
-        return False
-
-    file_author, file_license_label = get_author_and_license_for_file(file_path)
-    current_year = get_current_year()
-
-    if pr_license_override:
-        license_label = pr_license_override
-        print(f"  Using PR license override: {license_label}")
-    else:
-        license_label = file_license_label
-
-    if license_label not in LICENSE_CONFIG:
-        print(f"  Warning: Unknown license '{license_label}', using default: {DEFAULT_LICENSE_LABEL}")
-        license_label = DEFAULT_LICENSE_LABEL
-
-    license_id = LICENSE_CONFIG[license_label]["id"]
-
-    print(f"Adding new header to {file_path} (Author: {file_author}, License: {license_id})")
-
-    authors = {file_author: (current_year, current_year)}
-    new_header = create_header(authors, license_id, comment_style)
-
-    if content.strip():
-        prefix, suffix = comment_style
-        if suffix and content.lstrip().startswith("<?xml"):
-            xml_decl_end = content.find("?>") + 2
-            xml_declaration = content[:xml_decl_end]
-            rest_of_content = content[xml_decl_end:].lstrip()
-            new_content = xml_declaration + "\n" + new_header + "\n\n" + rest_of_content
-        else:
-            new_content = new_header + "\n\n" + content
-    else:
-        new_content = new_header + "\n"
-
+    # Existing upstream licenses are preserved. An explicit PR choice controls new or unlicensed files only.
+    license_label = explicit_license or DEFAULT_LICENSE_LABEL
+    license_id = existing_license or LICENSE_CONFIG[license_label]["id"]
+    new_content = update_content(content, style, authors, license_id)
     if new_content == content:
-        print(f"No changes needed for {file_path}")
         return False
-
-    with open(full_path, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(new_content)
-
-    print(f"Updated {file_path}")
+    path.write_text(new_content, encoding="utf-8", newline="\n")
+    print(f"Updated {file_path}: {license_id}; {', '.join(authors)}")
     return True
 
-def main():
-    parser = argparse.ArgumentParser(description="Update REUSE headers for PR files")
-    parser.add_argument("--files-added", nargs="*", default=[], help="List of added files")
-    parser.add_argument("--files-modified", nargs="*", default=[], help="List of modified files")
-    parser.add_argument("--pr-license", help="License override from PR (optional)")
-    parser.add_argument("--pr-base-sha", help="Base SHA of the PR (unused)")
-    parser.add_argument("--pr-head-sha", help="Head SHA of the PR (unused)")
+def changed_files(repo, base_sha, head_sha):
+    output = run_git(repo, "diff", "--name-status", "--find-renames", f"{base_sha}..{head_sha}")
+    added, modified = [], []
+    for line in output.splitlines():
+        fields = line.split("\t")
+        status = fields[0]
+        path = fields[-1]
+        if status == "A":
+            added.append(path)
+        elif status.startswith(("M", "R")):
+            modified.append(path)
+    return added, modified
 
+def main():
+    parser = argparse.ArgumentParser(description="Update REUSE headers for files changed by a pull request")
+    parser.add_argument("--files-added", nargs="*", default=[])
+    parser.add_argument("--files-modified", nargs="*", default=[])
+    parser.add_argument("--pr-license", choices=sorted(LICENSE_CONFIG))
+    parser.add_argument("--pr-base-sha")
+    parser.add_argument("--pr-head-sha")
+    parser.add_argument("--pr-author-name")
+    parser.add_argument("--pr-author-email")
+    parser.add_argument("--repo", default=".")
     args = parser.parse_args()
 
-    pr_license_override = None
-    if args.pr_license:
-        license_label = args.pr_license.lower()
-        if license_label in LICENSE_CONFIG:
-            pr_license_override = license_label
-            print(f"Using PR license override for all files: {LICENSE_CONFIG[license_label]['id']}")
-        else:
-            print(f"Warning: Unknown PR license '{license_label}', will use directory-based defaults")
+    validate_license_files(args.repo)
+    added, modified = args.files_added, args.files_modified
+    if not added and not modified and args.pr_base_sha and args.pr_head_sha:
+        added, modified = changed_files(args.repo, args.pr_base_sha, args.pr_head_sha)
+    fallback = Author(args.pr_author_name, args.pr_author_email or "") if args.pr_author_name else None
+    changed = 0
+    for path in added:
+        changed += process_file(args.repo, path, args.pr_license, args.pr_base_sha, args.pr_head_sha, fallback)
+    for path in modified:
+        changed += process_file(args.repo, path, args.pr_license, args.pr_base_sha, args.pr_head_sha, fallback)
+    print(f"Updated {changed} file(s)")
 
-    files_changed = False
-
-    print("\n--- Processing Added Files ---")
-    for file in args.files_added:
-        print(f"\nProcessing added file: {file}")
-        if process_file(file, pr_license_override, args.pr_base_sha, args.pr_head_sha):
-            files_changed = True
-
-    print("\n--- Processing Modified Files ---")
-    for file in args.files_modified:
-        print(f"\nProcessing modified file: {file}")
-        if process_file(file, pr_license_override, args.pr_base_sha, args.pr_head_sha):
-            files_changed = True
-
-    print("\n--- Summary ---")
-    if files_changed:
-        print("Files were modified")
-    else:
-        print("No files needed changes")
 
 if __name__ == "__main__":
     main()

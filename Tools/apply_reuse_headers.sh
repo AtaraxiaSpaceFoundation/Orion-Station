@@ -8,9 +8,10 @@ set -euo pipefail
 
 CURRENT_YEAR=$(date +%Y)
 DEFAULT_AUTHOR="Space Station 14 Contributors"
-DEFAULT_LICENSE="MIT-WIZARDS"
+DEFAULT_LICENSE="AGPL-3.0-or-later"
 
 declare -A LICENSE_CONFIG=(
+    ["agpl"]="AGPL-3.0-or-later"
     ["mit-wizards"]="MIT-WIZARDS"
     ["mpl"]="MPL-2.0"
 )
@@ -142,7 +143,7 @@ OPTIONS:
   -v, --verbose         Enable verbose output
   -n, --dry-run         Show what would be done without making changes
   -f, --force           Force overwrite existing headers
-  -l, --license LICENSE Override license for all files (mit or mpl)
+  -l, --license LICENSE Override license for all files (agpl, mit-wizards, or mpl)
   -a, --author AUTHOR   Override author for all files
   -p, --parallel        Enable parallel processing for faster execution
   -j, --jobs NUM        Number of parallel jobs (default: auto-detect CPU cores)
