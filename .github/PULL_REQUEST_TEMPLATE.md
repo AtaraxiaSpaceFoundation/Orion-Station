@@ -1,50 +1,64 @@
-<!-- NOTE: All code submitted to this repository is licensed under the terms specified in each file’s license header.
-By default, files are licensed under the Mozilla Public License (MPL).
-Secondary licenses may be indicated in the header to facilitate integration with other projects.
+<!-- ПРИМЕЧАНИЕ: Весь код, добавляемый в этот репозиторий, распространяется на условиях лицензии, указанной в заголовке соответствующего файла.
+По умолчанию файлы распространяются под лицензией GNU Affero General Public License версии 3 или любой более поздней версии (AGPL-3.0-or-later).
+В заголовке файла могут быть указаны дополнительные или альтернативные лицензии, упрощающие интеграцию с другими проектами.
 
-Uncomment and modify the following line only if you wish to change the file’s license from the default MPL.
-Currently allowed alternatives are: MIT or MPL-2.0-No-Copyleft.
-Files licensed under MPL-2.0-No-Copyleft cannot be ported to strong copyleft licenses (e.g., AGPL or GPL).
-If you wish to change this, do so before publishing the PR. -->
-<!--- LICENSE: MPL -->
+Раскомментируйте и измените следующую строку только в том случае, если хотите выбрать для файла лицензию, отличную от стандартной AGPL.
+В настоящее время разрешены следующие альтернативы: MIT, MPL-2.0 или MPL-2.0-No-Copyleft.
+Файлы, распространяемые только под MIT, MPL-2.0 или MPL-2.0-No-Copyleft, могут не подпадать под требования AGPL.
+Если вы хотите изменить лицензию файла, сделайте это до публикации PR. -->
+<!--- LICENSE: AGPL-3.0-or-later -->
 
-## About the PR
-<!-- What did you change? -->
+<!-- Текст между стрелками - это комментарии - они не будут видны в вашем PR. -->
 
-## Why / Balance
-<!-- Discuss how this would affect game balance or explain why it was changed. Link any relevant discussions or issues. -->
+# Описание PR
+<!-- Опишите здесь ваш Pull Request (PR). Что он изменяет? На что еще это может повлиять? -->
 
-## Technical details
-<!-- Summary of code changes for easier review. -->
+## Медиа
+<!-- Добавьте скриншоты/видео, для демонстрации вашего PR. Если ваш PR представляет собой визуальное изменение, добавьте скриншоты, иначе он может быть закрыт. -->
 
-## Test plan
-<!--
-Describe how you tested the pull request, and how someone reviewing this PR can test it themselves.
+<!-- Место для вашего чек-листа, здесь можно составить список, к примеру того, что вы хотите сделать.
+## Чек-лист
+
+- [x] Я сделаю хорошее
 -->
 
-## Media
-<!-- Attach media if the PR makes ingame changes (clothing, items, features, etc).
-Small fixes/refactors are exempt. Media may be used in SS14 progress reports with credit. -->
+## Тип PR
+<!-- Подходите ответственно к пометке этих пунктов, для этого необходимо поставить английскую "x" между квадратных скобок -->
 
-## Requirements
-<!-- Confirm the following by placing an X in the brackets without spaces inside (for example: [X] ): -->
-- [ ] I have read and am following the [Pull Request and Changelog Guidelines](https://docs.goobstation.com/en/general-development/codebase-info/pull-request-guidelines.html).
-- [ ] I have tested this pull request and written instructions on how to test it
-- [ ] I have added media to this PR or it does not require an in-game showcase.
-<!-- You should understand that not following the above may get your PR closed at maintainer’s discretion -->
+- [ ] Feature
+- [ ] Fix
+- [ ] Tweak
+- [ ] Balance
+- [ ] Refactor
+- [ ] Port
+- [ ] Translate
+- [ ] Resprite
 
-## Breaking changes
-<!-- List any breaking changes, including namespaces, public class/method/field changes, prototype renames; and provide instructions for fixing them.
-This will be posted in #codebase-changes. -->
+## Лицензионное соглашение
+<!-- Согласие с CLA означает: Ataraxia Space Foundation получает право использовать, модифицировать и распространять внесённые изменения в рамках условий лицензии -->
+<!-- ⚠️ Отказ от лицензионного соглашения может повлечь за собой закрытие вашего PR ⚠️ -->
 
-## Changelog
-<!-- Add a Changelog entry to make players aware of new features or changes that could affect gameplay.
-Make sure to read the guidelines and take this Changelog template out of the comment block in order for it to show up.
-Changelog must have a :cl: symbol, so the bot recognizes the changes and adds them to the game's changelog. -->
+- [x] Я согласен с лицензионным соглашением Contributor License Agreement, для Ataraxia Space Foundation.
+
+**Изменения**
 <!--
-:cl:
-- add: Added fun!
-- remove: Removed fun!
-- tweak: Changed fun!
-- fix: Fixed fun!
+Здесь вы можете написать список изменений, который будет автоматически добавлен в игру, когда ваш PR будет принят
+Для записей в списке изменений есть 4 значка: add, remove, tweak, fix. Думаю, вы сможете разобраться с остальным.
+
+Вы можете поставить свой ник после символа :cl:, чтобы изменить ник, который будет отображаться в журнале изменений (в противном случае будет использоваться ник вашего аккаунта GitHub)
+Например: ":cl: PuroSlavKing".
+
+Как правило, в журналы изменений следует помещать только то, что действительно важно игрокам. Вещи вроде "Рефактор системы X, но изменений вы не увидите" - не должны быть в журнале изменений, эти изменения обычные игроки не смогут заметить.
+
+При написании списка изменений НЕ считайте суффикс типа записи (например, add) "частью" предложения:
+Плохо: - add: Хирургия может вырезать яйца.
+Хорошо: - add: Добавлена хирургическая операция, которая позволяет вырезать яйца.
+-->
+
+<!-- Не забудьте убрать стрелки, что-бы changelog отображался, если вы считаете, что он нужен.
+:cl: 
+- add: Добавлено веселье.
+- remove: Убрано веселье.
+- tweak: Изменено веселье.
+- fix: Исправлено веселье.
 -->

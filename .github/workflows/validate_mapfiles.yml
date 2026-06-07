@@ -13,7 +13,7 @@ concurrency:
 jobs:
   yaml-schema-validation:
     name: YAML map schema validator
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name == 'merge_group' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.2.2

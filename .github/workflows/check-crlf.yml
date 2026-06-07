@@ -7,11 +7,12 @@ concurrency:
 on:
   pull_request:
     types: [ opened, reopened, synchronize, ready_for_review ]
+  merge_group:
 
 jobs:
   build:
     name: CRLF Check
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name == 'merge_group' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.2.2

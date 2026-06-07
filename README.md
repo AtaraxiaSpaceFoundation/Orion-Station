@@ -1,55 +1,141 @@
-<p align="center"> <img alt="Goob Station 14" width="880" height="300" src="https://github.com/Goob-Station/Goob-Station/blob/master/Resources/Textures/Logo/logo.png" /></p>
+<h1 align="center"> <img alt="Orion Station" width="480" height="120" src="https://raw.githubusercontent.com/AtaraxiaSpaceFoundation/asset-dump/refs/heads/master/OrionStation/Orion-Banner-Big.png" /> </h1>
 
-This is a fork from the primary repo for Space Station 14 called Goob Station. To prevent people forking RobustToolbox, a "content" pack is loaded by the client and server. This content pack contains everything needed to play the game on one specific server this is the content pack for Goob Station.
+<p align="center">
+  Ваш проводник в космический симулятор безумия!<br>
+  Основан на идеях <a href="https://github.com/tgstation/tgstation">/tg/station</a> и <a href="https://github.com/shiptest-ss13/Shiptest">Shiptest</a> из Space Station 13.
+</p>
 
-If you want to host or create content for SS14, go to the [Space Station 14 repository](https://github.com/space-wizards/space-station-14) as it contains both RobustToolbox and the content pack for development of new content packs and is the base for your fork.
+<div align="center">
 
-> [!WARNING]
->
-> WIP
->
-> This project is currently a work in progress and is NOT ready for any use.
->
-> The infrastucture is currently being set up in order to clarify the licensing on the content of the repository.
->
-> Currently all content PRs are freezed, until CLA and License header workflows are restored.
+  [![Steam](https://img.shields.io/badge/Steam-Скачать-blue?style=for-the-badge)](https://store.steampowered.com/app/1255460/Space_Station_14/)
+  [![Client](https://img.shields.io/badge/Клиент-Скачать-purple?style=for-the-badge)](https://spacestation14.io/about/nightlies/)
 
-## Links
+</div>
 
-[Goob Station Discord Server](https://discord.gg/goobstation) | [Goob Station Development Discord Server](https://discord.gg/zXk2cyhzPN) | [Goob Station Forum](https://forums.goobstation.com/) | [Goob Station Website](https://goobstation.com)
+---
 
-## Documentation/Wiki
+**Orion** — это русскоязычный форк [Goob Station](https://github.com/Goob-Station/Goob-Reforged), который стремится возродить дух классического геймплея Space Station 13, черпая вдохновение из таких проектов, как [/tg/station](https://github.com/tgstation/tgstation) и [Shiptest](https://github.com/shiptest-ss13/Shiptest). Мы фокусируемся на сочетании проверенных временем механик с инновационными идеями, создавая уникальный и приятный опыт игры в космическое безумие.
 
-The Goob Station [docs site](https://docs.goobstation.com/) has documentation on GS14's content, engine, game design, and more. It also has lots of resources for new contributors to the project.
+---
 
-## Contributing
+<div align="center">
+    
+## Ссылки
 
-We are happy to accept contributions from anybody. Get in [Development Discord Server](https://discord.gg/zXk2cyhzPN) if you want to help. Feel free to check the [list of issues](https://github.com/Goob-Station/Goob-Station/issues) that need to be done and anybody can pick them up. Don't be afraid to ask for help either!
-While following the [Space Station 14 contribution guidelines](https://docs.spacestation14.com/en/general-development/codebase-info/pull-request-guidelines.html) is not mandatory for Goob Station, we recommend reviewing them for best practices.
+</div>
 
-We are not currently accepting translations of the game on our main repository. If you would like to translate the game into another language consider creating a fork or contributing to a fork.
+[<img src="https://github.com/AtaraxiaSpaceFoundation/asset-dump/blob/master/Misc/Discord/discord-banner.png" alt="Discord" width="150" align="left">](https://discord.gg/K48JujjjsC)
+**[Discord Server](https://discord.gg/K48JujjjsC)**<br>В космосе вас никто не услышит.
 
-## Building
+[<img src="https://i.imgur.com/XiS9QP5.png" alt="ASF" width="150" align="left">](https://github.com/AtaraxiaSpaceFoundation)
+**[Ataraxia Space Foundation](https://github.com/AtaraxiaSpaceFoundation)**<br>Специализируемся на разработке этого билда.
 
-1. Clone this repo.
-2. Run `RUN_THIS.py` to init submodules and download the engine.
-3. <b style="color:crimson;">Different from other SS14 projects! </b>Compile the solution with `dotnet run --project Goobstation.Bootstrap`
+---
+<div align="center">
 
-[More detailed instructions on building the project.](https://docs.goobstation.com/en/general-development/setup.html)
+## Активность репозитория
 
-## License
+![Активность PR](https://repobeats.axiom.co/api/embed/50c8c950821b573c8bcca8158d8f2b99ee06417d.svg "ZZZ")
 
-Each file in this codebase includes a license header that clearly defines its terms. Most unique files in this repository are licensed under the Mozilla Public License (MPL). Files originating from upstream (the Space Station 14 codebase) are licensed under MIT. Any dual or multiple licenses are explicitly indicated with two or more license lines in the file header. Please refer to the headers for the exact licensing terms.
+</div>
+
+---
+<div align="center">
+
+## Политика Orion
+
+Любой сервер, заявляющий, что он является официальным представителем этого билда — не одобрен этой организацией.
+Однако мы хотели бы пригласить всех желающих создать сервер на базе билда Orion.
+
+</div>
+
+> [!WARNING]  
+> **Orion не имеет официальных игровых серверов**.
+
+---
+
+<div align="center">
+
+## Документация
+
+</div>
+
+Проект имеет обширную [документацию](https://docs.goobstation.com/), которая охватывает все аспекты: от контента и сборки до движка, дизайна игры и многого другого. Это также отличный ресурс для новичков, желающих внести свой вклад в разработку.
+
+---
+<div align="center">
+
+## Контрибуция
+
+</div>
+
+Мы всегда рады помощи в разработке, если вы хотите внести свой вклад, присоединяйтесь к [серверу разработки в Discord](https://discord.gg/zXk2cyhzPN). Вы можете помочь нам, решая проблемы из [списка открытых проблем](https://github.com/Goob-Station/Goob-Reforged/issues) или предлагая свои идеи. Не стесняйтесь задавать вопросы — мы всегда готовы помочь!
+
+---
+<div align="center">
+
+## Сборка
+
+</div>
+
+</div>
+
+> [!TIP]
+> Используйте [IDE Rider](https://github.com/designinlife/jetbrains), он неимоверно облегчит вам жизнь, если вы собираетесь влиться в разработку (код), или билдить сборку, больше пары раз.
+
+Следуйте гайду от [Джубами](https://docs.goobstation.com/en/general-development/setup.html) по настройке рабочей среды, но учитывайте, что репозитории отличаются друг от друга и некоторые вещи могут отличаться.
+Ниже перечислены скрипты и методы облегчающие работу с билдом.
+
+### Windows
+
+> 1. Клонируйте данный репозиторий.
+```shell
+git clone https://github.com/AtaraxiaSpaceFoundation/Orion-Station-14.git
+```
+> 2. Откройте коммандную строку в папке репозитория и введите команду для того, чтобы подготовить движок игры.
+```shell
+git submodule sync --recursive
+```
+```shell
+git submodule update --init --recursive
+```
+> 3. Следующим этапом идёт билд-билда, для этого нужно ввести команду с указанием того, для чего вы билдите, для этого нужно написать Release, Tools или Debug.
+```shell
+dotnet build --configuration Release/Tools/Debug
+```
+> [!TIP]
+> К примеру **Release** - полная версия, **Tools** - урезаная версия, **Debug** - урезаная версия, но которая будет вылетать при любой ошибке. В большинстве случаев вам хватит **Tools**, что-бы не перенапрягать машину.
+
+> 4. Далее вам требуется запустить сервер с клиентом, для этого есть несколько способов.
+> - 4.1. Командами, в конце так же можно указать вместо Tools любой интересующий вас тип.
+```shell
+dotnet run --project Content.Server --configuration Tools
+```
+```shell
+dotnet run --project Content.Client --configuration Tools
+```
+> - 4.2. Запуск .bat файла, который автоматически выполнит те же команды.
+```shell
+Scripts/bat/runQuickAll.bat
+```
+> 5. Подключитесь к **localhost** в появившемся окне и играйте!
+
+---
+<div align="center">
+
+## Лицензия
+
+</div>
+
+All code in this codebase is released under the [AGPL-3.0](LICENSE-AGPLv3.TXT)-or-later license. Each file includes REUSE Specification headers or separate .license files that specify a dual license option. This dual licensing is provided to simplify the process for projects that are not using AGPL, allowing them to adopt the relevant portions of the code under an alternative license.
 
 Most media assets are licensed under [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) unless stated otherwise. Assets have their license and the copyright in the metadata file. [Example](https://github.com/space-wizards/space-station-14/blob/master/Resources/Textures/Objects/Tools/crowbar.rsi/meta.json).
 
-Note that some assets are licensed under the non-commercial [CC-BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/) or similar non-commercial licenses and will need to be removed if you wish to use this project commercially.
+Most MPL-licensed files can also be relicensed under stronger copyleft licenses, such as GPL or AGPL, if desired. Exception: files licensed under MPL-2.0-no-copyleft-exception cannot be ported to heavier copyleft licenses.
 
-### MPL for Dummies, Forks, and people looking to port our content.
+</div>
 
-The Mozilla Public License (MPL) is a “file-level” license, which means it only applies to the specific files it covers. Unlike AGPL, which requires the entire project using your code to also be AGPL (strong copyleft), MPL allows your code to be included in any codebase (open or closed source) as long as the MPL license stays with that file.
+> [!NOTE]
+> Some assets are licensed under the non-commercial [CC-BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/) or similar non-commercial licenses and will need to be removed if you wish to use this project commercially.
 
-If you distribute binaries of an MPL-covered file, you must make that file’s source code available. You do **not** need to release the source code of the rest of the project. This makes it much easier to combine MPL-licensed files with other projects without affecting their overall licensing.
-
-Most MPL-licensed files can also be relicensed under stronger copyleft licenses, such as GPL or AGPL, if desired.
-**Exception:** files licensed under `MPL-2.0-no-copyleft-exception` cannot be ported to heavier copyleft licenses.
+<h1 align="right"> <img alt="Orion Station" src="https://raw.githubusercontent.com/AtaraxiaSpaceFoundation/asset-dump/refs/heads/master/OrionStation/Orion-Banner-Small.png" />  </h1>
