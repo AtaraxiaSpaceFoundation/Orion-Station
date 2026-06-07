@@ -1,0 +1,19 @@
+name: Orion
+id: orion
+version: 1.0.0
+
+resources:
+  - Resources
+
+projects:
+  - path: Content.Orion.Common
+    role: Common
+
+  - path: Content.Orion.Shared
+    role: Shared
+
+  - path: Content.Orion.Client
+    role: Client
+
+  - path: Content.Orion.Server
+    role: Server
