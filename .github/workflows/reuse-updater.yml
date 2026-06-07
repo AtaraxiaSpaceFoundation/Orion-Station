@@ -8,15 +8,24 @@ on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
 
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: reuse-headers-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   update_headers:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout pull request head
         uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
           token: ${{ secrets.BOT_TOKEN }}
 
@@ -50,12 +59,21 @@ jobs:
             --pr-author-name "${{ github.event.pull_request.user.login }}" \
             --pr-author-email "${{ github.event.pull_request.user.id }}+${{ github.event.pull_request.user.login }}@users.noreply.github.com"
 
+      - name: Explain external fork limitation
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "REUSE headers were checked, but this workflow cannot push changes to an external fork." >&2
+          echo "Run Tools/update_pr_reuse_headers.py in the pull request branch and push the result manually." >&2
+          exit 1
+
       - name: Commit changes
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Automatically update REUSE headers"
           commit_user_name: ${{ github.event.pull_request.user.login }}
           commit_user_email: ${{ github.event.pull_request.user.id }}+${{ github.event.pull_request.user.login }}@users.noreply.github.com
           commit_author: "${{ github.event.pull_request.user.login }} <${{ github.event.pull_request.user.id }}+${{ github.event.pull_request.user.login }}@users.noreply.github.com>"
+          branch: ${{ github.event.pull_request.head.ref }}
           skip_dirty_check: false
           skip_fetch: true

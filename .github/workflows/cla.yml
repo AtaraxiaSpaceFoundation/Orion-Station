@@ -44,9 +44,9 @@ jobs:
           # branch should not be protected
           branch: "master"
           allowlist: GoobAutomatedBot
-          create-file-commit-message: "[Tweak] Update CLA Signs"
+          create-file-commit-message: "[Tweak] Create CLA Signs"
           signed-commit-message: >-
-            $contributorName принял CLA в
+            @$contributorName принял CLA в
             $owner/$repo#${{ github.event.pull_request.number || github.event.issue.number }}
           custom-pr-sign-comment: "Я прочитал Contributor License Agreement и принимаю его условия"
           custom-notsigned-prcomment: |
