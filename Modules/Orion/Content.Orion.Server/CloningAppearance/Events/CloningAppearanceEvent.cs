@@ -1,4 +1,8 @@
-﻿using Content.Orion.Server.CloningAppearance.Components;
+﻿// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+using Content.Orion.Server.CloningAppearance.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
