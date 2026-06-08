@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Module System
 
 The module system allows you to organize custom content into self-contained modules with a manifest-based configuration system.
