@@ -1,6 +1,6 @@
 ---
 name: save-data-and-configuration
-description: Read, validate, migrate, and write persistent files and configuration without corruption or unsafe defaults.
+description: Validate, migrate, and atomically persist files and configuration with safe fallback and restart coverage.
 ---
 
 <!--
@@ -15,24 +15,30 @@ Persistent files and configuration are compatibility and reliability surfaces.
 
 ## Reading
 
-Treat files as untrusted input. Validate schema, bounds, required fields, enums, paths, and identifiers. Handle missing, empty, truncated, and malformed data with an explicit recovery policy.
+Treat files as untrusted input. Validate schema, bounds, enums, paths, identifiers, required fields, and cross-field rules. Define behavior for missing, empty, truncated, malformed, and future-version data.
 
-## Defaults and normalization
+## Defaults and migration
 
-Use safe defaults and normalize legacy values before exposing them to gameplay. Ensure defaults satisfy whitelists and cross-field constraints. Do not silently accept dangerous or impossible configuration.
+Defaults must satisfy whitelists and cross-field constraints. Normalize legacy values before exposing them to gameplay. Back up unreadable legacy data before reset when recovery matters.
+
+Version formats when changes are not backward-compatible. Do not silently accept impossible or dangerous configuration.
 
 ## Writing
 
-Write to a unique temporary file, flush where durability matters, then replace atomically. Clean temporary files in failure paths. Avoid overwriting a valid file with partial or invalid output.
+Write to a unique temporary file, flush when durability matters, and replace atomically. Clean temporary files on every failure path. Never overwrite a valid file with partial or unvalidated output.
 
-## Migration
+## Player-facing settings
 
-Version persistent formats when changes are not backward-compatible. Preserve unknown data only when the format and security model permit it. Back up unreadable legacy files before resetting them.
+Names, descriptions, options, validation errors, and fallback notices require `en-US` and `ru-RU`. Culture names and saved culture values must be validated against cultures actually found at runtime.
 
-## Security
+A saved setting must restore after restart. Removed or invalid values must fall back safely without corrupting the config.
 
-Constrain user-controlled paths, avoid shell interpolation, protect secrets, and set appropriate permissions. Do not log complete confidential configuration.
+## Verification commands
 
-## Verification
+```powershell
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+dotnet test --no-build --configuration Debug Content.Tests/Content.Tests.csproj -- NUnit.ConsoleOut=0 NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+```
 
-Test missing file, valid legacy file, malformed file, partial write, concurrent write, invalid bounds, normalization, backup, and restart persistence.
+Run the owning integration project for runtime reload, client settings UI, server/client propagation, or restart behavior. Test missing, malformed, legacy, partial, concurrent, out-of-range, backup, normalization, and restart cases.

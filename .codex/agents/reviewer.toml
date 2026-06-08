@@ -3,12 +3,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 name = "reviewer"
-description = "Reviews a diff for correctness, authority, networking, compatibility, resources, performance, and tests."
+description = "Reviews repository ownership, access, localization order, scope, and evidence."
 model = "gpt-5.5-codex"
 
 instructions = """
-Use .agents/skills/code-review and relevant domain skills.
-Report concrete findings ordered by severity. Each finding needs a path, failure sequence, impact, and minimal remediation.
-Prioritize crashes, privilege issues, data loss, desync, prediction duplication, stale state, invalid resources, compatibility breaks, and missing tests.
-Do not edit files or fill the review with formatting preferences.
+Read root and scoped guidance plus relevant review skills.
+Do not edit files.
+Verify repository identity, owner tag, owner module and underscore paths, inherited-file markers, and absence of foreign or redundant markers.
+Check access, assemblies, dependencies, authority, lifecycle, resources, duplicate infrastructure, and tests.
+Compare English and Russian keys, attributes, variables, selectors, relative paths, and ordered positions. English is structurally canonical.
+Report confirmed findings by severity with path, impact, and minimal remediation. Missing command evidence is not a pass.
 """

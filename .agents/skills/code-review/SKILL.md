@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review changes for correctness, regressions, authority, architecture, compatibility, performance, and missing tests.
+description: Review correctness, access, repository ownership, authority, localization, compatibility, resources, scope, and verification evidence.
 ---
 
 <!--
@@ -11,25 +11,19 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Code Review
 
-Review observable behavior before style.
+Review observable behavior and architectural validity before style.
 
-## Order of review
+1. Define intended behavior and scope.
+2. Verify repository identity, owner tag, owner-local paths, and upstream.
+3. Verify edit markers on inherited files and the absence of redundant markers in owner-local module and underscore paths.
+4. Identify projects, assemblies, declarations, and access modifiers.
+5. Trace validation, mutation, dirtying, persistence, lifecycle, and presentation.
+6. Check failure paths, cleanup, repeated execution, and reconnect.
+7. Compare English and Russian keys, attributes, variables, selectors, relative paths, and message order.
+8. Verify resources, compatibility surfaces, test ownership, and regression behavior.
+9. Inspect the complete diff for unrelated changes, SPDX edits, and duplicate infrastructure.
+10. Review maintainability and style last.
 
-1. Understand intended behavior and scope.
-2. Identify owners and assembly boundaries.
-3. Trace entry points, validation, mutation, dirtying, persistence, and presentation.
-4. Check failure paths and lifecycle cleanup.
-5. Review prototypes, localization, resources, and licenses.
-6. Check compatibility and migration impact.
-7. Evaluate tests and verification evidence.
-8. Only then consider maintainability and style.
+Treat inaccessible members, cross-assembly partial assumptions, reversed dependencies, duplicate infrastructure, foreign edit markers, missing inherited-file markers, redundant owner-local markers, missing Russian entries, Russian order drift, mismatched FTL contracts, stale culture UI, hardcoded text, and unproven test claims as defects.
 
-## High-value findings
-
-Prioritize crashes, data loss, privilege bypass, desync, duplicated prediction, stale UI, invalid prototype references, missing dirtying, incorrect module placement, compatibility breaks, hot-path regressions, and untested behavior.
-
-Every finding should include the path, failure mode, user or operator impact, and a minimal remediation. Distinguish confirmed defects from questions or speculative risks.
-
-## Avoid
-
-Do not flood the review with formatting preferences, restate the diff, or demand abstractions without a demonstrated problem. Do not approve based solely on compilation when runtime authority or resources changed.
+Every finding needs a path, declaration or execution sequence, impact, and minimal remediation.

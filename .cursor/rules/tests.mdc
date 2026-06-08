@@ -1,13 +1,22 @@
 ---
-description: Orion guidance adapter for tests
+description: Repository test guidance adapter
 globs: Content.Tests/**/*.cs,Content.IntegrationTests/**/*.cs,Modules/*/Content.*.IntegrationTests/**/*.cs
 alwaysApply: false
 ---
 
 <!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.github.com>
 SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-Read the nearest scoped `AGENTS.md` and the canonical `testing` and `tests-authoring` skills. Use deterministic focused or owner-local integration tests matching the failure mode.
+Root `AGENTS.md` hard rules apply. Read the nearest scoped `AGENTS.md` and canonical `testing` and `tests-authoring` skills.
+
+Verify repository identity, owner-local module and underscore paths, and edit-marker requirements before changing inherited test files. Do not add redundant owner markers inside owner-local paths.
+
+Use existing owner-local test infrastructure. Verify symbol access and project references. Do not create duplicate test projects, fixtures, CI steps, MSBuild targets, or `module.yml` entries.
+
+For locale and culture tests, treat `en-US` as structural truth. Verify `ru-RU` keys, attributes, variables, selectors, relative file paths, ordered positions, fallback, persistence, repeated switching, and cleanup.
+
+Run exact canonical commands, preserve failures, never edit SPDX metadata, and never weaken assertions for green CI.

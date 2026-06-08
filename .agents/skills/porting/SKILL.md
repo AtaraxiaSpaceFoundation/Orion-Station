@@ -1,6 +1,6 @@
 ---
 name: porting
-description: Port one complete feature family into the modular repository with provenance, adaptation, dependencies, and validation.
+description: Port one complete feature family with provenance, current-API adaptation, repository ownership, localization, resources, and verification.
 ---
 
 <!--
@@ -11,21 +11,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Porting
 
-Use one destination PR per feature family.
+Use one destination change per feature family. Port final intended behavior, including later fixes, rather than historical broken states.
 
-A feature family may include the original source PR, later fixes, improvements, and follow-up PRs. Port the final intended behavior instead of cherry-picking every historical broken state.
+Record the source repository, source commit, root PR, follow-ups, exclusions, dependencies, and licensing evidence. Inventory code layers, prototypes, English, Russian, UI, maps, sprites, audio, tests, database changes, CVars, and every inherited-file modification.
 
-## Workflow
+Verify the destination repository identity, owner tag, owner module, owner underscore paths, current APIs, project references, resources, and test infrastructure.
 
-1. Record source repository, root PR, included PRs, excluded or pending PRs, and source commit.
-2. Build a complete file and dependency inventory: Common, Shared, Server, Client, prototypes, locale, UI, maps, sprites, audio, tests, and base modifications.
-3. Determine target owner and module dependencies.
-4. Use final source state as reference for feature-owned files.
-5. Re-implement integration changes against current Goob Reforged APIs.
-6. Preserve fixes from later PRs.
-7. Verify code and asset licensing.
-8. Test the complete feature in the destination.
+Do not assume a source API, path, field, prototype parent, test project, marker, or locale layout exists in the destination.
 
-Do not bundle independent systems merely because the source PR touched both. Port dependencies in separate PRs and stack branches when necessary.
+English localization is structurally canonical. Add natural Russian localization and mirror English keys, attributes, variables, selectors, file paths, and order.
 
-Old `_Orion` paths are source paths only. Orion destinations live under `Modules/Orion`.
+Repository-owned behavior belongs in owner-local paths when possible. Inherited edits require the destination repository marker around the smallest delta. Owner-local module and underscore paths do not receive redundant markers.
+
+Do not bundle independent systems or create duplicate build and test infrastructure.
+
+Run the Debug build, Release resource validation, root integration tests, and existing integration-test projects for changed modules. Report omitted source behavior and unavailable checks.

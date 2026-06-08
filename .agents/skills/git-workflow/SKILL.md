@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Inspect, stage, commit, rebase, merge, and deliver changes without losing user work or polluting scope.
+description: Preserve user work, scope, metadata, history, and verifiable delivery.
 ---
 
 <!--
@@ -11,24 +11,52 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Git Workflow
 
-Start every write task with `git status --short --branch` and inspect the branch relationship to its remote.
+## Baseline
+
+Start every write task with:
+
+```text
+git status --short --branch
+git branch --show-current
+git remote -v
+```
+
+Record existing modified and untracked paths, branch relationship, and any pre-existing SPDX diff. Preserve user-owned work.
 
 ## Scope control
 
-Stage only task-related paths. Inspect staged diff before committing. Keep generated, untracked, or user-owned files out unless explicitly requested.
+Stage only task-related paths. Inspect the full staged diff before committing.
+
+Agents MUST NOT add, edit, delete, normalize, or generate lines containing `SPDX-`. If a new file requires metadata, leave it for the user and report the path. Do not repair REUSE by changing SPDX.
+
+Do not include generated files, logs, test results, IDE files, or unrelated cleanup unless requested.
 
 ## Shared history
 
-Do not force-push, reset hard, clean untracked files, rewrite published history, or choose merge/rebase policy without approval. When the remote moved, show the divergence and ask or follow explicit repository policy.
+Do not force-push, reset hard, clean untracked files, rewrite published history, or choose merge versus rebase without approval. Resolve conflicts by understanding both sides, not by selecting ours or theirs mechanically.
 
 ## Commits
 
-Create logical commits with messages matching repository conventions. Do not claim a commit was pushed until the remote ref is verified. A task record or local commit is not a GitHub update.
+Follow the exact commit count and message requested by the user. If one commit is requested, do not create preparatory commits on the target branch.
 
-## Conflict handling
+A local task record is not a Git commit. A local commit is not a remote update. Verify the resulting SHA and branch ref before claiming delivery.
 
-Understand both sides before resolving. Preserve current architecture and intended behavior rather than selecting one side mechanically. Run relevant checks after conflict resolution.
+## Delivery gate
 
-## Delivery
+Inspect:
 
-Verify the target branch SHA and existing PR head after push. Do not create a new PR when the user asked to update an existing branch.
+```text
+git status --short --branch
+git diff --name-status
+git diff --check
+git diff -U0
+```
+
+Confirm:
+
+- only requested paths changed;
+- no agent-introduced SPDX line changed;
+- no user work was removed;
+- no duplicate project or infrastructure appeared;
+- all claimed checks actually ran;
+- the target branch or PR head points to the reported commit.

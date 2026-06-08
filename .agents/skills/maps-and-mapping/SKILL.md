@@ -1,6 +1,6 @@
 ---
 name: maps-and-mapping
-description: Edit map files, map prototypes, grids, placements, entity references, and map compatibility safely.
+description: Edit maps, map prototypes, grids, placements, entity references, and serialized compatibility safely.
 ---
 
 <!--
@@ -15,26 +15,25 @@ Maps are serialized compatibility artifacts, not ordinary hand-written YAML.
 
 ## Workflow
 
-1. Identify whether the change belongs in a map file, map prototype, dungeon/template resource, or runtime spawner.
-2. Use the supported map editor or serializer path where possible.
-3. Keep module-owned entities and prototypes available in the map's runtime module set.
-4. Review entity parents, grids, coordinates, anchored state, containers, and map IDs.
+1. Decide whether the change belongs in a map file, map prototype, template resource, or runtime spawner.
+2. Use the supported editor or serializer path where possible.
+3. Verify every prototype, tile, component field, resource, and required runtime module.
+4. Review parents, grids, coordinates, anchored state, containers, map IDs, and entity references.
 5. Avoid unrelated serializer churn.
-6. Validate map schemas and load the affected map.
+6. Add `en-US` and `ru-RU` for player-visible map, landmark, device, or UI text introduced by the change.
+7. Load or validate the affected map.
 
-## Porting
+Do not copy map chunks from another fork before resolving unavailable prototypes and changed schemas deliberately.
 
-Do not copy map chunks from another fork before verifying every prototype ID, component field, tile, and resource. Replace unavailable entities deliberately and record behavior changes.
+## Verification commands
 
-## Review failures
+```powershell
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+dotnet build Content.MapRenderer/Content.MapRenderer.csproj --configuration Debug --no-restore
+dotnet build --configuration Release --no-restore /p:WarningsAsErrors= /m
+dotnet run --project Content.YAMLLinter/Content.YAMLLinter.csproj --no-build
+git diff --check
+```
 
-- missing prototype referenced by map entity;
-- accidental mass reserialization;
-- module resource unavailable at map load;
-- entity inside invalid container or parent;
-- orphaned grid or map entity;
-- changed GUID or map metadata without reason.
-
-## Verification
-
-Run map schema validation, map loading or integration coverage, and inspect the diff for unrelated generated changes.
+Run the exact current map schema workflow command for changed map files. Inspect the diff for mass reserialization, missing prototypes, and unrelated GUID or metadata changes.

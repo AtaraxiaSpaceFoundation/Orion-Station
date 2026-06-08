@@ -1,6 +1,6 @@
 ---
 name: client-server-shared
-description: Place contracts and behavior correctly across trust, prediction, presentation, and authority boundaries.
+description: Place contracts and behavior across authority, prediction, presentation, localization, and assembly boundaries.
 ---
 
 <!--
@@ -11,25 +11,21 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Client Server Shared
 
-Start from the trust boundary.
+Shared owns replicated contracts, common events, BUI contracts, and prediction-safe logic. Do not move hidden state, persistence, client controls, or server services into Shared merely for accessibility.
 
-## Shared
+Server validates requests, owns protected and persistent state, selects authority-only outcomes, performs mutation, and dirties replicated state.
 
-Shared owns components visible to both sides, common events, network payloads, BUI contracts, and logic safe to execute during prediction. Shared code may run repeatedly on the client.
+Client presents replicated state, renders visuals, owns controls, and provides prediction-safe feedback. Client checks are not security checks.
 
-## Server
+Player-visible feedback requires English localization and structurally ordered Russian localization. Do not network resolved strings when typed state can be localized at presentation time.
 
-Server validates requests, owns hidden and persistent state, selects protected outcomes, controls economy and access, and performs authoritative mutation.
+Verify repository owner, assembly boundaries, project references, and edit-marker requirements before changing inherited files.
 
-## Client
+```powershell
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+$env:DOTNET_gcServer=1
+dotnet test --no-build --configuration Debug Content.IntegrationTests/Content.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+```
 
-Client presents state, renders visuals, handles XAML and controls, and provides immediate local feedback. Client checks improve UX but are never security checks.
-
-## Review questions
-
-- Does the client receive more information than it needs?
-- Is a protected result selected client-side?
-- Can the same shared effect execute twice?
-- Does a server mutation need dirtying?
-- Is client-only UI leaking into Shared?
-- Is server-only persistence leaking into a shared component?
+Run existing changed-module integration tests as applicable.
