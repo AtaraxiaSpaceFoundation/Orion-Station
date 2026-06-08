@@ -1,6 +1,6 @@
 ---
 name: forms-and-input-validation
-description: Validate UI, command, text, numeric, entity, and configuration input consistently across client feedback and server authority.
+description: Validate UI, command, text, numeric, entity, and configuration input with localized feedback and server authority.
 ---
 
 <!--
@@ -15,30 +15,30 @@ Validation has two layers: client feedback and authoritative server enforcement.
 
 ## Parsing
 
-Trim input deliberately. Parse numbers with an explicit culture and format policy. Reject ambiguous values such as integer fields supplied as `1.0` unless the domain permits them. Bound lengths before expensive processing.
+Trim deliberately. Parse numbers with an explicit culture and format policy. Reject ambiguous forms such as integer fields supplied as `1.0` unless the domain permits them. Check length before expensive processing.
 
 ## Domain validation
 
-Validate ranges, whitelists, prototype IDs, entity existence, ownership, access, cooldowns, and cross-field constraints. Normalize case and whitespace only when the domain defines them as insignificant.
+Validate ranges, overflow, whitelists, prototype IDs, entity existence, ownership, access, cooldowns, and cross-field constraints. Normalize case and whitespace only when the domain defines them as insignificant.
 
-## Error reporting
+Use one authoritative validation source where possible. Do not allow UI and server rules to drift.
 
-Return specific localized errors without exposing hidden state or internal exceptions. Keep one validation source of truth so UI and server do not drift.
+## Feedback
 
-## Security
+Return specific player-safe errors in both `en-US` and `ru-RU`. Do not expose hidden state, internal exceptions, raw IDs, or server-only reasons.
 
-Treat rich text, markup, file paths, URLs, and command fragments as hostile. Apply escaping or structured APIs rather than concatenating into shell, SQL, or markup.
+Variable names and values passed into validation messages must match both locale files.
 
-## Common failures
+## Security failures
 
-- client-only validation;
-- culture-dependent decimal parsing;
-- overflow or negative quantity;
-- stale entity selected in UI;
-- whitelist comparison with inconsistent casing;
-- normalized value differs from stored value;
-- error message reveals protected data.
+Treat rich text, markup, paths, URLs, and command fragments as hostile. Use structured APIs instead of concatenating shell, SQL, markup, or resource paths.
 
-## Verification
+## Verification commands
 
-Test empty, whitespace, minimum, maximum, overflow, locale variants, malformed markup, stale entities, unauthorized actors, and conflicting fields.
+```powershell
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+dotnet test --no-build --configuration Debug Content.Tests/Content.Tests.csproj -- NUnit.ConsoleOut=0 NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+```
+
+Run the owning integration project for BUI, command authority, stale entities, culture-sensitive UI, or client/server behavior. Test empty, whitespace, boundaries, overflow, locale variants, malformed markup, unauthorized actors, and conflicting fields.

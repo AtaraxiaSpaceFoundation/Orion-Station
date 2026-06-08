@@ -1,6 +1,6 @@
 ---
 name: build-and-packaging
-description: Work with solution structure, CI configurations, generated content, packaging, and release outputs.
+description: Change projects, solution structure, CI, generated content, and packaging with repository-correct ownership and exact commands.
 ---
 
 <!--
@@ -11,30 +11,26 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Build And Packaging
 
-Use this skill when changing project files, solution membership, build targets, CI jobs, packaging rules, or generated assets.
+Use this for project files, solution structure, MSBuild targets, workflows, module manifests, packaging rules, and generated outputs.
 
-## Repository baseline
+Verify repository identity, owner tag, owner-local module and underscore paths, assembly role, dependency direction, target framework, XAML imports, generated-code targets, solution grouping, and manifest role.
 
-- SDK version comes from `global.json`.
-- The solution is `SpaceStation14.slnx`.
-- Normal CI builds and tests in `Debug`.
-- YAML linting uses a `Release` build followed by `--no-build` execution.
-- Packaging is owned by `Content.Packaging` and related workflows.
+Do not introduce base-to-module references. Do not make Shared depend on Client or Server. Do not add integration-test projects to `module.yml`. Search for existing projects and CI steps before creating anything.
 
-## Project changes
+Inherited workflow or project changes require the current repository edit marker when the file format supports comments. Owner-local module and underscore paths do not receive redundant owner markers.
 
-Before adding a project reference, verify dependency direction and module ownership. Keep project names, root namespaces, content references, XAML configuration, and solution grouping consistent with nearby projects.
+Copy commands and flags from the current repository. Do not import commands from another fork. Preserve submodule initialization, output paths, test arguments, and artifacts.
 
-Do not add a base-to-module reference. Do not make Shared depend on Server or Client. Do not include module resources through ad hoc copy rules when the module manifest already defines them.
+```powershell
+git submodule update --init --recursive
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+dotnet test --no-build --configuration Debug Content.Tests/Content.Tests.csproj -- NUnit.ConsoleOut=0 NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+$env:DOTNET_gcServer=1
+dotnet test --no-build --configuration Debug Content.IntegrationTests/Content.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+dotnet build --configuration Release --no-restore /p:WarningsAsErrors= /m
+dotnet run --project Content.YAMLLinter/Content.YAMLLinter.csproj --no-build
+dotnet build Content.Packaging --configuration Release --no-restore /m
+```
 
-## CI changes
-
-Keep workflows least-privileged. Pin actions according to repository policy. Preserve cache keys, submodule initialization, and platform-specific requirements. Do not hide failing tests with `continue-on-error` or broad warning suppression.
-
-## Packaging
-
-Confirm which client, server, symbols, resources, and module files belong in the output. Test both missing-file and duplicate-file risks. Avoid absolute paths and machine-specific assumptions.
-
-## Verification
-
-Run restore, affected build configurations, packaging checks, and inspect output manifests. Report platform or toolchain checks that were unavailable.
+Discover and run each affected module integration project. Run packaging platforms and specialized validators from exact current workflows. Report unavailable checks explicitly.

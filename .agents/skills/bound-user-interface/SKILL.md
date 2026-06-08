@@ -1,6 +1,6 @@
 ---
 name: bound-user-interface
-description: Implement BUI keys, shared messages and state, server handlers, client windows, validation, and state updates.
+description: Implement BUI contracts, server validation, localized client windows, lifecycle cleanup, and state refresh.
 ---
 
 <!--
@@ -11,27 +11,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Bound User Interface
 
-A BUI crosses Shared, Server, Client, and often Resources.
+A BUI crosses Shared, Server, Client, and usually Resources.
 
-## Shared
+Shared defines the UI key, serializable intent messages, and minimal state. Messages express requested actions, not trusted results.
 
-Define the UI key, serializable messages, and minimal state. Messages express intent, not trusted results.
+Server handlers validate actor, target, distance, access, ownership, cooldown, current state, and submitted values. Protected outcomes are derived server-side. Mutate authority and send refreshed state.
 
-## Server
+Client code creates the window, binds state, and sends intent messages. Client validation improves UX only.
 
-Register handlers, validate the actor and target, derive authoritative values, mutate state, and send updated UI state. Re-check access, distance, ownership, and current values.
+Every visible string requires English localization and an ordered Russian counterpart. Long-lived windows must refresh localized text on culture changes without discarding authoritative state or duplicating subscriptions.
 
-## Client
+Handle open, update, close, deletion, range loss, multiple viewers, and reopen behavior.
 
-Create the BUI class and window, bind state to controls, and send intent messages. Client checks are for UX only.
+Use repository ownership rules for edit markers. Do not mark owner-local module or underscore paths.
 
-## Common failures
+```powershell
+dotnet restore
+dotnet build --configuration Debug --no-restore /m
+$env:DOTNET_gcServer=1
+dotnet test --no-build --configuration Debug Content.IntegrationTests/Content.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+```
 
-- trusting a displayed price or selected account;
-- sending complete server components as UI state;
-- forgetting to refresh state after mutation;
-- duplicate subscriptions after reopening;
-- stale UI after deletion or range loss;
-- hardcoded labels.
-
-Test open, update, rejected message, close, deletion, and multiple viewers.
+Run the existing integration-test project of every changed module.
