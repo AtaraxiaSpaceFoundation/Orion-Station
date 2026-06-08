@@ -9,6 +9,7 @@ using Content.Shared.Bed.Cryostorage;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Preferences;
+using Content.Shared.Station.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
@@ -38,21 +39,38 @@ public sealed partial class CloningAppearanceSystem : EntitySystem
         SubscribeLocalEvent<CloningAppearanceEvent>(OnPlayerSpawn);
     }
 
-    public EntityUid SpawnProfileEntity(EntityCoordinates coordinates, HumanoidCharacterProfile profile, EntityUid? stationUid = null)
+    private EntityUid SpawnProfileEntity(EntityCoordinates coordinates, HumanoidCharacterProfile? profile, EntityUid? stationUid = null)
     {
-        return _spawning.SpawnPlayerMob(coordinates, null, profile, stationUid);
-    }
+        if (profile == null)
+        {
+            Log.Error("Cannot spawn a cloning appearance entity without a character profile.");
+            return EntityUid.Invalid;
+        }
 
-    public EntityUid SpawnProfileEntity(EntityCoordinates coordinates, ICommonSession player, EntityUid? stationUid = null)
-    {
-        var profile = _ticker.GetPlayerProfile(player);
-        return SpawnProfileEntity(coordinates, profile, stationUid);
+        if (!coordinates.IsValid(EntityManager))
+        {
+            Log.Error($"Cannot spawn a cloning appearance entity at invalid coordinates {coordinates}.");
+            return EntityUid.Invalid;
+        }
+
+        if (stationUid == null || (Exists(stationUid.Value) && HasComp<StationDataComponent>(stationUid.Value)))
+            return _spawning.SpawnPlayerMob(coordinates, null, profile, stationUid);
+
+        Log.Error($"Cannot spawn a cloning appearance entity for invalid station {stationUid.Value}.");
+        return EntityUid.Invalid;
+
     }
 
     private void OnPlayerSpawn(CloningAppearanceEvent ev)
     {
         var profile = _ticker.GetPlayerProfile(ev.Player);
         var mobUid = SpawnProfileEntity(ev.Coords, profile, ev.StationUid);
+        if (!Exists(mobUid))
+        {
+            Log.Error($"Failed to spawn a cloning appearance entity for player {ev.Player.Name}.");
+            return;
+        }
+
         var targetMind = ev.MindId != null && TryComp<MindComponent>(ev.MindId, out var transferredMind)
             ? (ev.MindId.Value, transferredMind)
             : _mindSystem.GetOrCreateMind(ev.Player.UserId);
@@ -69,12 +87,16 @@ public sealed partial class CloningAppearanceSystem : EntitySystem
         if (ev.Component.CopyTraits)
             _traitSystem.ApplyTraits(mobUid, profile);
 
+        var owningStation = _stations.GetOwningStation(mobUid);
         foreach (var nearbyEntity in _entityLookupSystem.GetEntitiesInRange(mobUid, 1f))
         {
-            if (!TryComp<CryostorageComponent>(nearbyEntity, out var cryostorageComponent))
+            // Try insert into cryo storage
+            if (owningStation == null || _stations.GetOwningStation(nearbyEntity) != owningStation || !TryComp<CryostorageComponent>(nearbyEntity, out var cryostorageComponent))
+            {
                 continue;
+            }
 
-            if(!_container.TryGetContainer(nearbyEntity, cryostorageComponent.ContainerId, out var container))
+            if (!_container.TryGetContainer(nearbyEntity, cryostorageComponent.ContainerId, out var container))
                 continue;
 
             if (!_container.CanInsert(mobUid, container, true))
@@ -92,13 +114,14 @@ public sealed partial class CloningAppearanceSystem : EntitySystem
 
     private void OnPlayerAttached(Entity<CloningAppearanceComponent> ent, ref PlayerAttachedEvent args)
     {
-        if(TerminatingOrDeleted(ent))
+        if (TerminatingOrDeleted(ent))
             return;
 
+        var componentSnapshot = _serialization.CreateCopy(ent.Comp, notNullableOverride: true);
         QueueLocalEvent(new CloningAppearanceEvent
         {
             Player = args.Player,
-            Component = ent.Comp,
+            Component = componentSnapshot,
             StationUid = _stations.GetOwningStation(ent),
             Coords = Transform(ent).Coordinates,
             MindId = TryComp<MindContainerComponent>(ent, out var mindContainer) ? mindContainer.Mind : null,

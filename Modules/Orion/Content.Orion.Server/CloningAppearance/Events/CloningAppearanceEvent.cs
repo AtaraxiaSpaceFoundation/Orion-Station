@@ -7,9 +7,9 @@ namespace Content.Orion.Server.CloningAppearance.Events;
 
 public sealed class CloningAppearanceEvent : EntityEventArgs
 {
-    public ICommonSession Player = default!;
-    public CloningAppearanceComponent Component = default!;
-    public EntityCoordinates Coords { get; set; }
-    public EntityUid? StationUid { get; set; }
-    public EntityUid? MindId { get; set; }
+    public required ICommonSession Player { get; init; }
+    public required CloningAppearanceComponent Component { get; init; }
+    public EntityCoordinates Coords { get; init; }
+    public EntityUid? StationUid { get; init; }
+    public EntityUid? MindId { get; init; }
 }

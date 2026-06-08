@@ -1,6 +1,7 @@
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Humanoid;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Content.Shared.Whitelist;
@@ -36,13 +37,42 @@ public sealed partial class TraitSystem : EntitySystem
     } // Orion-Edit: Separated ApplyTraits
 
     // Orion-Edit-Start: Separated from OnPlayerSpawnComplete
-    public void ApplyTraits(EntityUid mob, HumanoidCharacterProfile profile)
+    /// <summary>
+    /// Applies every valid trait in the profile, skipping missing trait prototypes instead of aborting the remaining traits.
+    /// </summary>
+    public void ApplyTraits(EntityUid mob, HumanoidCharacterProfile? profile)
     {
+        // Orion-Start
+        if (!Exists(mob))
+        {
+            Log.Error($"Cannot apply traits to missing entity {mob}.");
+            return;
+        }
+
+        if (!HasComp<HumanoidProfileComponent>(mob))
+        {
+            Log.Error($"Cannot apply traits to non-humanoid entity {ToPrettyString(mob)}.");
+            return;
+        }
+
+        if (profile == null)
+        {
+            Log.Error($"Cannot apply traits to {ToPrettyString(mob)} without a character profile.");
+            return;
+        }
+
+        if (profile.TraitPreferences.Count == 0)
+            return;
+
+        var skippedTraitCount = 0;
+        // Orion-End
+
         foreach (var traitId in profile.TraitPreferences)
         {
             if (!_prototypeManager.TryIndex(traitId, out var traitPrototype))
             {
-                Log.Error($"No trait found with ID {traitId}!");
+                skippedTraitCount++;
+                Log.Error($"No trait found with ID {traitId} for {ToPrettyString(mob)}; skipping it.");
                 continue;
             }
 
@@ -74,6 +104,11 @@ public sealed partial class TraitSystem : EntitySystem
                 checkActionBlocker: false,
                 handsComp: handsComponent);
         }
+
+        // Orion-Start
+        if (skippedTraitCount > 0)
+            Log.Info($"Skipped {skippedTraitCount} missing trait prototype(s) while applying traits to {ToPrettyString(mob)}.");
+        // Orion-End
     }
     // Orion-Edit-End
 }
