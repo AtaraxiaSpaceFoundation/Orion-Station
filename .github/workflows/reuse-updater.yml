@@ -59,15 +59,14 @@ jobs:
             --pr-author-name "${{ github.event.pull_request.user.login }}" \
             --pr-author-email "${{ github.event.pull_request.user.id }}+${{ github.event.pull_request.user.login }}@users.noreply.github.com"
 
-      - name: Explain external fork limitation
-        if: github.event.pull_request.head.repo.full_name != github.repository
+      - name: Require maintainer edits for external fork
+        if: github.event.pull_request.head.repo.full_name != github.repository && github.event.pull_request.maintainer_can_modify != true
         run: |
-          echo "REUSE headers were checked, but this workflow cannot push changes to an external fork." >&2
-          echo "Run Tools/update_pr_reuse_headers.py in the pull request branch and push the result manually." >&2
+          echo "The pull request author must enable 'Allow edits from maintainers' before REUSE headers can be pushed to the fork." >&2
           exit 1
 
       - name: Commit changes
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository || github.event.pull_request.maintainer_can_modify == true
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Automatically update REUSE headers"
