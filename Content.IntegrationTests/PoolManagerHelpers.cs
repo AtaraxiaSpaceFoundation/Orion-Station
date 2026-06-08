@@ -1,4 +1,8 @@
-﻿namespace Content.IntegrationTests;
+﻿// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+namespace Content.IntegrationTests;
 
 public static class PoolManagerHelpers
 {
@@ -6,9 +10,11 @@ public static class PoolManagerHelpers
     private static TimeSpan MaximumTotalTestingTimeLimit => TimeSpan.FromMinutes(30);
     private static TimeSpan HardStopTimeLimit => MaximumTotalTestingTimeLimit.Add(TimeSpan.FromMinutes(1));
 
-    public static void Setup()
+    // Orion-Edit-Start: Allow module test assemblies to provide their test prototypes.
+    public static void Setup(params System.Reflection.Assembly[] extraAssemblies)
     {
-        PoolManager.Startup();
+        PoolManager.Startup(extraAssemblies);
+    // Orion-Edit-End
         // If the tests seem to be stuck, we try to end it semi-nicely
         _ = Task.Delay(MaximumTotalTestingTimeLimit).ContinueWith(_ =>
         {
