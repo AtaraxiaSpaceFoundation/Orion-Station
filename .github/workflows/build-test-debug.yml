@@ -74,6 +74,12 @@ jobs:
         $env:DOTNET_gcServer=1
         dotnet test --no-build --configuration Debug Modules/Lavaland/Content.Lavaland.IntegrationTests/Content.Lavaland.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
 
+    - name: Run Content.Orion.IntegrationTests
+      shell: pwsh
+      run: |
+        $env:DOTNET_gcServer=1
+        dotnet test --no-build --configuration Debug Modules/Orion/Content.Orion.IntegrationTests/Content.Orion.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+
     - name: Archive NUnit3 test results.
       if: always()
       uses: actions/upload-artifact@v4

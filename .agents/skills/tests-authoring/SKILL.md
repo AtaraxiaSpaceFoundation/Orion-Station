@@ -21,6 +21,8 @@ Use focused tests for pure validation, serialization, prototype assumptions, sys
 
 Use integration tests when networking, server/client state, maps, timers, multiple systems, or lifecycle integration matters. Control simulation time and randomness. Inspect both authoritative and replicated state when testing desyncs.
 
+Place an integration test with the owner of the behavior: root behavior in `Content.IntegrationTests`, and module behavior in `Modules/<Module>/Content.<Module>.IntegrationTests`. A modular test project should directly reference only the required projects from its own module. Other modules may load at runtime without granting compile-time access; do not add unjustified project references for cross-module tests. Verify server authority first and replicated client state when it is part of the contract.
+
 ## Structure
 
 Name tests by behavior. Arrange only required entities and prototypes. Act through the public API or real event path. Assert success and important rejection branches. Clean up sessions, maps, and spawned entities.

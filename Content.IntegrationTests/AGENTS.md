@@ -7,6 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Integration test guidance
 
+This directory owns base-content integration tests and shared integration-test infrastructure. Module-specific tests belong in the corresponding module project, while reusable fixtures here may be consumed by modular test projects. Do not add Orion types or Orion-only behavior here merely for convenience.
+
 Use integration tests for behavior that crosses server, client, networking, maps, prototypes, or multiple systems.
 
 Control time and randomness. Assert authoritative results and, when relevant, replicated client state. Keep setup minimal and clean up spawned entities or sessions. Add an integration test when a regression cannot be represented faithfully as a focused unit test.

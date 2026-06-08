@@ -27,6 +27,8 @@ Use `.agents/CATALOG.md` to select skills. Use `.agents/SCENARIOS.md` when a tas
 - Each direct child of `Modules/` with a `module.yml` is an independent content owner.
 - Orion-only work belongs under `Modules/Orion` unless a module-local extension is impossible.
 - GoobStation and Lavaland are separate owners. Do not place Orion-specific behavior there for convenience.
+- Root-content focused and integration tests belong in `Content.Tests` and `Content.IntegrationTests`; module-specific integration tests belong in `Modules/<Module>/Content.<Module>.IntegrationTests`.
+- Do not place Orion-only integration tests in root `Content.IntegrationTests` without an architectural reason. A modular integration-test project is not a runtime project in `module.yml` and must be connected to both `SpaceStation14.slnx` and CI.
 - `RobustToolbox/` is the engine boundary. Edit it only when content-side APIs cannot solve the task.
 
 ## Assembly roles

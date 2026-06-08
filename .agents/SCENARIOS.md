@@ -8,6 +8,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file shows which guidance to load for common Orion tasks. It is a routing aid, not a substitute for reading current code.
 
+## Add or update an Orion integration test
+
+Read:
+
+- `Modules/Orion/AGENTS.md`
+- `Modules/Orion/Content.Orion.IntegrationTests/AGENTS.md`
+- `testing`
+- `tests-authoring`
+- gameplay, networking, UI, or prototype skills matching the behavior
+
+Keep the test with Orion, prove authoritative behavior and relevant replication, and avoid cross-module compile-time coupling.
+
 ## Add a networked Orion component
 
 Read:

@@ -13,6 +13,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 - Server may depend on Orion Common, Orion Shared, and root `Content.Server`.
 - Client may depend on Orion Common, Orion Shared, and root `Content.Client`.
 - Orion resources belong in `Modules/Orion/Resources`.
+- Orion integration tests belong in `Content.Orion.IntegrationTests`, which may reference Orion Client and Server and only the Shared or Common projects it directly needs.
+- `Content.Orion.IntegrationTests` is not a runtime project and must not be listed in `module.yml`.
+
+Choose focused versus module integration coverage from the actual behavior boundary. Add a module integration test for Orion server/client, networking, maps, prototypes, or lifecycle changes when a focused test cannot prove the contract.
 
 Prefer module-local systems, components, prototypes, locale, UI, and assets. Change root content or GoobStation only when a reusable extension point or inherited fix is truly required. Explain cross-owner edits in the PR.
 

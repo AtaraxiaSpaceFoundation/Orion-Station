@@ -1,6 +1,6 @@
 ---
 description: Orion guidance adapter for tests
-globs: Content.Tests/**/*.cs,Content.IntegrationTests/**/*.cs
+globs: Content.Tests/**/*.cs,Content.IntegrationTests/**/*.cs,Modules/*/Content.*.IntegrationTests/**/*.cs
 alwaysApply: false
 ---
 
@@ -10,4 +10,4 @@ SPDX-FileCopyrightText: 2026 PuroSlavKing <103608145+PuroSlavKing@users.noreply.
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-Use deterministic focused or integration tests matching the failure mode.
+Read the nearest scoped `AGENTS.md` and the canonical `testing` and `tests-authoring` skills. Use deterministic focused or owner-local integration tests matching the failure mode.

@@ -85,7 +85,6 @@ mkdir -p Modules/YourModule/Content.YourModule.Shared
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Content.YourModule.Shared</RootNamespace>
@@ -105,3 +104,28 @@ Writing TODO:
 - [ ] Step 8: uhm uhm uhm
 - [ ] Also I think i'll prolly write a script to generate a new module with Client/Shared/Server/Common modules baked in
 - [ ] uhm.... explain dependencies, circular shit, and common
+
+## Modular Integration Tests
+
+Integrated behavior owned by a module should be tested in `Modules/YourModule/Content.YourModule.IntegrationTests`, rather than in root `Content.IntegrationTests`. A typical project contains:
+
+```text
+Content.YourModule.IntegrationTests/
+├── Content.YourModule.IntegrationTests.csproj
+├── AssemblyInfo.cs
+├── GlobalUsings.cs
+├── YourModulePoolManagerTestEventHandler.cs
+└── Tests/
+```
+
+The project is a test-only compile-time owner. It references `Content.Benchmarks` for the shared pool setup and only the Client, Server, Shared, or Common projects from its module that its test code directly uses. All runtime modules are loaded into the integration-test environment, but their types cannot be referenced by test code without a `ProjectReference`; do not add cross-module references merely for convenience.
+
+Match the current modular test projects and import `MSBuild/Content.props`, RobustToolbox Client, Server, Shared, and Testing props, `Robust.Properties.targets`, `Robust.CompNetworkGenerator.targets`, `MSBuild/AllModules.targets`, and `MSBuild/TestModules.targets`. The setup fixture should call the shared `IntegrationTestHelpers.ChangeRootDir`, `PoolManagerHelpers.Setup`, and `PoolManager.Shutdown` APIs rather than implementing another pool.
+
+The integration-test project is not a runtime module project and must not be added to `module.yml`. Add it to the module folder in `SpaceStation14.slnx` and add a dedicated invocation beside the other modular tests in `.github/workflows/build-test-debug.yml`.
+
+Run Orion integration tests locally with:
+
+```sh
+dotnet test --no-build --configuration Debug Modules/Orion/Content.Orion.IntegrationTests/Content.Orion.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed
+```

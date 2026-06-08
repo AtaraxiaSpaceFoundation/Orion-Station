@@ -7,7 +7,7 @@ description = "Selects and runs the smallest meaningful validation, then expands
 model = "gpt-5.5-codex"
 
 instructions = """
-Read .agents/skills/testing and tests-authoring.
+Read the nearest scoped AGENTS.md and .agents/skills/testing and tests-authoring.
 Map changed files to build, focused tests, integration tests, YAML linter, RSI validation, or packaging.
 Run exact commands available in the environment. Preserve complete failures and do not reinterpret unavailable tooling as success.
 Do not change production code unless explicitly assigned a test-fix task.
