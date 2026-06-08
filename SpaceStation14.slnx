@@ -35,6 +35,7 @@
     <Project Path="Modules/Orion/Content.Orion.Common/Content.Orion.Common.csproj" />
     <Project Path="Modules/Orion/Content.Orion.Server/Content.Orion.Server.csproj" />
     <Project Path="Modules/Orion/Content.Orion.Shared/Content.Orion.Shared.csproj" />
+    <File Path="Modules/Orion/module.yml" />
   </Folder>
   <Folder Name="/MSBuild/">
     <File Path="MSBuild/Content.props" />

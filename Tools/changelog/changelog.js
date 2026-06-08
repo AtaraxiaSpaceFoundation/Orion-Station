@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // From https://github.com/DeltaV-Station/Delta-v/
 // Dependencies
 const fs = require("fs");
@@ -150,7 +154,7 @@ function writeChangelog(entry) {
     // Write updated changelogs file
     fs.writeFileSync(
         `../../${process.env.CHANGELOG_DIR}`,
-        "Name: Gooblog\nOrder: -1\nEntries:\n" + // IF YOU ARE A FORK, CHANGE THIS!!!!!!!!!!!!
+        "Name: orion-changelog\nOrder: -2\nEntries:\n" + // IF YOU ARE A FORK, CHANGE THIS!!!!!!!!!!!!
             yaml.dump(data.Entries, { indent: 2 }).replace(/^---/, "")
     );
 }
