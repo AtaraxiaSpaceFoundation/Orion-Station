@@ -1,0 +1,6 @@
+ent-BorgChassisGenericBug = борг "жук"
+ent-BorgChassisMiningBug = борг-шахтёр "жук"
+ent-BorgChassisEngineerBug = борг-инженер "жук"
+ent-BorgChassisServiceBugSlender = борг-официант "жук-слендер"
+ent-BorgChassisServiceBugTractor = борг-официант "жук-трактор"
+ent-BorgChassisServiceBugDj = борг-уборщик "жук"

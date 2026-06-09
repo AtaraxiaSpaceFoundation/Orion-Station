@@ -11,6 +11,43 @@
   - StationAiIconDorf
   - StationAiIconHeartline
   - StationAiIconSmiley
+  # Orion-Start
+  - StationAiIconThinking
+  - StationAiIconXenomorph
+  - StationAiIconBanned
+  - StationAiIconDatabase
+  - StationAiIconFirewall
+  - StationAiIconGento
+  - StationAiIconGlitchman
+  - StationAiIconGondola
+  - StationAiIconGoon
+  - StationAiIconHelios
+  - StationAiIconHouse
+  - StationAiIconInverted
+  - StationAiIconMatrix
+  - StationAiIconMonochrome
+  - StationAiIconArmy
+  - StationAiIconNanotrasen
+  - StationAiIconNotMalf
+  - StationAiIconPresident
+  - StationAiIconRainbow
+  - StationAiIconRed
+  - StationAiIconRedOctober
+  - StationAiIconStatic
+  - StationAiIconMeow
+  - StationAiIconText
+  - StationAiIconTooDeep
+  - StationAiIconTriumvirate
+  - StationAiIconTriumvirateMalf
+  - StationAiIconWeird
+  - StationAiIconAnima
+  - StationAiIconBorb
+  - StationAiIconDarkMatter
+  - StationAiIconRedDot
+  - StationAiIconLamp
+  - StationAiIconLizard
+  - StationAiIconVox
+  # Orion-End
 
 - type: stationAiCustomizationGroup
   id: StationAiHolograms
@@ -22,6 +59,25 @@
   - StationAiHologramFace
   - StationAiHologramCat
   - StationAiHologramDog
+  # Orion-Start
+  - StationAiHologramKobold
+  - StationAiHologramMonkey
+  - StationAiHologramHorror
+  - StationAiHologramXenomorphQueen
+  - StationAiHologramAngel
+  - StationAiHologramBorb
+  - StationAiHologramCloudkat
+  - StationAiHologramPhoenix
+  - StationAiHologramAlgalone
+  - StationAiHologramFractalsnowflake
+  - StationAiHologramHensonsnode
+  - StationAiHologramLongrun
+  - StationAiHologramNtpaint
+  - StationAiHologramPuredata
+  - StationAiHologramRorschach
+  - StationAiHologramSeraphim
+  - StationAiHologramTripleaffirmative
+  # Orion-End
 
 # Iconography
 - type: stationAiCustomization

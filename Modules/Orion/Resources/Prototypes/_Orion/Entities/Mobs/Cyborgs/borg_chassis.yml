@@ -1,0 +1,64 @@
+# Generic
+- type: entity
+  parent: BorgChassisGeneric
+  id: BorgChassisGenericBug
+  name: bug generic cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: generic_bug
+
+# Mining
+
+- type: entity
+  parent: BorgChassisMining
+  id: BorgChassisMiningBug
+  name: bug mining cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: mining_bug
+
+# Engineer
+
+- type: entity
+  parent: BorgChassisEngineer
+  id: BorgChassisEngineerBug
+  name: bug engineer cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: engineer_bug
+
+# Janitor
+
+# Medical
+
+# Service
+
+- type: entity
+  parent: BorgChassisService
+  id: BorgChassisServiceBugSlender
+  name: bug-slender service cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: service_bug-slender
+
+- type: entity
+  parent: BorgChassisService
+  id: BorgChassisServiceBugTractor
+  name: bug-tractor service cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: service_bug-tractor
+
+- type: entity
+  parent: BorgChassisService
+  id: BorgChassisServiceBugDj
+  name: bug service cyborg
+  categories: [ HideSpawnMenu ]
+#  components: # TODO
+#  - type: BorgSwitchableSubtype
+#    borgSubtype: service_bug-dj

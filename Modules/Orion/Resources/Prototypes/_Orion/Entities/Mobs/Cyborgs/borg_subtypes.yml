@@ -1,0 +1,47 @@
+# Generic subtypes
+
+#- type: borgSubtype
+#  parentBorgType: generic
+#  id: generic_bug
+#  spritePath: _Orion/Mobs/Silicon/Generic/bug.rsi
+#  dummyPrototype: BorgChassisGenericBug
+
+# Mining subtypes
+
+#- type: borgSubtype
+#  parentBorgType: mining
+#  id: mining_bug
+#  spritePath: _Orion/Mobs/Silicon/Miner/bug.rsi
+#  dummyPrototype: BorgChassisMiningBug
+
+# Engineer subtypes
+
+#- type: borgSubtype
+#  parentBorgType: engineering
+#  id: engineer_bug
+#  spritePath: _Orion/Mobs/Silicon/Engineering/bug.rsi
+#  dummyPrototype: BorgChassisEngineerBug
+
+# Janitor subtypes
+
+# Medical subtypes
+
+# Service subtypes
+
+#- type: borgSubtype
+#  parentBorgType: service
+#  id: service_bug-slender
+#  spritePath: _Orion/Mobs/Silicon/Service/bug_slender.rsi
+#  dummyPrototype: BorgChassisServiceBugSlender
+
+#- type: borgSubtype
+#  parentBorgType: service
+#  id: service_bug-tractor
+#  spritePath: _Orion/Mobs/Silicon/Service/bug_tractor.rsi
+#  dummyPrototype: BorgChassisServiceBugTractor
+
+#- type: borgSubtype
+#  parentBorgType: service
+#  id: service_bug-dj
+#  spritePath: _Orion/Mobs/Silicon/Service/bug_dj.rsi
+#  dummyPrototype: BorgChassisServiceBugDj
