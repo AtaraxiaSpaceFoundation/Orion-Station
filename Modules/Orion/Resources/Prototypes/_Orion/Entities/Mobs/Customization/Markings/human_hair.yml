@@ -388,6 +388,13 @@
       state: hair_mia
 
 - type: marking
+  id: mohawkshort
+  bodyPart: Hair
+  sprites:
+    - sprite: _Orion/Mobs/Customization/human_hair.rsi
+      state: hair_mohawkshort
+
+- type: marking
   id: newyou
   bodyPart: Hair
   sprites:
