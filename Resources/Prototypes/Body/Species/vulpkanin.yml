@@ -92,52 +92,54 @@
     species: Vulpkanin
   - type: Inventory
     speciesId: vulpkanin
+    # Orion-Edit-Start
+    femaleDisplacements:
+      jumpsuit:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit-female
+      shoes:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-Start
+      underwear:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit
+      socks:
+        sizeMaps:
+          32:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-End
     displacements:
       jumpsuit:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
+            sprite: _Orion/Mobs/Species/displacement.rsi
             state: jumpsuit
-      back:
-        sizeMaps:
-          32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: back
-      outerClothing:
-        sizeMaps:
-          32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: outerwear
-      gloves:
-        sizeMaps:
-          32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: hand
       shoes:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
+            sprite: _Orion/Mobs/Species/displacement.rsi
             state: shoes
-      head:
+      # Orion-Start
+      underwear:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: head
-      neck:
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: jumpsuit
+      socks:
         sizeMaps:
           32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: neck
-      eyes:
-        sizeMaps:
-          32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: eyes
-      belt:
-        sizeMaps:
-          32:
-            sprite: Mobs/Species/Vulpkanin/displacement.rsi
-            state: belt
+            sprite: _Orion/Mobs/Species/displacement.rsi
+            state: shoes
+      # Orion-End
+    # Orion-Edit-End
 
 - type: entity
   parent:
