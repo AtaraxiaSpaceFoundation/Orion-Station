@@ -1,0 +1,15 @@
+- type: entity
+  parent: [ OrganBaseLegLeft, OrganReptilianExternal ]
+  id: OrganReptilianLegLeftDigi
+
+- type: entity
+  parent: [ OrganBaseLegRight, OrganReptilianExternal ]
+  id: OrganReptilianLegRightDigi
+
+- type: entity
+  parent: [ OrganBaseFootLeft, OrganReptilianExternal ]
+  id: OrganReptilianFootLeftDigi
+
+- type: entity
+  parent: [ OrganBaseFootRight, OrganReptilianExternal ]
+  id: OrganReptilianFootRightDigi

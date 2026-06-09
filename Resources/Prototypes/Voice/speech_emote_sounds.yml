@@ -106,6 +106,10 @@
       collection: MaleGasp
     DefaultDeathgasp:
       collection: DeathGasp
+    # Orion-Start
+    Hiss:
+      collection: ReptilianHisses
+    # Orion-End
 
 - type: emoteSounds
   id: FemaleReptilian
@@ -130,6 +134,10 @@
       collection: FemaleGasp
     DefaultDeathgasp:
       collection: FemaleDeathGasp
+    # Orion-Start
+    Hiss:
+      collection: ReptilianHisses
+    # Orion-End
 
 - type: emoteSounds
   id: MaleSlime

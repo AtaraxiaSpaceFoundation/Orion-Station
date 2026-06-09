@@ -77,40 +77,50 @@
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_curled
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_curled_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_curled_r
 
 - type: marking
   id: LizardHornsRam
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_ram
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_ram_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_ram_r
 
 - type: marking
   id: LizardHornsShort
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_short
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_short_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_short_r
 
 - type: marking
   id: LizardHornsSimple
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_simple
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_simple_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_simple_r
 
 - type: marking
   id: LizardHornsDouble
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_double
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_double_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_double_r
 
 - type: marking
   id: LizardTailSmooth
@@ -259,32 +269,40 @@
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_argali
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_argali_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_argali_r
 
 - type: marking
   id: LizardHornsAyrshire
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_ayrshire
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_ayrshire_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_ayrshire_r
 
 - type: marking
   id: LizardHornsMyrsore
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_myrsore
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_myrsore_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_myrsore_r
 
 - type: marking
   id: LizardHornsBighorn
   bodyPart: HeadTop
   groupWhitelist: [Reptilian]
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: horns_bighorn
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_bighorn_l
+  - sprite: _Orion/Mobs/Customization/reptilian_parts.rsi # Orion-Edit
+    state: horns_bighorn_r
 
 - type: marking
   id: LizardHornsDemonic
