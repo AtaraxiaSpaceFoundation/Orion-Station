@@ -7,206 +7,232 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Repository Agent Guidance
 
-This is a modular Space Station 14 repository. Read this file first, then the nearest scoped `AGENTS.md`, relevant files in `.agents/rules/`, and only the skills selected through `.agents/CATALOG.md` or `.agents/SCENARIOS.md`.
+## Default scope
 
-## Requirement words
+Work only within the smallest scope required by the current task.
 
-- **MUST** and **MUST NOT** are hard requirements.
-- **VERIFY** means inspect the real declaration, file, project, directory, repository state, or command output before acting.
-- **STOP** means do not invent a workaround. Report the blocking fact and the smallest valid next step.
+Use paths, symbols, projects, modules, prototypes, locale keys, resources, and errors explicitly named by the user as the initial scope.
 
-## SPDX is human-owned metadata
+Do not inspect, inventory, summarize, or recursively enumerate the whole repository before starting work.
 
-Agents MUST NOT add, edit, delete, move, reorder, normalize, copy, or generate any line containing `SPDX-`.
+Do not read every `AGENTS.md`, `.agents/rules` file, skill, catalog, or scenario file.
 
-This applies to existing and new files. If a new file requires SPDX metadata, leave the header for a human and list the path in the final report. Do not repair REUSE failures by changing SPDX.
+Do not read `.agents/CATALOG.md` or `.agents/SCENARIOS.md` unless the user explicitly requests:
 
-The only exception is an explicit instruction in the user's current message that provides the exact SPDX change or exact header text.
+* a repository-wide review
+* a full pull request review
+* a complete feature port
+* a broad architecture change
+* a final pre-merge audit
 
-## Verify repository identity before ownership decisions
+Do not inspect unrelated modules, forks, upstream repositories, projects, resources, localization trees, tests, or workflows.
 
-Do not infer repository ownership from the local folder name, prompt wording, namespace, or an old fork.
+## Instruction selection
 
-Run before editing:
+For a normal task, initially read only:
+
+1. this root `AGENTS.md`
+2. the nearest scoped `AGENTS.md` for each explicitly targeted path
+3. no more than two directly relevant skills from `.agents/skills`
+
+A third skill may be read only when the current code proves that another technical surface is directly affected.
+
+Do not open a skill merely because it could be generally useful.
+
+Do not read both a broad skill and all of its neighboring domain skills by default.
+
+When expanding instruction scope, state the concrete changed surface that requires the additional instruction.
+
+## Skill routing
+
+Select skills from the actual requested change, not from hypothetical side effects.
+
+* Local C# implementation: `.agents/skills/csharp-style/SKILL.md`
+* Cross-project ownership or project references: `.agents/skills/module-architecture/SKILL.md`
+* Client, server, or shared boundaries: `.agents/skills/client-server-shared/SKILL.md`
+* Network state or network events: `.agents/skills/networking/SKILL.md`
+* Predicted execution: `.agents/skills/prediction/SKILL.md`
+* FTL localization: `.agents/skills/localization/SKILL.md`
+* Localized values used from code: `.agents/skills/localization-in-code/SKILL.md`
+* YAML prototypes: `.agents/skills/prototypes/SKILL.md`
+* Prototype display text: `.agents/skills/prototype-localization/SKILL.md`
+* General YAML or schema work: `.agents/skills/yaml-and-schema/SKILL.md`
+* XAML controls: `.agents/skills/xaml-ui/SKILL.md`
+* Bound user interfaces: `.agents/skills/bound-user-interface/SKILL.md`
+* Assets or resource paths: `.agents/skills/resources-and-assets/SKILL.md`
+* Maps: `.agents/skills/maps-and-mapping/SKILL.md`
+* Creating or changing tests: `.agents/skills/tests-authoring/SKILL.md`
+* Selecting verification commands: `.agents/skills/testing/SKILL.md`
+* Build, solution, CI, or packaging changes: `.agents/skills/build-and-packaging/SKILL.md`
+* Porting a complete feature: `.agents/skills/porting/SKILL.md`
+* Maintaining inherited upstream code: `.agents/skills/upstream-maintenance/SKILL.md`
+* Reviewing a pull request: `.agents/skills/code-review/SKILL.md`
+
+Examples:
+
+* A local C# fix normally requires only `csharp-style`.
+* An FTL wording correction normally requires only `localization`.
+* A prototype with a new visible name normally requires `prototypes` and `prototype-localization`.
+* A networked component normally requires `client-server-shared` and `networking`.
+* A XAML layout correction normally requires only `xaml-ui`.
+* A test-only correction normally requires `tests-authoring` and `testing`.
+
+## Targeted discovery
+
+Search for exact symbols, paths, prototype IDs, locale keys, resource paths, errors, or directly related types.
+
+Search commands must use the narrowest practical directory or pathspec.
+
+Preferred examples:
+
+```powershell
+git grep -n "ExactSymbol" -- Modules/Orion/Content.Orion.Server
+git grep -n "exact-locale-key" -- Modules/Orion/Resources/Locale
+git grep -n "PrototypeId" -- Modules/Orion/Resources/Prototypes
+Get-ChildItem Modules/Orion/Content.Orion.Server/Feature -File
+dotnet build Modules/Orion/Content.Orion.Server/Content.Orion.Server.csproj --no-restore
+```
+
+Do not begin with unrestricted commands such as:
+
+```powershell
+Get-ChildItem -Recurse
+git grep -n "generic-term"
+rg "generic-term" .
+dotnet build SpaceStation14.slnx
+dotnet test
+```
+
+An unrestricted repository-wide search is allowed only when:
+
+* the user explicitly requests repository-wide analysis
+* the exact owner cannot be found through targeted searches
+* a public compatibility surface is being renamed
+* the task explicitly requires finding every reference
+
+Stop expanding once enough evidence exists to implement the requested change.
+
+## Repository identity
+
+Do not perform a full repository identity audit for every task.
+
+For work inside a clearly owner-local path such as `Modules/Orion`, treat that path as Orion-owned unless nearby project or module metadata contradicts it.
+
+Run repository, remote, upstream, owner-tag, and edit-marker discovery only when the task changes:
+
+* an inherited file outside owner-local paths
+* module or project ownership
+* project references
+* upstream synchronization
+* edit markers
+* repository automation
+
+When required, use targeted identity checks:
 
 ```powershell
 git rev-parse --show-toplevel
 git branch --show-current
 git remote -v
 git log -1 --oneline
-git grep -n -E "[A-Za-z0-9]+-Edit(-Start|-End)?" -- "*.cs" "*.yml" "*.yaml" "*.ftl" "*.xml" "*.xaml" 2>$null
 ```
 
-Record:
+Do not scan every source file for edit markers unless an inherited file is actually being changed.
 
-```text
-Canonical repository:
-Current repository owner tag:
-Immediate upstream:
-Owner module path:
-Owner underscore paths:
-Existing edit-marker syntax:
-```
+## Evidence before changes
 
-The owner tag is the short project identity established by the repository's own modules, namespaces, paths, and existing edit markers.
+Do not invent APIs, symbols, events, types, paths, prototype IDs, locale keys, resources, projects, or framework behavior.
 
-Owner-local paths include:
+Verify declarations only for symbols that the implementation will actually call or modify.
 
-- `Modules/<OwnerTag>/...`
-- directories named `_<OwnerTag>` or another verified owner-specific underscore path
-- projects and namespaces explicitly owned by the current repository
+For a non-local symbol, verify the declaration, accessibility, namespace, owning project, caller project, and required project reference.
 
-An underscore directory such as `_<OwnerTag>` counts as owner-local for edit-marker decisions even when it is not a runtime module.
+Do not inspect unrelated assemblies or dependency graphs after the required access has already been proven.
 
-If repository identity, owner tag, upstream relationship, or owner paths are ambiguous, STOP before modifying inherited code.
+If required state is inaccessible and no supported extension point exists, stop and report the concrete declaration and access boundary. Do not use reflection or copy private implementation logic.
 
-## Edit markers in inherited files
+## Ownership and edit markers
 
-Existing inherited files outside owner-local paths require the current repository's edit marker unless the change is explicitly intended for direct upstream submission.
+Never add, edit, remove, reorder, normalize, copy, or generate a line containing `SPDX-` unless the user's current request provides the exact SPDX change.
 
-Use the syntax already established in nearby files. If none exists, use:
+Owner-local paths do not require Orion edit markers.
 
-- C# single-line change: `// <OwnerTag>-Edit`
-- C# block: `// <OwnerTag>-Edit-Start` and `// <OwnerTag>-Edit-End`
-- hash-comment formats: `# <OwnerTag>-Edit`
-- XML, XAML, or Markdown: `<!-- <OwnerTag>-Edit -->`
+Inherited files outside owner-local paths require the existing Orion edit-marker style around the smallest changed block.
 
-MUST NOT add the repository marker:
+Determine marker requirements only for files that will actually be modified.
 
-- inside `Modules/<OwnerTag>/...`
-- inside `_<OwnerTag>` or another verified owner-local underscore path
-- inside another project already owned by the current repository
-- to every line of a wholly new owner-local file
-- to generated files, serialized maps, lockfiles, binary metadata, or formats where comments are invalid
+Do not scan or classify unrelated files.
 
-Never use a foreign repository marker. Keep markers around the smallest inherited delta. Do not wrap an entire file when only one method or block changed.
+## Localization
 
-## Evidence before code
+For changed localization entries, `en-US` is the structural source of truth.
 
-Agents MUST NOT invent APIs, methods, events, types, paths, project references, prototype IDs, locale keys, resource paths, directory names, or framework behavior.
+When an English message is added, removed, renamed, moved, reordered, or structurally changed, apply the matching change to the corresponding `ru-RU` file.
 
-Before using a non-local symbol, VERIFY:
+Russian localization must use natural wording and must not contain `THE(...)` or equivalent English grammar wrappers.
 
-1. exact declaration and signature
-2. declaring type and namespace
-3. access modifier
-4. owning project and assembly
-5. caller project and assembly
-6. required `ProjectReference`
-7. runtime side, lifecycle, and thread constraints
+Compare only the affected locale files and directly referenced keys. Do not enumerate the complete locale tree for a local correction.
 
-Before creating a resource path, inspect the existing tree and nearest feature-owned files. A plausible path is not evidence.
+## Implementation
 
-## C# access boundaries are real
+Inspect the current implementation and nearby files before introducing a new abstraction.
 
-- `private` is accessible only inside the declaring type.
-- `internal` is accessible only inside the declaring assembly unless applicable friendship exists.
-- `protected` requires a valid derived-type access context.
-- `public` still requires valid dependency direction and a project reference.
-- Runtime loading does not grant compile-time access.
-- Extension methods do not gain access to private or protected state.
-- `partial` declarations do not combine across assemblies.
-- A `sealed` class cannot be inherited from.
+Prefer the existing owner, system, component, prototype file, resource directory, locale file, test project, and extension point.
 
-If required behavior is available only through inaccessible state and no supported extension point exists, STOP. Identify the declaration, modifier, involved assemblies, and smallest legitimate hook. Do not use reflection or runtime patching unless explicitly requested.
+Do not create parallel managers, helpers, projects, fixtures, CI steps, resource hierarchies, or locale files when an existing owner already covers the requested behavior.
 
-## Reuse existing ownership and infrastructure
+Validate client-originated requests on the server when the task crosses a trust boundary.
 
-Before creating a manager, service, system, event, helper, project, test project, fixture, CI step, MSBuild target, resource directory, or locale file, VERIFY that an equivalent owner or destination does not already exist.
+Keep compatibility-sensitive identifiers stable unless the user explicitly requests their migration.
 
-Module integration tests belong in the existing `Content.<Module>.IntegrationTests` project. Test projects are not runtime modules and MUST NOT be added to `module.yml`.
+## Verification
 
-## English localization is the structural source of truth
+Use the smallest verification set covering the files actually changed.
 
-`en-US` is canonical for localization structure.
+Do not automatically run:
 
-When English localization adds, removes, renames, moves, or reorders a message, attribute, section, variable, selector, or file, apply the same structural change to `ru-RU`.
+* `git submodule update --init --recursive`
+* `dotnet restore`
+* a full solution build
+* all unit tests
+* all integration tests
+* both Debug and Release builds
+* every linter
+* every packaging check
 
-The Russian file MUST mirror English message order. Insert a new Russian entry at the position corresponding to its English entry. Do not append it to the file end merely because that is easier.
+For a local C# change, build the directly affected project.
 
-Russian values must be natural translations. Message IDs, required attributes, variables, selectors, relative file paths, and message order must match English.
+For a test change, run the directly affected test project or filtered test.
 
-A Russian wording-only correction may leave English text unchanged, but it MUST preserve English-defined structure and order.
+For localization or prototype changes, run only the relevant validation when such a targeted command exists.
 
-A Russian key absent from English is stale unless a verified framework requirement or documented repository convention proves it is intentionally locale-specific.
+For documentation or agent-instruction changes, use diff checks only unless executable behavior changed.
 
-Before choosing an FTL path, inspect the actual locale trees and neighboring feature files. Reuse the existing owner file. Do not invent a cleaner hierarchy or shadow a core or foreign-module relative path.
-
-Russian localization MUST NOT contain `THE(...)` or equivalent English grammar wrappers.
-
-Do not persist or network already-resolved localized output. Long-lived UI must refresh localized text on culture changes without accumulating subscriptions.
-
-## Mandatory preflight
-
-```text
-Repository and branch:
-Canonical repository and upstream:
-Repository owner tag:
-Owner module and underscore paths:
-Existing edit-marker syntax:
-Requested outcome and exclusions:
-Existing behavior owner:
-Target and caller assemblies:
-Required symbols and verified access:
-Existing extension and test owners:
-Locale files inspected:
-Allowed and forbidden paths:
-Verification commands:
-```
-
-Do not begin implementation while a correctness-critical field is unknown.
-
-## Implementation expectations
-
-- Inspect current implementation and file layout before designing a replacement.
-- Prefer existing owning-system APIs and resource files over parallel helpers or directories.
-- Keep components as data and mutations in systems.
-- Validate all client-originated requests on the server.
-- Update code, prototypes, English, Russian, resources, UI, and tests together when they form one feature.
-- Treat serialized fields, prototype IDs, network payloads, database schema, maps, CVars, public APIs, locale keys, and locale variables as compatibility surfaces.
-- Add tests at the owner that reproduce the real failure mode.
-- Do not weaken assertions, add sleeps, suppress warnings, or use `continue-on-error` merely to obtain green CI.
-
-## Canonical verification
-
-Use the smallest set covering every changed surface:
+Always run:
 
 ```powershell
-git status --short --branch
-git submodule update --init --recursive
-dotnet restore
-dotnet build --configuration Debug --no-restore /m
-dotnet test --no-build --configuration Debug Content.Tests/Content.Tests.csproj -- NUnit.ConsoleOut=0 NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
-$env:DOTNET_gcServer=1
-dotnet test --no-build --configuration Debug Content.IntegrationTests/Content.IntegrationTests.csproj -- NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
-dotnet build --configuration Release --no-restore /p:WarningsAsErrors= /m
-dotnet run --project Content.YAMLLinter/Content.YAMLLinter.csproj --no-build
-git diff --name-status
 git diff --check
-git diff -U0
+git diff --stat
 ```
 
-Discover and run the existing integration-test project for each changed module. Run specialized RSI, map, database, and packaging commands from the current repository workflows. Report every applicable command not run and why.
+Inspect the final diff for the files changed by the task.
 
-## Delivery gate
+Run full repository verification only when the user explicitly requests full validation, final PR validation, release validation, or a repository-wide audit.
 
-Before reporting completion, VERIFY:
+Do not include large successful build or test logs in model context. Preserve the command result and inspect only relevant warnings or failures.
 
-- every changed path belongs to scope
-- repository identity and owner tag were verified
-- edit markers were added only where ownership requires them
-- owner module and owner underscore paths contain no redundant owner edit markers
-- no foreign edit marker was introduced
-- no agent-introduced SPDX line changed
-- every called symbol exists and is accessible from the real caller
-- every changed Russian file mirrors English keys, attributes, variables, selectors, relative path, and message order
-- new Russian entries occupy the corresponding English position rather than the file end
-- no duplicate project, fixture, CI step, manager, helper, locale file, or resource hierarchy was introduced
-- all claimed commands actually ran
-- the requested commit or remote update exists
+When a command fails, narrow the output to the first actionable errors before further analysis.
 
-Do not claim success based on intent.
+## Delivery
 
-## Git safety
+Before reporting completion, verify only the surfaces touched by the task:
 
-Do not rewrite published history, discard user changes, remove untracked files, or run destructive cleanup without explicit approval for the exact operation.
+* changed files belong to the requested scope
+* used symbols exist and are accessible
+* required localization counterparts were updated
+* no unrelated files were modified
+* claimed verification commands actually ran
+* the final diff matches the requested outcome
+
+Do not claim checks that were not run.
+
+Do not rewrite published history, discard user changes, remove untracked files, or perform destructive cleanup without explicit approval.
