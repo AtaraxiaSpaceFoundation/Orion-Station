@@ -82,6 +82,14 @@
           1
         ]
       ]
+    },
+    {
+      "name": "western_dragon",
+      "directions": 4
+    },
+    {
+      "name": "western_dragon_overlay",
+      "directions": 4
     }
   ]
 }
