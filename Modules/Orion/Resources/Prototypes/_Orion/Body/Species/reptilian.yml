@@ -5,15 +5,39 @@
 - type: entity
   parent: [ OrganBaseLegLeft, OrganReptilianExternal ]
   id: OrganReptilianLegLeftDigi
+  components:
+  - type: Sprite
+    sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
+  - type: VisualOrgan
+    data:
+      sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
 
 - type: entity
   parent: [ OrganBaseLegRight, OrganReptilianExternal ]
   id: OrganReptilianLegRightDigi
+  components:
+  - type: Sprite
+    sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
+  - type: VisualOrgan
+    data:
+      sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
 
 - type: entity
   parent: [ OrganBaseFootLeft, OrganReptilianExternal ]
   id: OrganReptilianFootLeftDigi
+  components:
+  - type: Sprite
+    sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
+  - type: VisualOrgan
+    data:
+      sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
 
 - type: entity
   parent: [ OrganBaseFootRight, OrganReptilianExternal ]
   id: OrganReptilianFootRightDigi
+  components:
+  - type: Sprite
+    sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
+  - type: VisualOrgan
+    data:
+      sprite: _Orion/Mobs/Species/Reptilian/parts.rsi
