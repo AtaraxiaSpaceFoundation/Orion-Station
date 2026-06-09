@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 - files: [reptilian_hiss.ogg]
   copyright: "Taken from https://github.com/Citadel-Station-13"
   license: "CC-BY-SA-3.0"

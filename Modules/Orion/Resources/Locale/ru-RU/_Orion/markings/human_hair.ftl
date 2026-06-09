@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 marking-longsmoothie = Длинный гладкий
 marking-shortbob = Короткая стрижка Боб
 marking-shortside = Короткая сторона
