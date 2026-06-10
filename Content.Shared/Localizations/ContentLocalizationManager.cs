@@ -25,21 +25,24 @@ namespace Content.Shared.Localizations
 
         // Orion-Start
         private static readonly ResPath LocaleDirectory = new("/Locale");
+
         private static readonly HashSet<string> SupportedCultureNames = new(StringComparer.OrdinalIgnoreCase)
         {
             DefaultCultureName,
             FallbackCultureName,
         };
-        private readonly HashSet<string> _functionsRegistered = new();
+        private readonly HashSet<string> _functionsRegistered = new(StringComparer.OrdinalIgnoreCase);
+
         private ISawmill _log = default!;
 
         public event Action<CultureInfo>? CultureChanged;
         // Orion-End
 
         /// <summary>
-        /// Custom format strings used for parsing and displaying minutes:seconds timespans.
+        /// Custom format strings used for parsing and displaying
+        /// minutes:seconds timespans.
         /// </summary>
-        public static readonly string[] TimeSpanMinutesFormats = new[]
+        public static readonly string[] TimeSpanMinutesFormats =
         {
             @"m\:ss",
             @"mm\:ss",
@@ -69,7 +72,8 @@ namespace Content.Shared.Localizations
                     }
                     catch (Exception)
                     {
-                        // Entries under /Locale are not guaranteed to be valid culture identifiers.
+                        // Entries under /Locale are not guaranteed
+                        // to be valid culture identifiers.
                     }
                 }
 
@@ -98,13 +102,18 @@ namespace Content.Shared.Localizations
             if (fallback == null)
             {
                 fallback = found[0];
-                _log.Error("The fallback culture {FallbackCulture} was not found. Falling back to {FoundCulture}.", FallbackCultureName, fallback.Name);
+                _log.Error("The fallback culture {FallbackCulture} was not found. " + "Falling back to {FoundCulture}.", FallbackCultureName, fallback.Name);
             }
 
-            TrySetCulture(configured ?? fallback);
+            TrySetCulture(configured ?? fallback, reloadLocalizations: false);
         }
 
         public bool TrySetCulture(CultureInfo culture)
+        {
+            return TrySetCulture(culture, reloadLocalizations: true);
+        }
+
+        private bool TrySetCulture(CultureInfo culture, bool reloadLocalizations)
         {
             var found = FoundCultures;
             var selected = TryGetFoundCulture(culture.Name, found);
@@ -122,22 +131,26 @@ namespace Content.Shared.Localizations
                 EnsureCultureLoaded(selected);
                 _cfg.SetCVar(CVars.LocCultureName, selected.Name);
                 _loc.SetCulture(selected);
-                _loc.ReloadLocalizations();
+
+                if (reloadLocalizations)
+                    _loc.ReloadLocalizations();
             }
             catch (Exception e)
             {
-                _log.Error("Failed to switch localization culture to {Culture}: {Exception}", selected.Name, e);
+                _log.Error("Failed to switch localization culture to " + "{Culture}: {Exception}", selected.Name, e);
                 try
                 {
                     EnsureCultureLoaded(fallback);
                     _loc.SetFallbackCluture(fallback);
                     _loc.SetCulture(fallback);
                     _cfg.SetCVar(CVars.LocCultureName, fallback.Name);
-                    _loc.ReloadLocalizations();
+
+                    if (reloadLocalizations)
+                        _loc.ReloadLocalizations();
                 }
                 catch (Exception fallbackException)
                 {
-                    _log.Error("Failed to restore fallback localization culture {Culture}: {Exception}", fallback.Name, fallbackException);
+                    _log.Error("Failed to restore fallback localization culture " + "{Culture}: {Exception}", fallback.Name, fallbackException);
                 }
 
                 return false;
@@ -182,7 +195,7 @@ namespace Content.Shared.Localizations
             }
             catch (Exception e)
             {
-                _log.Error("A culture change handler failed for {Culture}: {Exception}", culture.Name, e);
+                _log.Error("A culture change handler failed for " + "{Culture}: {Exception}", culture.Name, e);
             }
         }
 
