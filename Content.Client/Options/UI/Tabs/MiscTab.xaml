@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 <tabs:MiscTab xmlns="https://spacestation14.io"
               xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
