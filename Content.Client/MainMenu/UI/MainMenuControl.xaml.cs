@@ -57,4 +57,14 @@ public sealed partial class MainMenuControl : Control
         var currentUserName = configMan.GetCVar(CVars.PlayerName);
         UsernameBox.Text = currentUserName;
     }
+
+    // Orion-Start
+    public void UpdateLocalizedText()
+    {
+        UsernameBox.PlaceHolder = Loc.GetString("main-menu-username-text");
+        DirectConnectButton.Text = Loc.GetString("main-menu-direct-connect-button");
+        OptionsButton.Text = Loc.GetString("main-menu-options-button");
+        QuitButton.Text = Loc.GetString("main-menu-quit-button");
+    }
+    // Orion-End
 }

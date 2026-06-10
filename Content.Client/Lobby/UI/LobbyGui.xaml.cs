@@ -28,6 +28,18 @@ namespace Content.Client.Lobby.UI
             ExpandButton.OnPressed += _ => TogglePanel(true);
         }
 
+        // Orion-Start
+        public void UpdateLocalizedText()
+        {
+            LobbySong.SetMarkup(Loc.GetString("lobby-state-song-no-song-text"));
+            ObserveButton.Text = Loc.GetString("ui-lobby-observe-button");
+            ReadyButton.Text = Loc.GetString("ui-lobby-ready-up-button");
+            AHelpButton.Text = Loc.GetString("ui-lobby-ahelp-button");
+            OptionsButton.Text = Loc.GetString("ui-lobby-options-button");
+            LeaveButton.Text = Loc.GetString("ui-lobby-leave-button");
+        }
+        // Orion-End
+
         public void SwitchState(LobbyGuiState state)
         {
             DefaultState.Visible = false;

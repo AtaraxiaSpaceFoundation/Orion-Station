@@ -1,3 +1,4 @@
+using System.Globalization;
 using Content.Client.Audio;
 using Content.Client.GameTicking.Managers;
 using Content.Client.LateJoin;
@@ -7,6 +8,7 @@ using Content.Client.Playtime;
 using Content.Client.UserInterface.Systems.Chat;
 using Content.Client.Voting;
 using Content.Shared.CCVar;
+using Content.Shared.Localizations;
 using Robust.Client;
 using Robust.Client.Console;
 using Robust.Client.ResourceManagement;
@@ -30,6 +32,7 @@ namespace Content.Client.Lobby
         [Dependency] private IVoteManager _voteManager = default!;
         [Dependency] private ClientsidePlaytimeTrackingManager _playtimeTracking = default!;
         [Dependency] private IPrototypeManager _protoMan = default!;
+        [Dependency] private ContentLocalizationManager _contentLoc = default!; // Orion
 
         private ClientGameTicker _gameTicker = default!;
         private ContentAudioSystem _contentAudioSystem = default!;
@@ -75,6 +78,7 @@ namespace Content.Client.Lobby
             _gameTicker.InfoBlobUpdated += UpdateLobbyUi;
             _gameTicker.LobbyStatusUpdated += LobbyStatusUpdated;
             _gameTicker.LobbyLateJoinStatusUpdated += LobbyLateJoinStatusUpdated;
+            _contentLoc.CultureChanged += OnCultureChanged; // Orion
         }
 
         protected override void Shutdown()
@@ -84,6 +88,7 @@ namespace Content.Client.Lobby
             _gameTicker.InfoBlobUpdated -= UpdateLobbyUi;
             _gameTicker.LobbyStatusUpdated -= LobbyStatusUpdated;
             _gameTicker.LobbyLateJoinStatusUpdated -= LobbyLateJoinStatusUpdated;
+            _contentLoc.CultureChanged -= OnCultureChanged; // Orion
             _contentAudioSystem.LobbySoundtrackChanged -= UpdateLobbySoundtrackInfo;
 
             _voteManager.ClearPopupContainer();
@@ -94,6 +99,14 @@ namespace Content.Client.Lobby
 
             Lobby = null;
         }
+
+        // Orion-Start
+        private void OnCultureChanged(CultureInfo culture)
+        {
+            Lobby?.UpdateLocalizedText();
+            UpdateLobbyUi();
+        }
+        // Orion-End
 
         public void SwitchState(LobbyGui.LobbyGuiState state)
         {

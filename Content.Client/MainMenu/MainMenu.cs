@@ -1,6 +1,8 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using Content.Client.MainMenu.UI;
 using Content.Client.UserInterface.Systems.EscapeMenu;
+using Content.Shared.Localizations;
 using Robust.Client;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
@@ -26,6 +28,7 @@ namespace Content.Client.MainMenu
         [Dependency] private IResourceCache _resourceCache = default!;
         [Dependency] private IUserInterfaceManager _userInterfaceManager = default!;
         [Dependency] private ILogManager _logManager = default!;
+        [Dependency] private ContentLocalizationManager _contentLoc = default!; // Orion
 
         private ISawmill _sawmill = default!;
 
@@ -50,16 +53,25 @@ namespace Content.Client.MainMenu
             _mainMenuControl.ChangelogButton.OnPressed += ChangelogButtonPressed;
 
             _client.RunLevelChanged += RunLevelChanged;
+            _contentLoc.CultureChanged += OnCultureChanged; // Orion
         }
 
         /// <inheritdoc />
         protected override void Shutdown()
         {
             _client.RunLevelChanged -= RunLevelChanged;
+            _contentLoc.CultureChanged -= OnCultureChanged; // Orion
             _netManager.ConnectFailed -= _onConnectFailed;
 
             _mainMenuControl.Dispose();
         }
+
+        // Orion-Start
+        private void OnCultureChanged(CultureInfo culture)
+        {
+            _mainMenuControl.UpdateLocalizedText();
+        }
+        // Orion-End
 
         private void ChangelogButtonPressed(BaseButton.ButtonEventArgs args)
         {

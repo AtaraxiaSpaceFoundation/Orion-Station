@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -31,7 +32,7 @@ namespace Content.Shared.Preferences
     public sealed partial class HumanoidCharacterProfile
     {
         public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
-        private static readonly Regex RestrictedNameRegex = new(@"[^A-Za-z0-9 '\-]");
+        private static readonly Regex RestrictedNameRegex = new(@"[^\p{L}\p{M}0-9 '\-]"); // Orion-Edit
         private static readonly Regex ICNameCaseRegex = new(@"^(?<word>\w)|\b(?<word>\w)(?=\w*$)");
 
         /// <summary>
@@ -536,7 +537,7 @@ namespace Content.Shared.Preferences
             if (configManager.GetCVar(CCVars.ICNameCase))
             {
                 // This regex replaces the first character of the first and last words of the name with their uppercase version
-                name = ICNameCaseRegex.Replace(name, m => m.Groups["word"].Value.ToUpper());
+                name = ICNameCaseRegex.Replace(name, m => m.Groups["word"].Value.ToUpper(CultureInfo.CurrentCulture)); // Orion-Edit
             }
 
             if (string.IsNullOrEmpty(name))
