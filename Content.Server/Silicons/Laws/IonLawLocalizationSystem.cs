@@ -1,10 +1,14 @@
-﻿namespace Content.Server.Silicons.Laws;
+﻿using System.Globalization;
+using Content.Shared.Localizations;
+
+namespace Content.Server.Silicons.Laws;
 
 public sealed partial class IonLawLocalizationSystem : EntitySystem
 {
     [Dependency] private ILocalizationManager _loc = default!;
     [Dependency] private IonLawSystem _ionLaw = default!;
     [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private ContentLocalizationManager _contentLoc = default!; // Orion
 
     private ISawmill _sawmill = default!;
 
@@ -14,6 +18,7 @@ public sealed partial class IonLawLocalizationSystem : EntitySystem
 
         _sawmill = _logManager.GetSawmill("ion-law");
 
+/* // Orion-Edit: Removed
         var culture = _loc.DefaultCulture;
 
         if (culture == null)
@@ -21,6 +26,30 @@ public sealed partial class IonLawLocalizationSystem : EntitySystem
             _sawmill.Error("Culture was null when trying to generate Ion Law");
             return;
         }
+*/
+
+        // Orion-Start
+        foreach (var culture in _contentLoc.FoundCultures)
+        {
+            RegisterIonFunctions(culture);
+        }
+
+        _contentLoc.CultureChanged += RegisterIonFunctions;
+        // Orion-End
+    } // Orion-Edit: Separate for RegisterIonFunctions
+
+    // Orion-Start
+    public override void Shutdown()
+    {
+        _contentLoc.CultureChanged -= RegisterIonFunctions;
+        base.Shutdown();
+    }
+
+    private void RegisterIonFunctions(CultureInfo culture)
+    {
+        if (!_loc.HasCulture(culture))
+            return;
+        // Orion-End
 
         _loc.AddFunction(culture, "ION-NUMBER-BASE", _ => GetIonLawValue("ION-NUMBER-BASE"));
         _loc.AddFunction(culture, "ION-NUMBER-MOD", _ => GetIonLawValue("ION-NUMBER-MOD"));
