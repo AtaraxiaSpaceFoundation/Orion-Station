@@ -29,8 +29,8 @@ public sealed class ContentCultureSwitchTest : GameTest
                     Assert.That(loc.GetString("culture-switch-test-value"), Is.EqualTo("English value"));
 
                     Assert.That(contentLoc.TrySetCulture("ru-RU"), Is.True);
+                    Assert.That(loc.GetString("culture-switch-test-value"), Is.EqualTo("Русское значение"));
                 }
-                Assert.That(loc.GetString("culture-switch-test-value"), Is.EqualTo("Русское значение"));
             }
             finally
             {
