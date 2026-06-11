@@ -1,0 +1,17 @@
+﻿<Project>
+  <Target Name="BuildCopyClientModules" AfterTargets="Build">
+    <ItemGroup>
+      <ModuleProjects Include="../Modules/**/Content.*.Shared/Content.*.Shared.csproj" />
+      <ModuleProjects Include="../Modules/**/Content.*.Client/Content.*.Client.csproj" />
+    </ItemGroup>
+
+    <MSBuild Projects="@(ModuleProjects)"
+             Properties="BuildProjectReferences=false"
+             BuildInParallel="true">
+      <Output TaskParameter="TargetOutputs" ItemName="ModuleAssemblies" />
+    </MSBuild>
+
+    <Copy SourceFiles="@(ModuleAssemblies)"
+          DestinationFolder="$(OutDir)" />
+  </Target>
+</Project>
