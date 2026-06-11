@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,8 +113,9 @@ public sealed partial class AdminLogsEui : BaseEui
                 _sawmill.Info($"Admin log request from admin with id {Player.UserId.UserId} and name {Player.Name}");
 
                 _logSendCancellation.Cancel();
+                _logSendCancellation.Dispose(); // Orion
                 _logSendCancellation = new CancellationTokenSource();
-                _filter = new LogFilter
+                var filter = new LogFilter // Orion-Edit
                 {
                     CancellationToken = _logSendCancellation.Token,
                     Round = request.RoundId,
@@ -123,20 +129,26 @@ public sealed partial class AdminLogsEui : BaseEui
                     AllPlayers = request.AllPlayers,
                     IncludeNonPlayers = request.IncludeNonPlayers,
                     LastLogId = null,
-                    Limit = _clientBatchSize
+                    Limit = _clientBatchSize,
                 };
+                _filter = filter; // Orion
 
-                var roundId = _filter.Round ??= CurrentRoundId;
+                var roundId = filter.Round ??= CurrentRoundId; // Orion-Edit
                 await LoadFromDb(roundId);
 
-                SendLogs(true);
+                // Orion-Start
+                if (filter.CancellationToken.IsCancellationRequested || !ReferenceEquals(_filter, filter))
+                    break;
+                // Orion-End
+
+                await SendLogs(true, filter); // Orion-Edit
                 break;
             }
             case NextLogsRequest:
             {
                 _sawmill.Info($"Admin log next batch request from admin with id {Player.UserId.UserId} and name {Player.Name}");
 
-                SendLogs(false);
+                await SendLogs(false, _filter); // Orion-Edit
                 break;
             }
         }
@@ -152,35 +164,52 @@ public sealed partial class AdminLogsEui : BaseEui
         SendMessage(message);
     }
 
-    private async void SendLogs(bool replace)
+    private async Task SendLogs(bool replace, LogFilter filter) // Orion-Edit: Was void
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
+        List<SharedAdminLog>? logs = null; // Orion
 
-        var logs = await Task.Run(async () => await _adminLogs.All(_filter, _adminLogListPool.Get),
-            _filter.CancellationToken);
-
-        if (logs.Count > 0)
+        // Orion-Edit-Start
+        try
         {
-            _filter.LogsSent += logs.Count;
+            logs = await Task.Run(async () => await _adminLogs.All(filter, _adminLogListPool.Get),
+                filter.CancellationToken);
 
-            var largestId = _filter.DateOrder switch
+            if (filter.CancellationToken.IsCancellationRequested || !ReferenceEquals(_filter, filter))
+                return;
+
+            if (logs.Count > 0)
             {
-                DateOrder.Ascending => 0,
-                DateOrder.Descending => ^1,
-                _ => throw new ArgumentOutOfRangeException(nameof(_filter.DateOrder), _filter.DateOrder, null)
-            };
+                filter.LogsSent += logs.Count;
 
-            _filter.LastLogId = logs[largestId].Id;
+                var largestId = filter.DateOrder switch
+                {
+                    DateOrder.Ascending => 0,
+                    DateOrder.Descending => ^1,
+                    _ => throw new ArgumentOutOfRangeException(nameof(filter.DateOrder), filter.DateOrder, null),
+                };
+
+                filter.LastLogId = logs[largestId].Id;
+            }
+
+            var message = new NewLogs(logs, replace, logs.Count >= filter.Limit);
+
+            SendMessage(message);
+
+            var elapsedMilliseconds = stopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
+            _sawmill.Info(string.Concat("Sent ", logs.Count.ToString(), " logs to ", Player.Name, " in ", elapsedMilliseconds, " ms"));
         }
-
-        var message = new NewLogs(logs, replace, logs.Count >= _filter.Limit);
-
-        SendMessage(message);
-
-        _sawmill.Info($"Sent {logs.Count} logs to {Player.Name} in {stopwatch.Elapsed.TotalMilliseconds} ms");
-
-        _adminLogListPool.Return(logs);
+        catch (OperationCanceledException)
+        {
+            // Uhh nuh
+        }
+        finally
+        {
+            if (logs != null)
+                _adminLogListPool.Return(logs);
+        }
+        // Orion-Edit-End
     }
 
     public override void Closed()
