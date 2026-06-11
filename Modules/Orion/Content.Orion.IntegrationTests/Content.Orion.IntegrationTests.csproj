@@ -31,6 +31,5 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <Import Project="..\..\..\RobustToolbox\Imports\Shared.props" />
   <Import Project="..\..\..\RobustToolbox\Imports\Testing.props" />
 
-  <Import Project="..\..\..\MSBuild\AllModules.targets" />
-  <Import Project="..\..\..\MSBuild\TestModules.targets" />
+  <Import Project="..\..\..\MSBuild\BuildCopyAllModules.targets" />
 </Project>
