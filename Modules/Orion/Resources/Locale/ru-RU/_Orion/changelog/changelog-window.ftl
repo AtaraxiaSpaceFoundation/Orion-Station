@@ -3,3 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 changelog-tab-title-orion-changelog = Orion
+
+changelog-author-changed-with-pr = [color=#EEE]{ $author }[/color] изменил в PR #{ $number }:
+changelog-author-changed-with-pr-link = [color=#EEE]{ $author }[/color] изменил в [textlink="PR #{ $number }" link="{ $url }"]:

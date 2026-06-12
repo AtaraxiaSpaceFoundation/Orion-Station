@@ -201,6 +201,14 @@ namespace Content.Client.Changelog
             [DataField("author")]
             public string Author { get; private set; } = "";
 
+            // Orion-Start
+            [DataField("prNumber")]
+            public int? PullRequestNumber { get; private set; }
+
+            [DataField("prUrl")]
+            public string? PullRequestUrl { get; private set; }
+            // Orion-End
+
             [DataField]
             public DateTime Time { get; private set; }
 
