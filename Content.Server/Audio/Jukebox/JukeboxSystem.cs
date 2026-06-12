@@ -7,6 +7,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Server.Audio.Jukebox;
 
@@ -14,6 +15,9 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
 {
     [Dependency] private IPrototypeManager _protoManager = default!;
     [Dependency] private AppearanceSystem _appearanceSystem = default!;
+    // Orion-Start
+    [Dependency] private IGameTiming _gameTiming = default!;
+    // Orion-End
 
     public override void Initialize()
     {
@@ -23,6 +27,10 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
         SubscribeLocalEvent<JukeboxComponent, JukeboxPauseMessage>(OnJukeboxPause);
         SubscribeLocalEvent<JukeboxComponent, JukeboxStopMessage>(OnJukeboxStop);
         SubscribeLocalEvent<JukeboxComponent, JukeboxSetTimeMessage>(OnJukeboxSetTime);
+        // Orion-Start
+        SubscribeLocalEvent<JukeboxComponent, JukeboxSetVolumeMessage>(OnJukeboxSetVolume);
+        SubscribeLocalEvent<JukeboxComponent, JukeboxToggleLoopMessage>(OnJukeboxToggleLoop);
+        // Orion-End
         SubscribeLocalEvent<JukeboxComponent, ComponentInit>(OnComponentInit);
         SubscribeLocalEvent<JukeboxComponent, ComponentShutdown>(OnComponentShutdown);
 
@@ -39,12 +47,26 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
 
     private void OnJukeboxPlay(Entity<JukeboxComponent> ent, ref JukeboxPlayingMessage args)
     {
-        TryPlay(ent.AsNullable());
+        // Orion-Edit-Start
+        if (!TryPlay(ent.AsNullable()))
+            return;
+
+        ent.Comp.PlaybackStartTime = _gameTiming.CurTime;
+        Dirty(ent);
+        // Orion-Edit-End
     }
 
     private void OnJukeboxPause(Entity<JukeboxComponent> ent, ref JukeboxPauseMessage args)
     {
+        // Orion-Start
+        UpdatePlaybackOffset(ent);
+        // Orion-End
+
         Pause(ent.AsNullable());
+
+        // Orion-Start
+        Dirty(ent);
+        // Orion-End
     }
 
     private void OnJukeboxSetTime(Entity<JukeboxComponent> ent, ref JukeboxSetTimeMessage args)
@@ -52,9 +74,34 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
         if (TryComp(args.Actor, out ActorComponent? actorComp))
         {
             var offset = actorComp.PlayerSession.Channel.Ping * 1.5f / 1000f;
-            SetTime(ent.AsNullable(), args.SongTime + offset);
+            // Orion-Start
+            var playbackPosition = args.SongTime + offset;
+            // Orion-End
+            SetTime(ent.AsNullable(), playbackPosition); // Orion-Edit
+            // Orion-Start
+            ent.Comp.CurrentPlaybackOffset = playbackPosition;
+            ent.Comp.PlaybackStartTime = _gameTiming.CurTime;
+            Dirty(ent);
+            // Orion-End
         }
     }
+
+    // Orion-Start
+    private void OnJukeboxSetVolume(Entity<JukeboxComponent> ent, ref JukeboxSetVolumeMessage args)
+    {
+        ent.Comp.Volume = Math.Clamp(args.Volume, 0f, 100f);
+        if (TryComp<AudioComponent>(ent.Comp.AudioStream, out _))
+            Audio.SetVolume(ent.Comp.AudioStream, SharedJukeboxSystem.MapVolume(ent.Comp.Volume));
+
+        Dirty(ent);
+    }
+
+    private void OnJukeboxToggleLoop(Entity<JukeboxComponent> ent, ref JukeboxToggleLoopMessage args)
+    {
+        ent.Comp.LoopEnabled = !ent.Comp.LoopEnabled;
+        Dirty(ent);
+    }
+    // Orion-End
 
     private void OnPowerChanged(Entity<JukeboxComponent> entity, ref PowerChangedEvent args)
     {
@@ -83,6 +130,17 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
         var query = EntityQueryEnumerator<JukeboxComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {
+            // Orion-Start
+            if (comp.AudioStream is { } stream && TerminatingOrDeleted(stream))
+            {
+                comp.AudioStream = null;
+                comp.CurrentPlaybackOffset = 0f;
+                comp.PlaybackStartTime = null;
+                Dirty(uid, comp);
+                continue;
+            }
+            // Orion-End
+
             if (comp.Selecting)
             {
                 comp.SelectAccumulator += frameTime;
@@ -94,6 +152,31 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
                     TryUpdateVisualState((uid, comp));
                 }
             }
+
+            // Orion-Start
+            if (comp.PlaybackStartTime == null || !TryComp(comp.AudioStream, out AudioComponent? audio))
+                continue;
+
+            var position = comp.CurrentPlaybackOffset + (float) (_gameTiming.CurTime - comp.PlaybackStartTime.Value).TotalSeconds;
+            if (position < Audio.GetAudioLength(audio.FileName).TotalSeconds)
+                continue;
+
+            if (comp.LoopEnabled)
+            {
+                comp.CurrentPlaybackOffset = 0f;
+                comp.PlaybackStartTime = _gameTiming.CurTime;
+                Audio.SetPlaybackPosition(comp.AudioStream, 0f);
+                Audio.SetState(comp.AudioStream, AudioState.Playing);
+            }
+            else
+            {
+                comp.AudioStream = Audio.Stop(comp.AudioStream);
+                comp.CurrentPlaybackOffset = 0f;
+                comp.PlaybackStartTime = null;
+            }
+
+            Dirty(uid, comp);
+            // Orion-End
         }
     }
 
@@ -136,6 +219,10 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
             DirectSetVisualState(ent, JukeboxVisualState.Select);
             ent.Comp.Selecting = true;
             ent.Comp.AudioStream = Audio.Stop(ent.Comp.AudioStream);
+            // Orion-Start
+            ent.Comp.CurrentPlaybackOffset = 0f;
+            ent.Comp.PlaybackStartTime = null;
+            // Orion-End
             Dirty(ent);
         }
     }
@@ -161,7 +248,13 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
                 return false;
             }
 
-            ent.Comp.AudioStream = Audio.PlayPvs(jukeboxProto.Path, ent, AudioParams.Default.WithMaxDistance(10f))?.Entity;
+            // Orion-Edit-Start
+            var audioParams = AudioParams.Default
+                .WithMaxDistance(10f)
+                .WithVolume(SharedJukeboxSystem.MapVolume(ent.Comp.Volume))
+                .WithPlayOffset(ent.Comp.CurrentPlaybackOffset);
+            ent.Comp.AudioStream = Audio.PlayPvs(jukeboxProto.Path, ent, audioParams)?.Entity;
+            // Orion-Edit-End
             Dirty(ent);
         }
         return true;
@@ -175,8 +268,29 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
         if (!Resolve(entity, ref entity.Comp, logMissing: false))
             return;
 
-        Audio.SetState(entity.Comp.AudioStream, AudioState.Stopped);
+        // Orion-Edit-Start
+        if (entity.Comp.AudioStream is { } stream && !TerminatingOrDeleted(stream))
+            Audio.SetState(stream, AudioState.Stopped);
+        // Orion-Edit-End
+
+        // Orion-Start
+        entity.Comp.AudioStream = null;
+        entity.Comp.CurrentPlaybackOffset = 0f;
+        entity.Comp.PlaybackStartTime = null;
+        Dirty(entity);
+        // Orion-End
     }
+
+    // Orion-Start
+    private void UpdatePlaybackOffset(Entity<JukeboxComponent> ent)
+    {
+        if (ent.Comp.PlaybackStartTime == null)
+            return;
+
+        ent.Comp.CurrentPlaybackOffset += (float) (_gameTiming.CurTime - ent.Comp.PlaybackStartTime.Value).TotalSeconds;
+        ent.Comp.PlaybackStartTime = null;
+    }
+    // Orion-End
 
     /// <summary>
     /// Pauses any track that may currently be playing.

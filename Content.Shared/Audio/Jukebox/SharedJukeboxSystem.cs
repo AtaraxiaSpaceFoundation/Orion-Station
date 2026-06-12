@@ -6,6 +6,13 @@ public abstract partial class SharedJukeboxSystem : EntitySystem
 {
     [Dependency] protected SharedAudioSystem Audio = default!;
 
+    // Orion-Start
+    public static float MapVolume(float volume)
+    {
+        return -30f + Math.Clamp(volume, 0f, 100f) * 0.3f;
+    }
+    // Orion-End
+
     /// <summary>
     /// Returns whether or not the given jukebox is currently playing a song.
     /// </summary>

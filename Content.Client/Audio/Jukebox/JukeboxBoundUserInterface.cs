@@ -41,6 +41,11 @@ public sealed partial class JukeboxBoundUserInterface : BoundUserInterface
             SendMessage(new JukeboxStopMessage());
         };
 
+        // Orion-Start
+        _menu.OnLoopToggled += () => SendMessage(new JukeboxToggleLoopMessage());
+        _menu.SetVolume += SetVolume;
+        // Orion-End
+
         _menu.OnSongSelected += SelectSong;
 
         _menu.SetTime += SetTime;
@@ -57,6 +62,10 @@ public sealed partial class JukeboxBoundUserInterface : BoundUserInterface
             return;
 
         _menu.SetAudioStream(jukebox.AudioStream);
+        // Orion-Start
+        _menu.SetVolumeSlider(jukebox.Volume);
+        _menu.SetLoopButton(jukebox.LoopEnabled);
+        // Orion-End
 
         if (_protoManager.Resolve(jukebox.SelectedSongId, out var songProto))
         {
@@ -97,5 +106,15 @@ public sealed partial class JukeboxBoundUserInterface : BoundUserInterface
 
         SendMessage(new JukeboxSetTimeMessage(sentTime));
     }
+
+    // Orion-Start
+    public void SetVolume(float volume)
+    {
+        if (EntMan.TryGetComponent(Owner, out JukeboxComponent? jukebox) && EntMan.TryGetComponent(jukebox.AudioStream, out AudioComponent? audioComp))
+            audioComp.Volume = SharedJukeboxSystem.MapVolume(volume);
+
+        SendMessage(new JukeboxSetVolumeMessage(volume));
+    }
+    // Orion-End
 }
 
