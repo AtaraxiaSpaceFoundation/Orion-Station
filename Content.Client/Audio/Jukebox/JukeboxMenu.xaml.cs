@@ -142,9 +142,6 @@ public sealed partial class JukeboxMenu : FancyWindow
             return;
 
         _loopState = loopEnabled;
-        LoopButton.Text = Loc.GetString(loopEnabled
-            ? "jukebox-menu-button-loop-enabled"
-            : "jukebox-menu-button-loop");
         LoopButton.Pressed = loopEnabled;
     }
 
@@ -173,7 +170,7 @@ public sealed partial class JukeboxMenu : FancyWindow
         PlaybackSlider.Disabled = _lockTimer > 0f;
         // Orion-Start
         VolumeSlider.Disabled = _lockTimer > 0f;
-        VolumeNumberLabel.Text = $"{VolumeSlider.Value:0.##} %";
+        VolumeNumberLabel.Text = $"{(int) VolumeSlider.Value} %";
         // Orion-End
 
         if (_entManager.TryGetComponent(_audio, out AudioComponent? audio))
