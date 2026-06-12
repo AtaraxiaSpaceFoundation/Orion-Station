@@ -1,5 +1,7 @@
 using Content.Shared.Actions;
+using Content.Shared.Bed.Sleep;
 using Content.Shared.Mind;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.MouseRotator;
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC.Systems;
@@ -15,6 +17,9 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedNPCSystem _npc = default!;
+    // Orion-Start
+    [Dependency] private MobStateSystem _mobState = default!;
+    // Orion-End
 
     public override void Initialize()
     {
@@ -34,6 +39,10 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     private void OnShutdown(EntityUid uid, CombatModeComponent component, ComponentShutdown args)
     {
         _actionsSystem.RemoveAction(uid, component.CombatToggleActionEntity);
+
+        // Orion-Start
+        RaiseLocalEvent(uid, new CombatModeChangedEvent(false));
+        // Orion-End
 
         SetMouseRotatorComponents(uid, false);
     }
@@ -71,8 +80,17 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         if (component.IsInCombatMode == value)
             return;
 
+        // Orion-Start
+        if (value && (_mobState.IsIncapacitated(entity) || HasComp<SleepingComponent>(entity)))
+            return;
+        // Orion-End
+
         component.IsInCombatMode = value;
         Dirty(entity, component);
+
+        // Orion-Start
+        RaiseLocalEvent(entity, new CombatModeChangedEvent(value));
+        // Orion-End
 
         if (component.CombatToggleActionEntity != null)
             _actionsSystem.SetToggled(component.CombatToggleActionEntity, component.IsInCombatMode);

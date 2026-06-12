@@ -14,6 +14,9 @@ public sealed partial class AccessibilityTab : Control
 
         Control.AddOptionCheckBox(CCVars.ChatEnableColorName, EnableColorNameCheckBox);
         Control.AddOptionCheckBox(CCVars.AccessibilityColorblindFriendly, ColorblindFriendlyCheckBox);
+        // Orion-Start
+        Control.AddOptionCheckBox(CCVars.CombatIndicator, CombatIndicatorCheckBox);
+        // Orion-End
         Control.AddOptionCheckBox(CCVars.ReducedMotion, ReducedMotionCheckBox);
         Control.AddOptionCheckBox(CCVars.DisableAiStatic, DisableAiStaticCheckBox);
         Control.AddOptionPercentSlider(CCVars.ScreenShakeIntensity, ScreenShakeIntensitySlider);

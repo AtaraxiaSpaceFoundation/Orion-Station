@@ -33,6 +33,10 @@ public sealed partial class CombatModeSystem : SharedCombatModeSystem
     private void OnHandleState(EntityUid uid, CombatModeComponent component, ref AfterAutoHandleStateEvent args)
     {
         UpdateHud(uid);
+
+        // Orion-Start
+        RaiseLocalEvent(uid, new CombatModeChangedEvent(component.IsInCombatMode));
+        // Orion-End
     }
 
     public override void Shutdown()
