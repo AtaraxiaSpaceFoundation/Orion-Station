@@ -14,7 +14,7 @@ public sealed class OrionPoolManagerTestEventHandler
     public void Setup()
     {
         IntegrationTestHelpers.ChangeRootDir("../../../");
-        PoolManagerHelpers.Setup(typeof(OrionPoolManagerTestEventHandler).Assembly);
+        PoolManagerHelpers.Setup();
     }
 
     [OneTimeTearDown]
