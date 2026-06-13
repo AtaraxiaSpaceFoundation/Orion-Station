@@ -1,14 +1,11 @@
 using Content.Shared.Actions;
 using Content.Shared.Bed.Sleep;
-using Content.Shared.CCVar;
 using Content.Shared.Mind;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.MouseRotator;
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Popups;
-using Robust.Shared.Configuration;
-using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.CombatMode;
@@ -22,8 +19,6 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     [Dependency] private SharedNPCSystem _npc = default!;
     // Orion-Start
     [Dependency] private MobStateSystem _mobState = default!;
-    [Dependency] private IConfigurationManager _cfg = default!;
-    [Dependency] private INetManager _net = default!;
     // Orion-End
 
     public override void Initialize()
@@ -68,7 +63,7 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         // Orion-Edit-End
 
         // Orion-Start
-        if (component.IsInCombatMode && (_net.IsServer || _cfg.GetCVar(CCVars.CombatIndicator)))
+        if (!ShouldShowCombatModePopup())
             return;
         // Orion-End
 
@@ -131,6 +126,13 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
             RemComp<NoRotateOnMoveComponent>(uid);
         }
     }
+
+    // Orion-Start
+    protected virtual bool ShouldShowCombatModePopup()
+    {
+        return true;
+    }
+    // Orion-End
 }
 
 public sealed partial class ToggleCombatActionEvent : InstantActionEvent
