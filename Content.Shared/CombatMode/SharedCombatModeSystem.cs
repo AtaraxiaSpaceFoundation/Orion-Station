@@ -1,6 +1,7 @@
 using Content.Shared.Actions;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Mind;
+using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.MouseRotator;
 using Content.Shared.Movement.Components;
@@ -28,6 +29,9 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         SubscribeLocalEvent<CombatModeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<CombatModeComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<CombatModeComponent, ToggleCombatActionEvent>(OnActionPerform);
+        // Orion-Start
+        SubscribeLocalEvent<CombatModeComponent, MobStateChangedEvent>(OnMobStateChanged);
+        // Orion-End
     }
 
     private void OnMapInit(EntityUid uid, CombatModeComponent component, MapInitEvent args)
@@ -69,6 +73,14 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
 
         _popup.PopupClient(Loc.GetString(msg), args.Performer, args.Performer);
     }
+
+    // Orion-Start
+    private void OnMobStateChanged(EntityUid uid, CombatModeComponent component, MobStateChangedEvent args)
+    {
+        if (args.NewMobState is MobState.Critical or MobState.Dead)
+            SetInCombatMode(uid, false, component);
+    }
+    // Orion-End
 
     public void SetCanDisarm(EntityUid entity, bool canDisarm, CombatModeComponent? component = null)
     {
