@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Client.Hands.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.CombatMode;
@@ -57,6 +61,13 @@ public sealed partial class CombatModeSystem : SharedCombatModeSystem
         base.SetInCombatMode(entity, value, component);
         UpdateHud(entity);
     }
+
+    // Orion-Start
+    protected override bool ShouldShowCombatModePopup()
+    {
+        return !_cfg.GetCVar(CCVars.CombatIndicator);
+    }
+    // Orion-End
 
     private void UpdateHud(EntityUid entity)
     {

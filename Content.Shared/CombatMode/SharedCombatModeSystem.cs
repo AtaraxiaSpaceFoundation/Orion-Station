@@ -1,5 +1,12 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Actions;
+using Content.Shared.Bed.Sleep;
 using Content.Shared.Mind;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.MouseRotator;
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC.Systems;
@@ -15,6 +22,9 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedNPCSystem _npc = default!;
+    // Orion-Start
+    [Dependency] private MobStateSystem _mobState = default!;
+    // Orion-End
 
     public override void Initialize()
     {
@@ -23,6 +33,9 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         SubscribeLocalEvent<CombatModeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<CombatModeComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<CombatModeComponent, ToggleCombatActionEvent>(OnActionPerform);
+        // Orion-Start
+        SubscribeLocalEvent<CombatModeComponent, MobStateChangedEvent>(OnMobStateChanged);
+        // Orion-End
     }
 
     private void OnMapInit(EntityUid uid, CombatModeComponent component, MapInitEvent args)
@@ -35,6 +48,10 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     {
         _actionsSystem.RemoveAction(uid, component.CombatToggleActionEntity);
 
+        // Orion-Start
+        RaiseLocalEvent(uid, new CombatModeChangedEvent(false));
+        // Orion-End
+
         SetMouseRotatorComponents(uid, false);
     }
 
@@ -44,11 +61,30 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
             return;
 
         args.Handled = true;
+        var requestedCombatMode = !component.IsInCombatMode; // Orion
         SetInCombatMode(uid, !component.IsInCombatMode, component);
 
-        var msg = component.IsInCombatMode ? "action-popup-combat-enabled" : "action-popup-combat-disabled";
+        // Orion-Edit-Start
+        var msg = component.IsInCombatMode != requestedCombatMode
+            ? "action-popup-combat-enabled"
+            : "action-popup-combat-disabled";
+        // Orion-Edit-End
+
+        // Orion-Start
+        if (!ShouldShowCombatModePopup())
+            return;
+        // Orion-End
+
         _popup.PopupClient(Loc.GetString(msg), args.Performer, args.Performer);
     }
+
+    // Orion-Start
+    private void OnMobStateChanged(EntityUid uid, CombatModeComponent component, MobStateChangedEvent args)
+    {
+        if (args.NewMobState is MobState.Critical or MobState.Dead)
+            SetInCombatMode(uid, false, component);
+    }
+    // Orion-End
 
     public void SetCanDisarm(EntityUid entity, bool canDisarm, CombatModeComponent? component = null)
     {
@@ -71,8 +107,17 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         if (component.IsInCombatMode == value)
             return;
 
+        // Orion-Start
+        if (value && (_mobState.IsIncapacitated(entity) || HasComp<SleepingComponent>(entity)))
+            return;
+        // Orion-End
+
         component.IsInCombatMode = value;
         Dirty(entity, component);
+
+        // Orion-Start
+        RaiseLocalEvent(entity, new CombatModeChangedEvent(value));
+        // Orion-End
 
         if (component.CombatToggleActionEntity != null)
             _actionsSystem.SetToggled(component.CombatToggleActionEntity, component.IsInCombatMode);
@@ -97,6 +142,13 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
             RemComp<NoRotateOnMoveComponent>(uid);
         }
     }
+
+    // Orion-Start
+    protected virtual bool ShouldShowCombatModePopup()
+    {
+        return true;
+    }
+    // Orion-End
 }
 
 public sealed partial class ToggleCombatActionEvent : InstantActionEvent
