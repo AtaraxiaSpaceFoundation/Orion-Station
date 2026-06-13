@@ -1,11 +1,14 @@
 using Content.Shared.Actions;
 using Content.Shared.Bed.Sleep;
+using Content.Shared.CCVar;
 using Content.Shared.Mind;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.MouseRotator;
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Popups;
+using Robust.Shared.Configuration;
+using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.CombatMode;
@@ -19,6 +22,8 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
     [Dependency] private SharedNPCSystem _npc = default!;
     // Orion-Start
     [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private INetManager _net = default!;
     // Orion-End
 
     public override void Initialize()
@@ -53,9 +58,20 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
             return;
 
         args.Handled = true;
+        var requestedCombatMode = !component.IsInCombatMode; // Orion
         SetInCombatMode(uid, !component.IsInCombatMode, component);
 
-        var msg = component.IsInCombatMode ? "action-popup-combat-enabled" : "action-popup-combat-disabled";
+        // Orion-Edit-Start
+        var msg = component.IsInCombatMode != requestedCombatMode
+            ? "action-popup-combat-enabled"
+            : "action-popup-combat-disabled";
+        // Orion-Edit-End
+
+        // Orion-Start
+        if (component.IsInCombatMode && (_net.IsServer || _cfg.GetCVar(CCVars.CombatIndicator)))
+            return;
+        // Orion-End
+
         _popup.PopupClient(Loc.GetString(msg), args.Performer, args.Performer);
     }
 
