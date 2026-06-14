@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+// SPDX-FileCopyrightText: 2026 TheShuEd <96445749+theshued@users.noreply.github.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Orion.Server.EnergyDome.Components;
 using Content.Server.DeviceLinking.Systems;
 using Content.Server.Power.EntitySystems;
