@@ -55,6 +55,8 @@ public sealed partial class EnergyDomeSystem : EntitySystem
         SubscribeLocalEvent<EnergyDomeGeneratorComponent, ChargeChangedEvent>(OnChargeChanged);
 
         SubscribeLocalEvent<EnergyDomeGeneratorComponent, EntParentChangedMessage>(OnParentChanged);
+        SubscribeLocalEvent<EnergyDomeGeneratorComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
+        SubscribeLocalEvent<EnergyDomeGeneratorComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
 
         SubscribeLocalEvent<EnergyDomeGeneratorComponent, GetVerbsEvent<ActivationVerb>>(AddToggleDomeVerb);
         SubscribeLocalEvent<EnergyDomeGeneratorComponent, ExaminedEvent>(OnExamine);
@@ -148,13 +150,13 @@ public sealed partial class EnergyDomeSystem : EntitySystem
 
     private void OnPowerCellChanged(Entity<EnergyDomeGeneratorComponent> generator, ref PowerCellChangedEvent args)
     {
-        if (args.Ejected || TryComp<PowerCellDrawComponent>(generator, out var draw) && TryComp<PowerCellSlotComponent>(generator, out var slot) && !_powerCell.HasDrawCharge((generator, draw, slot)))
+        if (HasComp<PowerCellDrawComponent>(generator) && (args.Ejected || !HasPowerCellCharge(generator)))
             TurnOff(generator, true);
     }
 
     private void OnChargeChanged(Entity<EnergyDomeGeneratorComponent> generator, ref ChargeChangedEvent args)
     {
-        if (args.CurrentCharge == 0)
+        if (!HasComp<PowerCellDrawComponent>(generator) && args.CurrentCharge == 0)
             TurnOff(generator, true);
     }
 
@@ -182,6 +184,8 @@ public sealed partial class EnergyDomeSystem : EntitySystem
                 if (_battery.GetCharge(batteryEntity) == 0)
                     TurnOff((generatorUid, generatorComp), true);
             }
+
+            return;
         }
 
         // It seems to me it would not work well to hang both a powercell and an internal battery with wire charging on the object....
@@ -196,10 +200,18 @@ public sealed partial class EnergyDomeSystem : EntitySystem
 
     private void OnParentChanged(Entity<EnergyDomeGeneratorComponent> generator, ref EntParentChangedMessage args)
     {
-        // TODO: taking the active barrier in hand for some reason does not manage to change the parent in this case,
-        // and the barrier is not turned off.
         if (GetProtectedEntity(generator) != generator.Comp.DomeParentEntity)
             TurnOff(generator, false);
+    }
+
+    private void OnContainerChanged(Entity<EnergyDomeGeneratorComponent> generator, ref EntInsertedIntoContainerMessage args)
+    {
+        TurnOff(generator, false);
+    }
+
+    private void OnContainerChanged(Entity<EnergyDomeGeneratorComponent> generator, ref EntRemovedFromContainerMessage args)
+    {
+        TurnOff(generator, false);
     }
 
     private void OnComponentRemove(Entity<EnergyDomeGeneratorComponent> generator, ref ComponentRemove args)
@@ -220,24 +232,16 @@ public sealed partial class EnergyDomeSystem : EntitySystem
             return;
         }
 
-        if (TryComp<PowerCellSlotComponent>(generator, out var slot))
+        if (HasComp<PowerCellDrawComponent>(generator))
         {
-            if (!_powerCell.TryGetBatteryFromSlot((generator, slot), out _) && !TryComp(generator, out BatteryComponent? _))
+            if (!HasPowerCellCharge(generator))
             {
                 _audio.PlayPvs(generator.Comp.TurnOffSound, generator);
                 _popup.PopupEntity(Loc.GetString("energy-dome-no-cell"), generator);
                 return;
             }
-
-            if (TryComp<PowerCellDrawComponent>(generator, out var draw) && !_powerCell.HasDrawCharge((generator, draw, slot)))
-            {
-                _audio.PlayPvs(generator.Comp.TurnOffSound, generator);
-                _popup.PopupEntity(Loc.GetString("energy-dome-no-power"), generator);
-                return;
-            }
         }
-
-        if (TryComp<BatteryComponent>(generator, out var battery))
+        else if (TryComp<BatteryComponent>(generator, out var battery))
         {
             if (_battery.GetCharge((generator, battery)) == 0)
             {
@@ -317,6 +321,14 @@ public sealed partial class EnergyDomeSystem : EntitySystem
         return (_container.TryGetOuterContainer(entity, Transform(entity), out var container))
             ? container.Owner
             : entity;
+    }
+
+    private bool HasPowerCellCharge(EntityUid generator)
+    {
+        return TryComp<PowerCellDrawComponent>(generator, out var draw) &&
+               TryComp<PowerCellSlotComponent>(generator, out var slot) &&
+               _powerCell.TryGetBatteryFromSlot((generator, slot), out _) &&
+               _powerCell.HasDrawCharge((generator, draw, slot));
     }
 
     private void SetSelfRechargeEnabled(Entity<BatterySelfRechargerComponent> recharger, bool enabled)

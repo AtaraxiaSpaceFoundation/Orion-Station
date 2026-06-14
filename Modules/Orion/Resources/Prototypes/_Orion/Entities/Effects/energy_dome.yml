@@ -26,8 +26,9 @@
   - type: Physics
     bodyType: Static
   - type: Damageable
-    damageContainer: Inorganic
     damageModifierSet: HardLightBarrier
+  - type: Injurable
+    damageContainer: Inorganic
   - type: AmbientSound
     volume: 35
     range: 5
@@ -149,7 +150,7 @@
     drawdepth: LowFloors
     sprite: _Orion/Effects/EnergyDome/energydome_slowdown_big.rsi
     layers:
-    - state: big
+    - state: slowdown_big
       color: "#a3d177"
   - type: PointLight
     enabled: true
@@ -182,7 +183,7 @@
   - type: Sprite
     sprite: _Orion/Effects/EnergyDome/energydome_directed.rsi
     layers:
-    - state: small
+    - state: directed
       color: "#64b9de"
   - type: PointLight
     enabled: true
