@@ -88,3 +88,11 @@ Entries:
   time: '2026-06-13T19:13:02.0000000+00:00'
   prNumber: 25
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/25
+- author: PuroSlavKing, TheShuEd
+  changes:
+    - type: Add
+      message: Добавлен энергетический барьер/энергокупол.
+  id: 10
+  time: '2026-06-14T16:15:22.0000000+00:00'
+  prNumber: 27
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/27
