@@ -94,6 +94,9 @@
   tier: 1
   cost: 8000
   recipeUnlocks:
+  # Orion-Start
+  - EnergyDomeTurtle
+  # Orion-End
   - Truncheon
   - TelescopicShield
   - HoloprojectorSecurity
