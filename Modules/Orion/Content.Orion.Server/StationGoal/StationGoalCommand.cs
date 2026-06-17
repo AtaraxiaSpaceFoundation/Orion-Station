@@ -35,20 +35,20 @@ public sealed partial class StationGoalCommand : IConsoleCommand
 
         if (!NetEntity.TryParse(args[0], out var euidNet) || !_entManager.TryGetEntity(euidNet, out var euid))
         {
-            shell.WriteError($"Failed to parse euid '{args[0]}'.");
+            shell.WriteError(Loc.GetString("send-station-goal-command-error-euid", ("euid", args[0])));
             return;
         }
 
         var protoId = args[1];
         if (!_prototypeManager.TryIndex<StationGoalPrototype>(protoId, out _))
         {
-            shell.WriteError($"No station goal found with ID {protoId}!");
+            shell.WriteError(Loc.GetString("send-station-goal-command-error-goal", ("protoId", protoId)));
             return;
         }
 
         var stationGoalPaper = _entManager.System<Systems.StationGoalPaperSystem>();
         if (!stationGoalPaper.SendStationGoal(euid.Value, protoId))
-            shell.WriteError("Station goal was not sent");
+            shell.WriteError(Loc.GetString("send-station-goal-command-error-not-sent"));
     }
 
     public CompletionResult GetCompletion(IConsoleShell shell, string[] args)

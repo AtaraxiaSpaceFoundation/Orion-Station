@@ -63,7 +63,7 @@ public sealed partial class StationGoalPaperSystem : EntitySystem
             }
 
             if (selGoal is null)
-                return;
+                continue;
 
             if (SendStationGoal(uid, selGoal))
                 Log.Info($"Goal {selGoal.ID} has been sent to station {MetaData(uid).EntityName}");
@@ -108,13 +108,13 @@ public sealed partial class StationGoalPaperSystem : EntitySystem
                 continue;
 
             _fax.Receive(faxUid, printout, null, fax);
+            wasSent = true;
 
             foreach (var spawnEnt in goal.Spawns)
             {
                 SpawnAtPosition(spawnEnt, Transform(faxUid).Coordinates);
             }
 
-            wasSent |= receiver.ReceiveStationGoal;
         }
 
         return wasSent;
