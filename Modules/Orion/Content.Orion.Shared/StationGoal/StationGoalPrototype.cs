@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager.Attributes;
 
 namespace Content.Orion.Shared.StationGoal;
 
-[Serializable, Prototype]
+[Prototype]
 public sealed partial class StationGoalPrototype : IPrototype
 {
     [IdDataField]
