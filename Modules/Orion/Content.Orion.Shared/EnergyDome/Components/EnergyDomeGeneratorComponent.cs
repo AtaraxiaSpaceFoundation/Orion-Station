@@ -3,21 +3,19 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Orion.Server.EnergyDome.Systems;
 using Content.Shared.DeviceLinking;
-using Robust.Shared.Analyzers;
 using Robust.Shared.Audio;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.ViewVariables;
 
-namespace Content.Orion.Server.EnergyDome.Components;
+namespace Content.Orion.Shared.EnergyDome.Components;
 
 /// <summary>
 /// Allows an entity to generate a battery-powered energy dome of a specific type.
 /// </summary>
-[RegisterComponent, Access(typeof(EnergyDomeSystem))]
+[RegisterComponent]
 public sealed partial class EnergyDomeGeneratorComponent : Component
 {
     [DataField]
