@@ -19,6 +19,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Content.Benchmarks\Content.Benchmarks.csproj" />
+    <ProjectReference Include="..\..\GoobStation\Content.Goobstation.Client\Content.Goobstation.Client.csproj" />
+    <ProjectReference Include="..\..\GoobStation\Content.Goobstation.Server\Content.Goobstation.Server.csproj" />
+    <ProjectReference Include="..\..\Lavaland\Content.Lavaland.Client\Content.Lavaland.Client.csproj" />
+    <ProjectReference Include="..\..\Lavaland\Content.Lavaland.Server\Content.Lavaland.Server.csproj" />
     <ProjectReference Include="..\Content.Orion.Client\Content.Orion.Client.csproj" />
     <ProjectReference Include="..\Content.Orion.Server\Content.Orion.Server.csproj" />
   </ItemGroup>
