@@ -11,11 +11,10 @@ public static class ModuleResourceMounter
 {
     public static void MountAll(IResourceManager resourceManager, ISawmill sawmill)
     {
-        // Orion-Edit-Start
-        var modulesPath = FindModulesPath();
-        if (modulesPath is null)
+        var basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../"));
+        var modulesPath = Path.Combine(basePath, "Modules");
+        if (!Directory.Exists(modulesPath))
             return;
-        // Orion-Edit-End
 
         var manifests = new List<ModuleManifest>();
         foreach (var manifestPath in Directory.GetFiles(modulesPath, "module.yml", SearchOption.AllDirectories))
@@ -72,21 +71,4 @@ public static class ModuleResourceMounter
                 $"Add it under 'resources:' to mount it, or remove it. Path: {conventionalResources}");
         }
     }
-
-    // Orion-Start
-    private static string? FindModulesPath()
-    {
-        var current = new DirectoryInfo(AppContext.BaseDirectory);
-        while (current is not null)
-        {
-            var modulesPath = Path.Combine(current.FullName, "Modules");
-            if (Directory.Exists(modulesPath))
-                return modulesPath;
-
-            current = current.Parent;
-        }
-
-        return null;
-    }
-    // Orion-End
 }
