@@ -380,8 +380,8 @@ public static partial class GameDataScrounger
     {
         yield return ContentResources();
 
-        var modulesPath = FindModulesPath();
-        if (modulesPath is null)
+        var modulesPath = ExecutableRelativeFile($"{FindContentRootDir()}Modules");
+        if (!Directory.Exists(modulesPath))
             yield break;
 
         foreach (var resourceRoot in Directory.EnumerateDirectories(modulesPath, "Resources", SearchOption.AllDirectories))
@@ -389,22 +389,6 @@ public static partial class GameDataScrounger
             if (Directory.Exists(Path.Combine(resourceRoot, "Prototypes")))
                 yield return resourceRoot;
         }
-    }
-
-    private static string? FindModulesPath()
-    {
-        var current = new DirectoryInfo(GetExecutableDirectory());
-
-        while (current is not null)
-        {
-            var modulesPath = Path.Combine(current.FullName, "Modules");
-            if (Directory.Exists(modulesPath))
-                return modulesPath;
-
-            current = current.Parent;
-        }
-
-        return null;
     }
     // Orion-End
 }
