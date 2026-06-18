@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System;
-using Content.Orion.Shared.EnergyDome.Components;
+using Content.Orion.Server.EnergyDome.Components;
 using Content.Server.DeviceLinking.Systems;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Actions;
