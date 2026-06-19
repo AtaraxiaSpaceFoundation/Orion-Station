@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using Content.Orion.Shared.CCVar;
 using Content.Orion.Shared.StationGoal;
+using Content.Orion.Shared.StationGoal.Components;
 using Content.Server.Fax;
 using Content.Server.GameTicking;
 using Content.Server.Station.Systems;
@@ -72,7 +73,7 @@ public sealed partial class StationGoalPaperSystem : EntitySystem
 
     private List<ProtoId<StationGoalPrototype>> GetStationGoals(EntityUid station)
     {
-        return TryComp<Shared.StationGoal.Components.StationGoalComponent>(station, out var stationGoal)
+        return TryComp<StationGoalComponent>(station, out var stationGoal)
             ? new List<ProtoId<StationGoalPrototype>>(stationGoal.Goals)
             : new List<ProtoId<StationGoalPrototype>>();
     }
@@ -101,7 +102,7 @@ public sealed partial class StationGoalPaperSystem : EntitySystem
         var query = EntityQueryEnumerator<FaxMachineComponent>();
         while (query.MoveNext(out var faxUid, out var fax))
         {
-            if (!TryComp<Shared.StationGoal.Components.StationGoalFaxComponent>(faxUid, out var receiver))
+            if (!TryComp<StationGoalFaxComponent>(faxUid, out var receiver))
                 continue;
 
             if (!receiver.ReceiveAllStationGoals && !(receiver.ReceiveStationGoal && _station.GetOwningStation(faxUid) == ent))
