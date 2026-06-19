@@ -24,3 +24,4 @@ ghost-respawn-log-character-almost-same = Player {$player} { $try ->
 ghost-respawn-log-return-to-lobby = { $userName } returned to the lobby.
 ghost-respawn-command-no-entity = This command can only be used by a player with an attached entity.
 ghost-respawn-time-left = Time left until you can return to the round: { $time }
+ghost-respawn-lobby-disabled = Return to round is unavailable while the lobby is disabled.

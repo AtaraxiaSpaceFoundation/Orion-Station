@@ -57,6 +57,9 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
 
     private void TryGhostReturnToRound(EntityUid uid, Entity<GhostComponent> ent)
     {
+        if (!GhostRespawnEnabled)
+            return;
+
         if (TerminatingOrDeleted(ent))
             return;
 
@@ -68,6 +71,12 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             SendChatMsg(session,
                 Loc.GetString("ghost-respawn-max-players", ("players", _ghostRespawnMaxPlayers))
             );
+            return;
+        }
+
+        if (!_gameTicker.LobbyEnabled)
+        {
+            SendChatMsg(session, Loc.GetString("ghost-respawn-lobby-disabled"));
             return;
         }
 

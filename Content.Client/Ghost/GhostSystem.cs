@@ -205,13 +205,5 @@ namespace Content.Client.Ghost
         {
             GhostVisibility = visibility ?? !GhostVisibility;
         }
-
-        // Orion-Start
-        public void ReturnToRound()
-        {
-            var msg = new GhostReturnToRoundRequest();
-            RaiseNetworkEvent(msg);
-        }
-        // Orion-End
     }
 }

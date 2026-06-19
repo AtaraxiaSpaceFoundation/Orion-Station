@@ -709,6 +709,10 @@ namespace Content.Server.GameTicking
         /// </summary>
         private void ResettingCleanup()
         {
+            // Orion-Start
+            _ghostRespawnCharacterNames.Clear();
+            // Orion-End
+
             // Move everybody currently in the server to lobby.
             foreach (var player in _playerManager.Sessions)
             {

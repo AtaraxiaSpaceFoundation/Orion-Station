@@ -27,3 +27,4 @@ ghost-respawn-log-character-almost-same = Игрок { $player } { $try ->
 ghost-respawn-log-return-to-lobby = { $userName } вернулся в лобби.
 ghost-respawn-command-no-entity = Эту команду может использовать только игрок с привязанной сущностью.
 ghost-respawn-time-left = До возможности вернуться в раунд: { $time }
+ghost-respawn-lobby-disabled = Возвращение в раунд недоступно при отключённом лобби.

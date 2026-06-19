@@ -126,6 +126,10 @@ namespace Content.Server.GameTicking
 
                 case SessionStatus.Disconnected:
                 {
+                    // Orion-Start
+                    _ghostRespawnCharacterNames.Remove(session.UserId);
+                    // Orion-End
+
                     _chatManager.SendAdminAnnouncement(Loc.GetString("player-leave-message", ("name", args.Session.Name)));
                     if (mindId != null)
                     {

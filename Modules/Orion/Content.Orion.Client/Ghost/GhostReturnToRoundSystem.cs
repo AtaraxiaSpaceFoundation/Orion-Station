@@ -8,6 +8,7 @@ using Content.Orion.Shared.Ghost;
 using Content.Shared.Ghost;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
+using Robust.Client.UserInterface.Controls;
 using Robust.Shared.IoC;
 using Robust.Shared.Timing;
 
@@ -20,22 +21,37 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
     [Dependency] private IGameTiming _gameTiming = default!;
 
     private TimeSpan _lastTimeLeft = TimeSpan.Zero;
+    private GhostGui? _trackedGui;
+    private Button? _returnToRoundButton;
 
     public override void FrameUpdate(float frameTime)
     {
         base.FrameUpdate(frameTime);
 
-        var player = _playerManager.LocalSession?.AttachedEntity;
-        if (player == null)
+        if (!GhostRespawnEnabled)
+        {
+            RemoveReturnToRoundButton();
             return;
+        }
 
-        if (!TryComp<GhostComponent>(player, out var ghostComponent))
+        var player = _playerManager.LocalSession?.AttachedEntity;
+        if (player == null || !TryComp<GhostComponent>(player, out var ghostComponent))
+        {
+            RemoveReturnToRoundButton();
             return;
+        }
 
         var ui = _userInterfaceManager.GetActiveUIWidgetOrNull<GhostGui>();
         if (ui == null)
+        {
+            RemoveReturnToRoundButton();
+            return;
+        }
+
+        if (!EnsureReturnToRoundButton(ui) || _returnToRoundButton == null)
             return;
 
+        var button = _returnToRoundButton;
         var timeOffset = _gameTiming.CurTime - ghostComponent.TimeOfDeath;
         var rawTimeLeft = GhostRespawnTime - timeOffset;
         var timeLeft = rawTimeLeft > TimeSpan.Zero ? rawTimeLeft : TimeSpan.Zero;
@@ -43,18 +59,67 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
 
         var displayTime = FormatTimeLeft(timeLeft);
 
-        var buttonStateChanged = ui.ReturnToRound.Disabled == canReturn;
+        var buttonStateChanged = button.Disabled == canReturn;
         var timeChanged = FormatTimeLeft(_lastTimeLeft) != displayTime;
 
         if (!buttonStateChanged && !timeChanged)
             return;
 
-        ui.ReturnToRound.Disabled = !canReturn;
-        ui.ReturnToRound.Text = canReturn
+        button.Disabled = !canReturn;
+        button.Text = canReturn
             ? Loc.GetString("ghost-gui-return-to-round-ready-button")
             : Loc.GetString("ghost-gui-return-to-round-button", ("time", displayTime));
 
         _lastTimeLeft = timeLeft;
+    }
+
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        RemoveReturnToRoundButton();
+    }
+
+    private bool EnsureReturnToRoundButton(GhostGui ui)
+    {
+        if (_trackedGui == ui && _returnToRoundButton != null)
+            return true;
+
+        RemoveReturnToRoundButton();
+
+        if (ui.GetChild(0) is not BoxContainer container)
+            return false;
+
+        _trackedGui = ui;
+        _returnToRoundButton = new Button
+        {
+            Disabled = true,
+            Text = Loc.GetString("ghost-gui-return-to-round-ready-button"),
+            ToolTip = Loc.GetString("ghost-gui-return-to-round-button-tooltip"),
+        };
+        _returnToRoundButton.OnPressed += OnReturnToRoundPressed;
+        container.AddChild(_returnToRoundButton);
+
+        return true;
+    }
+
+    private void RemoveReturnToRoundButton()
+    {
+        if (_returnToRoundButton == null)
+        {
+            _trackedGui = null;
+            return;
+        }
+
+        _returnToRoundButton.OnPressed -= OnReturnToRoundPressed;
+        _returnToRoundButton.Parent?.RemoveChild(_returnToRoundButton);
+        _returnToRoundButton = null;
+        _trackedGui = null;
+    }
+
+    private void OnReturnToRoundPressed(BaseButton.ButtonEventArgs args)
+    {
+        RaiseNetworkEvent(new GhostReturnToRoundRequest());
     }
 
     private static string FormatTimeLeft(TimeSpan timeLeft)

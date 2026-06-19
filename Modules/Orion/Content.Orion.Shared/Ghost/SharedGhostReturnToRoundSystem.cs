@@ -20,13 +20,21 @@ public abstract partial class SharedGhostReturnToRoundSystem : EntitySystem
     {
         base.Initialize();
 
+        Cfg.OnValueChanged(OrionCCVars.GhostRespawnEnabled,
+            ghostRespawnEnabled =>
+            {
+                GhostRespawnEnabled = ghostRespawnEnabled;
+            },
+            true);
+
         Cfg.OnValueChanged(OrionCCVars.GhostRespawnTime,
             ghostRespawnTime =>
             {
-                GhostRespawnTime = TimeSpan.FromSeconds(ghostRespawnTime);
+                GhostRespawnTime = TimeSpan.FromSeconds(Math.Max(0f, ghostRespawnTime));
             },
             true);
     }
 
+    protected bool GhostRespawnEnabled = true;
     protected TimeSpan GhostRespawnTime = new(0, 5, 0);
 }
