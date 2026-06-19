@@ -5,6 +5,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
 using Content.Server.GameTicking.Events;
@@ -456,10 +457,13 @@ namespace Content.Server.GameTicking
             if (!_ghostRespawnCharacterNames.TryGetValue(player.UserId, out var previousCharacterName))
                 return true;
 
-            if (previousCharacterName == character.Name)
+            var normalizedPreviousName = NormalizeCharacterName(previousCharacterName);
+            var normalizedCurrentName = NormalizeCharacterName(character.Name);
+
+            if (normalizedPreviousName == normalizedCurrentName)
                 return false;
 
-            var similarity = CalculateStringSimilarity(previousCharacterName, character.Name);
+            var similarity = CalculateStringSimilarity(normalizedPreviousName, normalizedCurrentName);
             switch (similarity)
             {
                 case >= 85f:
@@ -514,6 +518,35 @@ namespace Content.Server.GameTicking
 
             var maxLength = Math.Max(n, m);
             return ((maxLength - distances[n, m]) / (float) maxLength) * 100;
+        }
+
+        private static string NormalizeCharacterName(string name)
+        {
+            var normalized = name.Normalize(NormalizationForm.FormKC);
+            var builder = new StringBuilder(normalized.Length);
+            var previousWasWhiteSpace = true;
+
+            foreach (var rune in normalized.EnumerateRunes())
+            {
+                if (Rune.IsWhiteSpace(rune))
+                {
+                    if (!previousWasWhiteSpace)
+                    {
+                        builder.Append(' ');
+                        previousWasWhiteSpace = true;
+                    }
+
+                    continue;
+                }
+
+                builder.Append(rune.ToString().ToUpperInvariant());
+                previousWasWhiteSpace = false;
+            }
+
+            if (builder.Length > 0 && builder[^1] == ' ')
+                builder.Length--;
+
+            return builder.ToString();
         }
         // Orion-End
 

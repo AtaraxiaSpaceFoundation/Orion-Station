@@ -37,4 +37,13 @@ public abstract partial class SharedGhostReturnToRoundSystem : EntitySystem
 
     protected bool GhostRespawnEnabled = true;
     protected TimeSpan GhostRespawnTime = new(0, 5, 0);
+
+    protected static string FormatTimeLeft(TimeSpan timeLeft)
+    {
+        var clampedTime = timeLeft > TimeSpan.Zero ? timeLeft : TimeSpan.Zero;
+        var totalMinutes = (int) clampedTime.TotalMinutes;
+        var seconds = clampedTime.Seconds;
+
+        return $"{totalMinutes:00}:{seconds:00}";
+    }
 }

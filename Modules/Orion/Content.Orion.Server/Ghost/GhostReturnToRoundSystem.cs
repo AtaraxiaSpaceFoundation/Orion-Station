@@ -93,7 +93,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
         if (timeOffset < GhostRespawnTime)
         {
             SendChatMsg(session,
-                Loc.GetString("ghost-respawn-time-left", ("time", (GhostRespawnTime - timeOffset).ToString()))
+                Loc.GetString("ghost-respawn-time-left", ("time", FormatTimeLeft(GhostRespawnTime - timeOffset)))
             );
             return;
         }

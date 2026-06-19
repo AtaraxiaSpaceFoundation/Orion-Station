@@ -122,11 +122,4 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
         RaiseNetworkEvent(new GhostReturnToRoundRequest());
     }
 
-    private static string FormatTimeLeft(TimeSpan timeLeft)
-    {
-        var totalMinutes = (int) timeLeft.TotalMinutes;
-        var seconds = timeLeft.Seconds;
-
-        return $"{totalMinutes:00}:{seconds:00}";
-    }
 }
