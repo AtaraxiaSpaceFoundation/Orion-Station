@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 ghost-respawn-minutes-left = До возможности вернуться в раунд { $time }
     { $time ->
         [one] минута
