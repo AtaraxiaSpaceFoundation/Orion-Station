@@ -4,12 +4,31 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 language: "ru-RU"
+
+early_access: true
+tone_instructions: "Пиши кратко, технически и по делу на русском (ru-RU). Приоритет: баги, регрессии, prediction, локализация, assembly placement и рискованные upstream-правки. Без поэм и пустых похвал."
+
+chat:
+  auto_reply: true
+
 reviews:
   profile: "assertive"
-  high_level_summary: true
-  poem: false
+  auto_apply_labels: true
   review_status: true
+  review_details: false
   collapse_walkthrough: false
+  in_progress_fortune: false
+  poem: false
+  request_changes_workflow: false
+  suggested_labels: true
+  enable_prompt_for_ai_agents: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  related_issues: false
+  related_prs: true
+  path_filters:
+    - "!**/*.DotSettings"
   path_instructions:
     - path: "**/*.cs"
       instructions: |
@@ -17,15 +36,144 @@ reviews:
         prediction duplication, missing validation, stale network state, forgotten Dirty/DirtyField,
         wrong Common/Shared/Server/Client placement, unnecessary APIs, dead methods, and missing tests.
         Check module ownership before suggesting base or inherited changes.
-    - path: "**/*.{yml,yaml}"
+
+    - path: "**/*.yml"
       instructions: |
         Check prototype schema, IDs, inheritance, stale source-fork fields, references, localization,
         module resource ownership, and missing assets.
+
+    - path: "**/*.yaml"
+      instructions: |
+        Check prototype schema, IDs, inheritance, stale source-fork fields, references, localization,
+        module resource ownership, and missing assets.
+
     - path: "**/*.{xaml,md,mdc,toml,json}"
       instructions: |
         Check frontmatter or syntax, broken links and paths, duplicated guidance, UI lifetime,
         hardcoded player-facing strings, and invalid tool configuration.
+
+    - path: "Resources/Locale/**/*.ftl"
+      instructions: |
+        Check Russian localization quality, missing keys, stale keys, player-facing wording,
+        THE(...) artifacts, inconsistent entity names, and mismatches with changed prototypes or UI strings.
+
     - path: "Modules/Orion/**"
       instructions: |
         Prefer Orion-local implementation. Flag Orion-only behavior placed in base, GoobStation,
         or Lavaland without a clear extension-point reason.
+
+    - path: ".agents/**/*.md"
+      instructions: |
+        These files are the canonical AI guidance pack for the repository.
+        Review for broken relative links, stale file paths, conflicting instructions, and drift against AGENTS.md, .github instructions, .cursor rules, CLAUDE.md, and GEMINI.md.
+
+    - path: ".github/**/*.md"
+      instructions: |
+        Review repository-facing docs and templates for consistency with AGENTS.md and this .coderabbit.yaml.
+        If a template could improve CodeRabbit output or linked-issue validation, call that out explicitly.
+
+    - path: ".github/workflows/**/*.yml"
+      instructions: |
+        Review workflows for trigger correctness, referenced file paths, action usage, and overlap with existing validation jobs.
+        Flag workflow logic that is brittle, redundant, or accidentally inconsistent with this repo's actual validation paths.
+
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  high_level_summary_instructions: |
+    При составлении summary учитывай особенности этого SS14-форка.
+
+    Включай только применимые блоки:
+    - Главное изменение: что реально поменялось для кода, контента или воркфлоу.
+    - Prediction / networking: что ушло в Shared, что стало сетевым, где есть риск миспредикта.
+    - Resources / localization: какие прототипы, FTL, RSI meta или другие ресурсные данные были затронуты.
+    - Validation / risk: что проверено, чего не хватает, где есть риск регрессии.
+
+    Явно отмечай:
+    - breaking prototype IDs или переезды файлов;
+    - missing locale updates для player-facing изменений;
+    - engine-side или широкие upstream-правки;
+    - отсутствие тестов или runtime-проверки, если изменение выглядит рискованным.
+
+    Не пересказывай diff построчно и не засоряй summary общими словами.
+
+  labeling_instructions:
+    - label: "Feature"
+      instructions: "Применить лейбл, если название PR содержит [Feature], или чекбокс рядом с Feature, в описании PR имеет [x]. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Fix"
+      instructions: "Применить лейбл, если название PR содержит [Fix], или чекбокс рядом с Fix, в описании PR имеет [x]. Также добавляется, если в описании PR есть текст о том что это исправление с ссылкой на PR/коммит в котором была ошибка. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Port"
+      instructions: "Применить лейбл, если название PR содержит [Port], или чекбокс рядом с Port, в описании PR имеет [x]. Также добавляется, если в описании PR есть ссылка на оригинальный PR/коммит, с которого были взяты изменения. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Tweak"
+      instructions: "Применить лейбл, если название PR содержит [Tweak], или чекбокс рядом с Tweak, в описании PR имеет [x]. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Balance"
+      instructions: "Применить лейбл, если название PR содержит [Balance], или чекбокс рядом с Balance, в описании PR имеет [x]. Также добавляется, если вносятся множественные изменения в существующие предметы, урон, значения, здоровье и так далее. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Refactor"
+      instructions: "Применить лейбл, если название PR содержит [Refactor], или чекбокс рядом с Refactor, в описании PR имеет [x]. Также добавляется, если происходит рефактор кода, а именно изменение больше чем 50% кода, при этом не изменяя его логики. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Translate"
+      instructions: "Применить лейбл, если название PR содержит [Translate], или чекбокс рядом с Translate, в описании PR имеет [x]. Также добавляется, если вносятся новые локализации. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+    - label: "Resprite"
+      instructions: "Применить лейбл, если название PR содержит [Resprite], или чекбокс рядом с Resprite, в описании PR имеет [x]. Не нужно удалять тэг, если он всё ещё актуален для этого PR."
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 10
+    drafts: false
+    ignore_title_keywords:
+      - "WIP"
+      - "DO NOT MERGE"
+      - "[skip review]"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "renovate[bot]"
+      - "github-actions[bot]"
+  pre_merge_checks:
+    description:
+      mode: warning
+    issue_assessment:
+      mode: warning
+    docstrings:
+      mode: off
+
+  tools:
+    ast-grep:
+      essential_rules: true
+    actionlint:
+      enabled: true
+    github-checks:
+      enabled: true
+      timeout_ms: 180000
+    gitleaks:
+      enabled: true
+    markdownlint:
+      enabled: true
+    psscriptanalyzer:
+      enabled: true
+    shellcheck:
+      enabled: true
+    yamllint:
+      enabled: true
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - ".agents/**/*.md"
+      - ".github/instructions/*.instructions.md"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - "GEMINI.md"
+  learnings:
+    scope: "local"
+  issues:
+    scope: "local"
+  pull_requests:
+    scope: "local"
+  web_search:
+    enabled: true
+
+issue_enrichment:
+  auto_enrich:
+    enabled: false
+  planning:
+    enabled: false
