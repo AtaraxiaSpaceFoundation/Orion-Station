@@ -17,4 +17,7 @@ public sealed partial class OrionCCVars
 
     public static readonly CVarDef<int> GhostRespawnMaxPlayers =
         CVarDef.Create("ghost.respawn_max_players", 80, CVar.SERVERONLY);
+
+    public static readonly CVarDef<bool> GhostRespawnCheckSameCharacter =
+        CVarDef.Create("ghost.respawn_check_same_character", true, CVar.ARCHIVE | CVar.SERVERONLY);
 }

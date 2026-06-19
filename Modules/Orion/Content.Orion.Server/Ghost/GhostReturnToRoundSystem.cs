@@ -45,6 +45,13 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             },
             true);
 
+        Cfg.OnValueChanged(OrionCCVars.GhostRespawnCheckSameCharacter,
+            ghostRespawnCheckSameCharacter =>
+            {
+                _gameTicker.GhostRespawnCheckSameCharacter = ghostRespawnCheckSameCharacter;
+            },
+            true);
+
         _console.RegisterCommand("returntoround", ReturnToRoundCommand, ReturnToRoundCompletion);
     }
 
@@ -82,10 +89,10 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             return;
         }
 
-        _gameTicker.Respawn(session);
+        _gameTicker.Respawn(session, true);
         _adminLogger.Add(LogType.Mind, LogImpact.Medium, $"{Loc.GetString("ghost-respawn-log-return-to-lobby", ("userName", session.Name))}");
 
-        var message= Loc.GetString("ghost-respawn-window-rules-footer");
+        var message = Loc.GetString("ghost-respawn-window-rules-footer");
         SendChatMsg(session, message);
     }
 
