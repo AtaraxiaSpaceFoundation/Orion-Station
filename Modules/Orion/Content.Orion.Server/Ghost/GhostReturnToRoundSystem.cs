@@ -55,6 +55,13 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
         _console.RegisterCommand("returntoround", ReturnToRoundCommand, ReturnToRoundCompletion);
     }
 
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        _console.UnregisterCommand("returntoround");
+    }
+
     private void TryGhostReturnToRound(EntityUid uid, Entity<GhostComponent> ent)
     {
         if (!GhostRespawnEnabled)
@@ -66,7 +73,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
         if (!_playerManager.TryGetSessionByEntity(uid, out var session))
             return;
 
-        if (_ghostRespawnMaxPlayers > 0 && _playerManager.PlayerCount > _ghostRespawnMaxPlayers)
+        if (_ghostRespawnMaxPlayers > 0 && _playerManager.PlayerCount >= _ghostRespawnMaxPlayers)
         {
             SendChatMsg(session,
                 Loc.GetString("ghost-respawn-max-players", ("players", _ghostRespawnMaxPlayers))
