@@ -18,6 +18,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Content.Lavaland.Client\Content.Lavaland.Client.csproj" />
     <ProjectReference Include="..\Content.Lavaland.Server\Content.Lavaland.Server.csproj" />
+    <ProjectReference Include="..\..\GoobStation\Content.Goobstation.Client\Content.Goobstation.Client.csproj" />
+    <ProjectReference Include="..\..\GoobStation\Content.Goobstation.Server\Content.Goobstation.Server.csproj" />
+    <ProjectReference Include="..\..\Orion\Content.Orion.Client\Content.Orion.Client.csproj" />
+    <ProjectReference Include="..\..\Orion\Content.Orion.Server\Content.Orion.Server.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\..\RobustToolbox\MSBuild\Robust.Properties.targets" />
