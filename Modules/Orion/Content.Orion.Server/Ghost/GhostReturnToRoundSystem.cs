@@ -66,7 +66,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
         if (!_playerManager.TryGetSessionByEntity(uid, out var session))
             return;
 
-        if (_playerManager.PlayerCount >= _ghostRespawnMaxPlayers)
+        if (_ghostRespawnMaxPlayers > 0 && _playerManager.PlayerCount > _ghostRespawnMaxPlayers)
         {
             SendChatMsg(session,
                 Loc.GetString("ghost-respawn-max-players", ("players", _ghostRespawnMaxPlayers))
@@ -80,7 +80,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             return;
         }
 
-        var now = GameTiming.CurTime;
+        var now = GameTiming.RealTime;
         var timeOffset = now - ent.Comp.TimeOfDeath;
 
         if (timeOffset < TimeSpan.Zero)

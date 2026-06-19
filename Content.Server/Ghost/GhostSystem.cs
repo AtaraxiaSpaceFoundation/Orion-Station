@@ -201,7 +201,7 @@ namespace Content.Server.Ghost
             }
 
             _eye.RefreshVisibilityMask(uid);
-            var time = _gameTiming.CurTime; // Orion-Edit
+            var time = _gameTiming.RealTime;
             component.TimeOfDeath = time;
 
             Dirty(uid, component);

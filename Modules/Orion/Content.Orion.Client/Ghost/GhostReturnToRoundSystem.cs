@@ -52,7 +52,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             return;
 
         var button = _returnToRoundButton;
-        var timeOffset = _gameTiming.CurTime - ghostComponent.TimeOfDeath;
+        var timeOffset = _gameTiming.RealTime - ghostComponent.TimeOfDeath;
         var rawTimeLeft = GhostRespawnTime - timeOffset;
         var timeLeft = rawTimeLeft > TimeSpan.Zero ? rawTimeLeft : TimeSpan.Zero;
         var canReturn = timeLeft == TimeSpan.Zero;
@@ -87,9 +87,6 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
 
         RemoveReturnToRoundButton();
 
-        if (ui.GetChild(0) is not BoxContainer container)
-            return false;
-
         _trackedGui = ui;
         _returnToRoundButton = new Button
         {
@@ -98,7 +95,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             ToolTip = Loc.GetString("ghost-gui-return-to-round-button-tooltip"),
         };
         _returnToRoundButton.OnPressed += OnReturnToRoundPressed;
-        container.AddChild(_returnToRoundButton);
+        ui.GhostButtonContainer.AddChild(_returnToRoundButton);
 
         return true;
     }

@@ -238,6 +238,11 @@ namespace Content.Server.GameTicking
                     player.Channel,
                     Color.Red);
 
+                if (LobbyEnabled)
+                    PlayerJoinLobby(player);
+                else
+                    JoinAsObserver(player);
+
                 return;
             }
             // Orion-End
