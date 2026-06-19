@@ -6,8 +6,7 @@ using Robust.Shared.Configuration;
 
 namespace Content.Orion.Shared.CCVar;
 
-[CVarDefs]
-public sealed class OrionCCVars
+public sealed partial class OrionCCVars
 {
     /*
      * Station Goal

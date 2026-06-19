@@ -215,4 +215,9 @@ namespace Content.Shared.Ghost
             AvailableGhostRoles = availableGhostRoleCount;
         }
     }
+
+    // Orion-Start
+    [Serializable, NetSerializable]
+    public sealed class GhostReturnToRoundRequest : EntityEventArgs;
+    // Orion-End
 }
