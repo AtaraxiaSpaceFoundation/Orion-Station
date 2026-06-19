@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 #nullable enable
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -52,17 +56,17 @@ public static partial class GameDataScrounger
     /// <summary>
     ///     Prototype type to ID index.
     /// </summary>
-    private static Dictionary<string, List<string>>? _prototypeIndex = null;
+    private static Dictionary<string, List<string>>? _prototypeIndex;
 
     /// <summary>
     ///     Component type to prototype ID index.
     /// </summary>
-    private static Dictionary<string, List<string>>? _entitiesWithComponentIndex = null;
+    private static Dictionary<string, List<string>>? _entitiesWithComponentIndex;
 
     /// <summary>
     ///     Entity proto to metadata index.
     /// </summary>
-    private static Dictionary<string, EntityMetadata>? _entitiesMetaIndex = null;
+    private static Dictionary<string, EntityMetadata>? _entitiesMetaIndex;
 
     private sealed class EntityMetadata
     {
@@ -156,42 +160,46 @@ public static partial class GameDataScrounger
         if (NoScrounging)
             return;
 
-        var resDir = ContentResources();
-        Assert.That(Directory.Exists($"{resDir}/Prototypes"));
-
-        var ignoreList = GetIgnoredPrototypes(resDir);
-
-        // Start with our root directory. We use this as a stack of directories to traverse.
-        var explorationStack = new List<string>() { $"{resDir}/Prototypes" };
-
-        while (explorationStack.Count > 0)
+        // Orion-Edit-Start
+        foreach (var resDir in PrototypeResourceRoots())
         {
-            // Take a directory off the stack.
-            var dir = explorationStack.Pop();
+            Assert.That(Directory.Exists($"{resDir}/Prototypes"));
 
-            if (ignoreList.Contains(dir))
-                continue; // It's all abstract anyway.
+            var ignoreList = GetIgnoredPrototypes(resDir);
 
-            explorationStack.AddRange(Directory.EnumerateDirectories(dir));
+            // Start with our root directory. We use this as a stack of directories to traverse.
+            var explorationStack = new List<string>() { $"{resDir}/Prototypes" };
 
-            foreach (var file in Directory.EnumerateFiles(dir, "*.yml"))
+            while (explorationStack.Count > 0)
             {
-                if (ignoreList.Contains(file))
+                // Take a directory off the stack.
+                var dir = explorationStack.Pop();
+
+                if (ignoreList.Contains(dir))
                     continue; // It's all abstract anyway.
 
-                foreach (var (kind, id) in IndexPrototypesIn(file))
-                {
-                    // alternate universe where .net has rust's Entry api.
-                    if (!_prototypeIndex.TryGetValue(kind, out var list))
-                    {
-                        _prototypeIndex[kind] = new();
-                        list = _prototypeIndex[kind];
-                    }
+                explorationStack.AddRange(Directory.EnumerateDirectories(dir));
 
-                    list.Add(id);
+                foreach (var file in Directory.EnumerateFiles(dir, "*.yml"))
+                {
+                    if (ignoreList.Contains(file))
+                        continue; // It's all abstract anyway.
+
+                    foreach (var (kind, id) in IndexPrototypesIn(file))
+                    {
+                        // Alternate universe where .net has rust's Entry api.
+                        if (!_prototypeIndex.TryGetValue(kind, out var list))
+                        {
+                            _prototypeIndex[kind] = new();
+                            list = _prototypeIndex[kind];
+                        }
+
+                        list.Add(id);
+                    }
                 }
             }
         }
+        // Orion-Edit-End
 
         PushInheritanceAndIndex();
     }
@@ -366,4 +374,37 @@ public static partial class GameDataScrounger
 
         return ignores;
     }
+
+    // Orion-Start
+    private static IEnumerable<string> PrototypeResourceRoots()
+    {
+        yield return ContentResources();
+
+        var modulesPath = FindModulesPath();
+        if (modulesPath is null)
+            yield break;
+
+        foreach (var resourceRoot in Directory.EnumerateDirectories(modulesPath, "Resources", SearchOption.AllDirectories))
+        {
+            if (Directory.Exists(Path.Combine(resourceRoot, "Prototypes")))
+                yield return resourceRoot;
+        }
+    }
+
+    private static string? FindModulesPath()
+    {
+        var current = new DirectoryInfo(GetExecutableDirectory());
+
+        while (current is not null)
+        {
+            var modulesPath = Path.Combine(current.FullName, "Modules");
+            if (Directory.Exists(modulesPath))
+                return modulesPath;
+
+            current = current.Parent;
+        }
+
+        return null;
+    }
+    // Orion-End
 }
