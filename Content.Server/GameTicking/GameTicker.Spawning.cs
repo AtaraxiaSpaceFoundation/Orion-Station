@@ -24,6 +24,7 @@ using Content.Shared.Preferences;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Roles;
+using Content.Shared.Roles.Components;
 using Content.Shared.Roles.Jobs;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -450,6 +451,9 @@ namespace Content.Server.GameTicking
         private void RecordGhostRespawnCharacter(ICommonSession player)
         {
             if (player.GetMind() is not { } mindId || !TryComp<MindComponent>(mindId, out var mind) || mind.CharacterName is not { } characterName)
+                return;
+
+            if (!_roles.MindHasRole<JobRoleComponent>(mindId))
                 return;
 
             _ghostRespawnCharacterNames[player.UserId] = characterName;

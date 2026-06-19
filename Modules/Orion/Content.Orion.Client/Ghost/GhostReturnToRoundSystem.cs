@@ -95,7 +95,7 @@ public sealed partial class GhostReturnToRoundSystem : SharedGhostReturnToRoundS
             ToolTip = Loc.GetString("ghost-gui-return-to-round-button-tooltip"),
         };
         _returnToRoundButton.OnPressed += OnReturnToRoundPressed;
-        ui.GhostButtonContainer.AddChild(_returnToRoundButton);
+        ui.AddGhostButton(_returnToRoundButton);
 
         return true;
     }
