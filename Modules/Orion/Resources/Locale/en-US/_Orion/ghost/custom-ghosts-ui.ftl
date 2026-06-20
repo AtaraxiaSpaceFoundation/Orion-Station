@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+# SPDX-FileCopyrightText: 2026 RedFoxIV <38788538+redfoxiv@users.noreply.github.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 custom-ghost-fail-exclusive-ghost = This ghost is ckey-locked.
 custom-ghost-fail-playtime-unavailable = Failed to get playtimes. Ask an admin for help if this error persists.
 custom-ghost-fail-server-insufficient-playtime = Play on the server for {$requiredHours} {$requiredHours ->
