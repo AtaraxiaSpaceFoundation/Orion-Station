@@ -19,6 +19,7 @@ namespace Content.Client.Lobby
         void CreateCharacter(HumanoidCharacterProfile profile);
         void DeleteCharacter(HumanoidCharacterProfile profile);
         void DeleteCharacter(int slot);
+        void SetCustomGhost(string ghostProto); // Orion
         void UpdateConstructionFavorites(List<ProtoId<ConstructionPrototype>> favorites);
     }
 }

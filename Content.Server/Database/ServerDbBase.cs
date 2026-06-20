@@ -149,6 +149,7 @@ namespace Content.Server.Database
                 UserId = userId.UserId,
                 SelectedCharacterSlot = 0,
                 AdminOOCColor = Color.Red.ToHex(),
+                GhostId = "default", // Orion
                 ConstructionFavorites = [],
             };
 
@@ -183,6 +184,17 @@ namespace Content.Server.Database
             await db.DbContext.SaveChangesAsync();
 
         }
+
+        // Orion-Start
+        public async Task SaveGhostTypeAsync(NetUserId userId, string ghostProto)
+        {
+            await using var db = await GetDb();
+            var prefs = await db.DbContext.Preference.SingleAsync(p => p.UserId == userId.UserId);
+            prefs.GhostId = ghostProto;
+
+            await db.DbContext.SaveChangesAsync();
+        }
+        // Orion-End
 
         public async Task SaveConstructionFavoritesAsync(NetUserId userId, List<ProtoId<ConstructionPrototype>> constructionFavorites)
         {

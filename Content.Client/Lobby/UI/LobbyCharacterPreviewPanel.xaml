@@ -19,9 +19,12 @@
                                                   Access="Public" />
             </BoxContainer>
             <controls:VSpacer/>
-            <Button Name="CharacterSetup" Text="{Loc 'lobby-character-preview-panel-character-setup-button'}"
-                    HorizontalAlignment="Center"
-                    Margin="0 5 0 0"/>
+            <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" SeparationOverride="4" Margin="0 5 0 0">
+                <Button Name="CharacterSetup" Text="{Loc 'lobby-character-preview-panel-character-setup-button'}" />
+                <!-- Orion-Start -->
+                <Button Name="CustomGhosts" Access="Public" Text="{Loc 'custom-ghosts-window-title'}" />
+                <!-- Orion-End -->
+            </BoxContainer>
         </BoxContainer>
         <Label Name="Unloaded" Text="{Loc 'lobby-character-preview-panel-unloaded-preferences-label'}"/>
     </BoxContainer>

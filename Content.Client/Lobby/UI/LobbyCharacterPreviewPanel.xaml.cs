@@ -13,6 +13,7 @@ namespace Content.Client.Lobby.UI;
 public sealed partial class LobbyCharacterPreviewPanel : Control
 {
     public Button CharacterSetupButton => CharacterSetup;
+    public Button CustomGhostsButton => CustomGhosts; // Orion
 
     public LobbyCharacterPreviewPanel()
     {
