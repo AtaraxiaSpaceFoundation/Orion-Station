@@ -46,6 +46,7 @@ namespace Content.Client.Lobby.UI
 
         private readonly DocumentParsingManager _parsingManager;
         private Control? _speciesWindow;
+        private bool _disposingSpeciesEditor;
         // Orion-End
 
         private readonly SpriteSystem _sprite;
@@ -218,7 +219,7 @@ namespace Content.Client.Lobby.UI
             // Orion-Start
             NewSpeciesButton.OnToggled += args =>
             {
-                if (Profile == null)
+                if (Profile == null || _disposingSpeciesEditor)
                     return;
 
                 _speciesWindow?.Dispose();
@@ -240,6 +241,9 @@ namespace Content.Client.Lobby.UI
                     _parsingManager,
                     species =>
                     {
+                        if (_disposingSpeciesEditor)
+                            return;
+
                         SetSpecies(species);
                         _speciesWindow?.Dispose();
                         _speciesWindow = null;
@@ -248,6 +252,9 @@ namespace Content.Client.Lobby.UI
                     },
                     () =>
                     {
+                        if (_disposingSpeciesEditor)
+                            return;
+
                         NewSpeciesButton.Pressed = false;
                         _speciesWindow = null;
                     }));
@@ -461,12 +468,22 @@ namespace Content.Client.Lobby.UI
 
         protected override void Dispose(bool disposing)
         {
+            // Orion-Start
+            if (disposing)
+                _disposingSpeciesEditor = true;
+            // Orion-End
+
             base.Dispose(disposing);
             if (!disposing)
                 return;
 
             _loadoutWindow?.Dispose();
             _loadoutWindow = null;
+
+            // Orion-Start
+            _speciesWindow?.Dispose();
+            _speciesWindow = null;
+            // Orion-End
         }
 
         protected override void EnteredTree()

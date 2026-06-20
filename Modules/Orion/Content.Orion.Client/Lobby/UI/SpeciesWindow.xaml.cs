@@ -107,7 +107,14 @@ public sealed partial class SpeciesWindow : FancyWindow
                 Text = Loc.GetString(item.Name),
                 Margin = new Thickness(5f, 5f),
             };
-            button.OnToggled += _ => SelectSpecies(item.ID);
+            button.OnToggled += args =>
+            {
+                if (!args.Pressed)
+                    return;
+
+                SelectSpecies(item.ID);
+            };
+
             SpeciesContainer.AddChild(button);
         }
     }
