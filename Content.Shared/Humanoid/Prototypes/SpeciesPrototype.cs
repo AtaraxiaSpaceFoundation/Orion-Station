@@ -1,8 +1,6 @@
-using Content.Shared.Body;
 using Content.Shared.Dataset;
-using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Humanoid.Prototypes;
 
@@ -105,7 +103,16 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// </summary>
     [DataField]
     public int MaxAge = 120;
+
+    // Orion-Start
+    [DataField]
+    public SpeciesCategory Category = SpeciesCategory.Classic;
+
+    [DataField]
+    public ResPath? Description;
+    // Orion-End
 }
+
 
 public enum SpeciesNaming : byte
 {
@@ -114,3 +121,13 @@ public enum SpeciesNaming : byte
     FirstDashFirst,
     TheFirstofLast,
 }
+
+// Orion-Start
+public enum SpeciesCategory : byte
+{
+    Classic,
+    Unusual,
+    Special,
+    Sponsor,
+}
+// Orion-End

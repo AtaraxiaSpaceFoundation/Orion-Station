@@ -57,10 +57,14 @@
                                 <BoxContainer HorizontalExpand="True">
                                     <Label Text="{Loc 'humanoid-profile-editor-species-label'}" />
                                     <Control HorizontalExpand="True"/>
+                                    <!-- Orion-Edit-Start -->
                                     <TextureButton Name="SpeciesInfoButton" Scale="0.3 0.3"
                                                    VerticalAlignment="Center"
-                                                   ToolTip="{Loc 'humanoid-profile-editor-guidebook-button-tooltip'}"/>
-                                    <OptionButton Name="SpeciesButton" HorizontalAlignment="Right" />
+                                                   ToolTip="{Loc 'humanoid-profile-editor-guidebook-button-tooltip'}"
+                                                   Visible="False"/>
+                                    <OptionButton Name="SpeciesButton" HorizontalAlignment="Right" Visible="False" />
+                                    <Button Name="NewSpeciesButton" HorizontalAlignment="Right" ToggleMode="True" />
+                                    <!-- Orion-Edit-End -->
                                 </BoxContainer>
                                 <!-- Age -->
                                 <BoxContainer HorizontalExpand="True">

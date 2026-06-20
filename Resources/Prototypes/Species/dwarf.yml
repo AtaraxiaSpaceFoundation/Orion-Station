@@ -5,3 +5,7 @@
   prototype: MobDwarf
   dollPrototype: AppearanceDwarf
   skinColoration: HumanToned
+  # Orion-Start
+  category: Unusual
+  description: "/ServerInfo/_Orion/SpeciesDescriptions/Dwarf.xml"
+  # Orion-End

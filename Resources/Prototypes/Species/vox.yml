@@ -5,6 +5,10 @@
   prototype: MobVox
   dollPrototype: AppearanceVox
   skinColoration: VoxFeathers
+  # Orion-Start
+  category: Classic
+  description: "/ServerInfo/_Orion/SpeciesDescriptions/Vox.xml"
+  # Orion-End
   defaultSkinTone: "#6c741d"
   maleFirstNames: NamesVox
   femaleFirstNames: NamesVox

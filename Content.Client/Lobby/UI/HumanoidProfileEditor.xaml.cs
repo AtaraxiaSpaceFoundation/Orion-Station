@@ -1,4 +1,5 @@
 using Content.Client.Humanoid;
+using Content.Client.Guidebook;
 using Content.Client.Message;
 using Content.Client.Players.PlayTimeTracking;
 using Content.Client.Sprite;
@@ -35,6 +36,12 @@ namespace Content.Client.Lobby.UI
         private readonly MarkingManager _markingManager;
         private readonly JobRequirementsManager _requirements;
         private readonly LobbyUIController _controller;
+        // Orion-Start
+        public static Func<SpeciesWindowContext, Control?>? CreateSpeciesWindow;
+
+        private readonly DocumentParsingManager _parsingManager;
+        private Control? _speciesWindow;
+        // Orion-End
 
         private readonly SpriteSystem _sprite;
 
@@ -101,6 +108,9 @@ namespace Content.Client.Lobby.UI
             _resManager = resManager;
             _requirements = requirements;
             _controller = UserInterfaceManager.GetUIController<LobbyUIController>();
+            // Orion-Start
+            _parsingManager = IoCManager.Resolve<DocumentParsingManager>();
+            // Orion-End
             _sprite = _entManager.System<SpriteSystem>();
 
             _maxNameLength = _cfgManager.GetCVar(CCVars.MaxNameLength);
@@ -199,6 +209,45 @@ namespace Content.Client.Lobby.UI
                 SetSpecies(_species[args.Id].ID);
                 OnSkinColorOnValueChanged();
             };
+
+            // Orion-Start
+            NewSpeciesButton.OnToggled += args =>
+            {
+                if (Profile == null)
+                    return;
+
+                _speciesWindow?.Dispose();
+                _speciesWindow = null;
+
+                if (!args.Pressed)
+                    return;
+
+                if (CreateSpeciesWindow == null)
+                {
+                    NewSpeciesButton.Pressed = false;
+                    return;
+                }
+
+                _speciesWindow = CreateSpeciesWindow(new SpeciesWindowContext(
+                    Profile,
+                    _prototypeManager,
+                    _resManager,
+                    _parsingManager,
+                    species =>
+                    {
+                        SetSpecies(species);
+                        _speciesWindow?.Dispose();
+                        _speciesWindow = null;
+                        NewSpeciesButton.Text = Loc.GetString(_prototypeManager.Index(Profile.Species).Name);
+                        NewSpeciesButton.Pressed = false;
+                    },
+                    () =>
+                    {
+                        NewSpeciesButton.Pressed = false;
+                        _speciesWindow = null;
+                    }));
+            };
+            // Orion-End
 
             #region Skin
 
@@ -432,4 +481,14 @@ namespace Content.Client.Lobby.UI
             SpriteView.OverrideDirection = (Direction)((int)direction % 4 * 2);
         }
     }
+
+    // Orion-Start
+    public sealed record SpeciesWindowContext(
+        HumanoidCharacterProfile Profile,
+        IPrototypeManager PrototypeManager,
+        IResourceManager ResourceManager,
+        DocumentParsingManager ParsingManager,
+        Action<string> OnChosen,
+        Action OnClosed);
+    // Orion-End
 }
