@@ -202,6 +202,7 @@
 # King
 - type: customGhost
   id: king
+  supportsDeathDamageState: true
   category: misc
   proto: MobObserverKing
   restrictions:
@@ -234,6 +235,7 @@
 # Blazeit
 - type: customGhost
   id: blazeit
+  supportsDeathDamageState: true
   category: color
   proto: MobObserverBlazeit
   restrictions:
@@ -254,6 +256,7 @@
 # Rainbow
 - type: customGhost
   id: rainbow
+  supportsDeathDamageState: true
   category: color
   proto: MobObserverRainbow
   restrictions:
@@ -311,6 +314,7 @@
 # Fire
 - type: customGhost
   id: fire
+  supportsDeathDamageState: true
   category: color
   proto: MobObserverFire
   restrictions:
