@@ -171,7 +171,10 @@ public sealed partial class HumanoidProfileEditor
                 SpeciesButton.SelectId(i);
                 // Orion-Start
                 NewSpeciesButton.Text = name;
-                NewSpeciesButton.Pressed = false;
+
+                if (NewSpeciesButton.Pressed)
+                    continue;
+
                 _speciesWindow?.Dispose();
                 _speciesWindow = null;
                 // Orion-End

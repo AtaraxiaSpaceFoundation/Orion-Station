@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Content.Client.Administration.UI.CustomControls;
 using Content.Client.Guidebook;
@@ -52,6 +53,7 @@ public sealed partial class SpeciesWindow : FancyWindow
 {
     // All differences are relative to BaselineSpecies
     private const string BaselineSpecies = "Human";
+    private const string RespirationMetabolismType = "Respiration";
     private const float DamageDifferenceEpsilon = 0.005f;
 
     private readonly DocumentParsingManager _parsingMan;
@@ -239,8 +241,14 @@ public sealed partial class SpeciesWindow : FancyWindow
 
         // Take race descriptions text from .xml files, so we need to find and use the content from the specified file.
         // Everything works the same way as in the guidebook (yes, you can insert images here)
-        using var file = _resMan.ContentFileReadText(proto.Description.Value);
-        _parsingMan.TryAddMarkup(DetailInfoContainer, file.ReadToEnd());
+        if (!_resMan.TryContentFileRead(proto.Description.Value, out var file))
+            return;
+
+        using (file)
+        using (var reader = new StreamReader(file))
+        {
+            _parsingMan.TryAddMarkup(DetailInfoContainer, reader.ReadToEnd());
+        }
     }
 
     private List<SpeciesProsConsEntry> BuildGeneratedProsCons(SpeciesPrototype species)
@@ -626,7 +634,7 @@ public sealed partial class SpeciesWindow : FancyWindow
         var result = new HashSet<string>(StringComparer.Ordinal);
         foreach (var reagent in _proto.EnumeratePrototypes<ReagentPrototype>())
         {
-            if (reagent.Metabolisms?.Metabolisms.TryGetValue("Respiration", out var respiration) != true)
+            if (reagent.Metabolisms?.Metabolisms.TryGetValue(RespirationMetabolismType, out var respiration) != true)
                 continue;
 
             foreach (var effect in respiration?.Effects ?? Array.Empty<EntityEffect>())

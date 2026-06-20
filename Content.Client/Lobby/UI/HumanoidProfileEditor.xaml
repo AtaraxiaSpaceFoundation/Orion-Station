@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                                    ToolTip="{Loc 'humanoid-profile-editor-guidebook-button-tooltip'}"
                                                    Visible="False"/>
                                     <OptionButton Name="SpeciesButton" HorizontalAlignment="Right" Visible="False" />
-                                    <Button Name="NewSpeciesButton" HorizontalAlignment="Right" ToggleMode="True" />
+                                    <Button Name="NewSpeciesButton" HorizontalAlignment="Right" ToggleMode="True" Text="{Loc 'humanoid-profile-editor-species-label'}" />
                                     <!-- Orion-Edit-End -->
                                 </BoxContainer>
                                 <!-- Age -->
