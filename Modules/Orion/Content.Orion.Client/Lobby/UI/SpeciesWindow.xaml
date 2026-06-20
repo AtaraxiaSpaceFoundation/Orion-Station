@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 _kote <143940725+le-kote@users.noreply.github.com>
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 <controls:FancyWindow xmlns="https://spacestation14.io"
          xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls;assembly=Content.Client"
          xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"

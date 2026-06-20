@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 _kote <143940725+le-kote@users.noreply.github.com>
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Content.Shared.Dataset;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 _kote <143940725+le-kote@users.noreply.github.com>
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 species-window-title = Расы
 ui-species-select-button = Выбрать
 ui-species-pros-cons = Плюсы и минусы
