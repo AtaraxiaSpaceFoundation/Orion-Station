@@ -50,6 +50,7 @@ namespace Content.Orion.Client.Lobby.UI;
 [GenerateTypedNameReferences]
 public sealed partial class SpeciesWindow : FancyWindow
 {
+    // All differences are relative to BaselineSpecies
     private const string BaselineSpecies = "Human";
     private const float DamageDifferenceEpsilon = 0.005f;
 
@@ -252,6 +253,8 @@ public sealed partial class SpeciesWindow : FancyWindow
         AddDamageModifierEntries(entries, speciesEntity, baselineEntity);
         AddDamageOverTimeEntries(entries, speciesEntity, baselineEntity);
         AddMetabolismEntries(entries, speciesEntity, baselineEntity);
+        AddMobilityEntries(entries, speciesEntity, baselineEntity);
+        AddStaminaEntries(entries, speciesEntity, baselineEntity);
         AddMetabolizerTypeEntries(entries, speciesEntity, baselineEntity);
         AddBreathGasEntries(entries, speciesEntity, baselineEntity);
         AddTemperatureEntries(entries, speciesEntity, baselineEntity);
@@ -355,6 +358,45 @@ public sealed partial class SpeciesWindow : FancyWindow
                 "ui-species-generated-thirst-faster",
                 "ui-species-generated-thirst-slower");
         }
+    }
+
+    private void AddMobilityEntries(List<SpeciesProsConsEntry> entries, EntityPrototype speciesEntity, EntityPrototype baselineEntity)
+    {
+        var speciesMovement = TryGetPrototypeComponent<MovementSpeedModifierComponent>(speciesEntity, out var movement)
+            ? movement
+            : new MovementSpeedModifierComponent();
+        var baselineMovement = TryGetPrototypeComponent<MovementSpeedModifierComponent>(baselineEntity, out movement)
+            ? movement
+            : new MovementSpeedModifierComponent();
+
+        AddRateDifference(entries,
+            speciesMovement.BaseWalkSpeed,
+            baselineMovement.BaseWalkSpeed,
+            "ui-species-generated-walk-speed-faster",
+            "ui-species-generated-walk-speed-slower");
+        AddRateDifference(entries,
+            speciesMovement.BaseSprintSpeed,
+            baselineMovement.BaseSprintSpeed,
+            "ui-species-generated-sprint-speed-faster",
+            "ui-species-generated-sprint-speed-slower");
+    }
+
+    private void AddStaminaEntries(List<SpeciesProsConsEntry> entries, EntityPrototype speciesEntity, EntityPrototype baselineEntity)
+    {
+        var speciesStamina = TryGetPrototypeComponent<StaminaComponent>(speciesEntity, out var stamina)
+            ? stamina
+            : new StaminaComponent();
+        var baselineStamina = TryGetPrototypeComponent<StaminaComponent>(baselineEntity, out stamina)
+            ? stamina
+            : new StaminaComponent();
+
+        AddThresholdDifference(entries,
+            speciesStamina.BaseCritThreshold,
+            baselineStamina.BaseCritThreshold,
+            "ui-species-generated-stamina-threshold-higher",
+            "ui-species-generated-stamina-threshold-lower",
+            MathF.Round(speciesStamina.BaseCritThreshold),
+            "stamina");
     }
 
     private void AddMetabolizerTypeEntries(List<SpeciesProsConsEntry> entries, EntityPrototype speciesEntity, EntityPrototype baselineEntity)
@@ -537,6 +579,17 @@ public sealed partial class SpeciesWindow : FancyWindow
 
     private static void AddThresholdDifference(List<SpeciesProsConsEntry> entries, float speciesThreshold, float baselineThreshold, string higherKey, string lowerKey)
     {
+        AddThresholdDifference(entries,
+            speciesThreshold,
+            baselineThreshold,
+            higherKey,
+            lowerKey,
+            MathF.Round(speciesThreshold - 273.15f),
+            "temperature");
+    }
+
+    private static void AddThresholdDifference(List<SpeciesProsConsEntry> entries, float speciesThreshold, float baselineThreshold, string higherKey, string lowerKey, float displayedValue, string valueName)
+    {
         if (MathF.Abs(speciesThreshold - baselineThreshold) < DamageDifferenceEpsilon)
             return;
 
@@ -544,7 +597,7 @@ public sealed partial class SpeciesWindow : FancyWindow
             Loc.GetString(speciesThreshold > baselineThreshold
                     ? higherKey
                     : lowerKey,
-                ("temperature", MathF.Round(speciesThreshold - 273.15f)))));
+                (valueName, displayedValue))));
     }
 
     private HashSet<string> GetMetabolizerTypes(EntityPrototype entity)
