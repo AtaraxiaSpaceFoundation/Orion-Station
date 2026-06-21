@@ -5,6 +5,8 @@
 
 custom-ghost-fail-exclusive-ghost = Этот призрак доступен только определённому человеку.
 custom-ghost-fail-playtime-unavailable = Не удалось получить время игры. Обратитесь к администратору, если ошибка повторится.
+custom-ghost-fail-invalid-job = У этого призрака некорректное требование к должности.
+custom-ghost-fail-invalid-department = У этого призрака некорректное требование к отделу.
 custom-ghost-fail-server-insufficient-playtime = Отыграть {$requiredHours} {$requiredHours ->
   *[one] час
   [few] часа

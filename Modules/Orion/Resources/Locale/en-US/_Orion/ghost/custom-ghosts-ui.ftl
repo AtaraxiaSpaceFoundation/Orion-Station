@@ -5,6 +5,8 @@
 
 custom-ghost-fail-exclusive-ghost = This ghost is ckey-locked.
 custom-ghost-fail-playtime-unavailable = Failed to get playtimes. Ask an admin for help if this error persists.
+custom-ghost-fail-invalid-job = This ghost has an invalid job requirement.
+custom-ghost-fail-invalid-department = This ghost has an invalid department requirement.
 custom-ghost-fail-server-insufficient-playtime = Play on the server for {$requiredHours} {$requiredHours ->
   *[one] hour
   [other] hours

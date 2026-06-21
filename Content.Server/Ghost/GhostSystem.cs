@@ -473,14 +473,14 @@ namespace Content.Server.Ghost
             }
 
             // Orion-Start
-            EntProtoId<GhostComponent> ghostPrototype = "MobObserver";
+            EntProtoId<GhostComponent> ghostPrototype = GameTicker.ObserverPrototypeName;
             var supportsDeathDamageState = true;
-            if (mind.Comp.UserId is { } customGhostUserId)
+            if (mind.Comp.UserId is { } userId)
             {
-                var customGhostEv = new ResolveCustomGhostPrototypeEvent(customGhostUserId, _prefs.GetPreferences(customGhostUserId).CustomGhost, ghostPrototype);
-                RaiseLocalEvent(customGhostEv);
-                ghostPrototype = customGhostEv.GhostPrototype;
-                supportsDeathDamageState = customGhostEv.SupportsDeathDamageState;
+                var ev = new ResolvePlayerGhostPrototypeEvent(userId, _prefs.GetPreferences(userId).CustomGhost, ghostPrototype);
+                RaiseLocalEvent(ev);
+                ghostPrototype = ev.GhostPrototype;
+                supportsDeathDamageState = ev.SupportsDeathDamageState;
             }
             // Orion-End
 
@@ -625,10 +625,10 @@ namespace Content.Server.Ghost
     }
 
     // Orion-Start
-    public sealed class ResolveCustomGhostPrototypeEvent(NetUserId userId, string customGhostId, EntProtoId<GhostComponent> ghostPrototype) : EntityEventArgs
+    public sealed class ResolvePlayerGhostPrototypeEvent(NetUserId userId, string ghostStyleId, EntProtoId<GhostComponent> ghostPrototype) : EntityEventArgs
     {
         public NetUserId UserId { get; } = userId;
-        public string CustomGhostId { get; } = customGhostId;
+        public string GhostStyleId { get; } = ghostStyleId;
         public EntProtoId<GhostComponent> GhostPrototype { get; set; } = ghostPrototype;
         public bool SupportsDeathDamageState { get; set; } = true;
     }

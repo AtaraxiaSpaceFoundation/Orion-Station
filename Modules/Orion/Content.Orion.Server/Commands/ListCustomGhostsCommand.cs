@@ -64,11 +64,10 @@ public sealed partial class ListCustomGhostsCommand : IConsoleCommand
                     if (restriction.HideOnFail)
                     {
                         visible = false;
-                        break;
+                        continue;
                     }
 
                     available = false;
-                    break;
                 }
             }
 

@@ -23,16 +23,19 @@ public sealed partial class CustomGhostSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ResolveCustomGhostPrototypeEvent>(OnResolveCustomGhostPrototype);
+        SubscribeLocalEvent<ResolvePlayerGhostPrototypeEvent>(OnResolvePlayerGhostPrototype);
     }
 
-    private void OnResolveCustomGhostPrototype(ResolveCustomGhostPrototypeEvent args)
+    private void OnResolvePlayerGhostPrototype(ResolvePlayerGhostPrototypeEvent args)
     {
         if (!_player.TryGetSessionById(args.UserId, out var session))
             return;
 
-        if (!_prototype.TryIndex<CustomGhostPrototype>(args.CustomGhostId, out var customGhost) || customGhost.Abstract || !customGhost.CanUse(session))
-            customGhost = _prototype.Index(DefaultCustomGhostPrototype);
+        if (!_prototype.TryIndex<CustomGhostPrototype>(args.GhostStyleId, out var customGhost) || customGhost.Abstract || !customGhost.CanUse(session))
+        {
+            if (!_prototype.TryIndex(DefaultCustomGhostPrototype, out customGhost))
+                return;
+        }
 
         args.GhostPrototype = customGhost.GhostEntityPrototype;
         args.SupportsDeathDamageState = customGhost.SupportsDeathDamageState;

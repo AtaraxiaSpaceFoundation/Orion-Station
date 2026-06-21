@@ -51,7 +51,7 @@ public sealed partial class JobRequirementsManager : ISharedPlaytimeManager
     }
 
     // Orion-Start
-    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out Dictionary<string, TimeSpan>? time)
+    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out IReadOnlyDictionary<string, TimeSpan>? time)
     {
         if (id != _playerManager.LocalSession)
         {

@@ -53,7 +53,7 @@ custom-ghost-fire-name = Огненный призрак
 custom-ghost-fire-desc = Выглядит сногсшибательно. По меркам 2004 года.
 
 custom-ghost-skeleton-name = Скелет
-custom-ghost-skeleton-desc = Maybe it's the way you're dressed?
+custom-ghost-skeleton-desc = Может, всё дело в твоём наряде?
 
 custom-ghost-frog-name = Лягушка
 custom-ghost-frog-desc = "Сап космач, есть одна вульпа..."

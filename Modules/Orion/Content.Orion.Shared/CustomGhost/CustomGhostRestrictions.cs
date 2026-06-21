@@ -85,7 +85,7 @@ public sealed partial class PlaytimeServerRestriction : CustomGhostRestriction
 public sealed partial class PlaytimeJobRestriction : CustomGhostRestriction
 {
     [DataField(required: true)]
-    public string Job = string.Empty;
+    public ProtoId<JobPrototype> Job = string.Empty;
 
     [DataField(required: true)]
     public float HoursPlaytime;
@@ -106,7 +106,12 @@ public sealed partial class PlaytimeJobRestriction : CustomGhostRestriction
         }
 
         double jobPlaytime = 0;
-        var jobProto = _proto.Index<JobPrototype>(Job);
+        if (!_proto.TryIndex(Job, out var jobProto))
+        {
+            failReason = Loc.GetString("custom-ghost-fail-invalid-job");
+            return false;
+        }
+
         if (playtimes.TryGetValue(jobProto.PlayTimeTracker, out var time))
             jobPlaytime += time.TotalHours;
 
@@ -151,11 +156,21 @@ public sealed partial class PlaytimeDepartmentRestriction : CustomGhostRestricti
         }
 
         double departmentPlaytime = 0;
-        var departmentProto = _proto.Index(Department);
+        if (!_proto.TryIndex(Department, out var departmentProto))
+        {
+            failReason = Loc.GetString("custom-ghost-fail-invalid-department");
+            return false;
+        }
+
         var departmentJobs = departmentProto.Roles;
         foreach (var job in departmentJobs)
         {
-            var jobProto = _proto.Index(job);
+            if (!_proto.TryIndex(job, out var jobProto))
+            {
+                failReason = Loc.GetString("custom-ghost-fail-invalid-job");
+                return false;
+            }
+
             if (playtimes.TryGetValue(jobProto.PlayTimeTracker, out var time))
                 departmentPlaytime += time.TotalHours;
         }

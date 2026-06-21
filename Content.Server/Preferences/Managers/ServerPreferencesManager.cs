@@ -51,6 +51,8 @@ namespace Content.Server.Preferences.Managers
         private readonly Dictionary<NetUserId, PlayerPrefData> _cachedPlayerPrefs =
             new();
 
+        private const string DefaultGhostStyle = "default";
+
         private ISawmill _sawmill = default!;
 
         private int MaxCharacterSlots => _cfg.GetCVar(CCVars.GameMaxCharacterSlots);
@@ -90,7 +92,7 @@ namespace Content.Server.Preferences.Managers
             foreach (var favorite in prefs.ConstructionFavorites)
                 constructionFavorites.Add(new ProtoId<ConstructionPrototype>(favorite));
 
-            return new PlayerPreferences(profiles, prefs.SelectedCharacterSlot, Color.FromHex(prefs.AdminOOCColor), constructionFavorites, prefs.GhostId); // Orion-Edit: Load custom ghost.
+            return new PlayerPreferences(profiles, prefs.SelectedCharacterSlot, Color.FromHex(prefs.AdminOOCColor), constructionFavorites, NormalizeGhostStyle(prefs.GhostId)); // Orion-Edit: Load custom ghost.
         }
 
         internal HumanoidCharacterProfile ConvertProfiles(Profile profile)
@@ -497,7 +499,14 @@ namespace Content.Server.Preferences.Managers
             {
                 return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, p.Value.Validated(session, collection));
             }), prefs.SelectedCharacterIndex, prefs.AdminOOCColor, prefs.ConstructionFavorites,
-                string.IsNullOrWhiteSpace(prefs.CustomGhost) ? "default" : prefs.CustomGhost); // Orion-Edit: Sanitize custom ghost fallback.
+                NormalizeGhostStyle(prefs.CustomGhost)); // Orion-Edit: Sanitize custom ghost fallback.
+        }
+
+        private static string NormalizeGhostStyle(string? ghostStyle)
+        {
+            return string.IsNullOrWhiteSpace(ghostStyle)
+                ? DefaultGhostStyle
+                : ghostStyle;
         }
 
         public IEnumerable<KeyValuePair<NetUserId, HumanoidCharacterProfile>> GetSelectedProfilesForPlayers(

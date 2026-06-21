@@ -47,13 +47,12 @@
   proto: MobObserverPuroSlavKing
 
 - type: entity
-  parent: MobObserver
+  parent: MobObserverCkey
   id: MobObserverPuroSlavKing
   description: Hello World!
   components:
   - type: Sprite
     sprite: _Orion/Ghosts/ckey/PuroSlavKing.rsi
-    color: "#ffffffe6" # 0.9 alpha
 
 # GodFace
 - type: customGhost
@@ -65,13 +64,12 @@
   proto: MobObserverGodFace
 
 - type: entity
-  parent: MobObserver
+  parent: MobObserverCkey
   id: MobObserverGodFace
   description: BoO-oO!
   components:
   - type: Sprite
     sprite: _Orion/Ghosts/ckey/GodFace.rsi
-    color: "#ffffffe6" # 0.9 alpha
 
 # LIZARDWIZARD
 - type: customGhost
@@ -83,13 +81,12 @@
   proto: MobObserverLIZARDWIZARD
 
 - type: entity
-  parent: MobObserver
+  parent: MobObserverCkey
   id: MobObserverLIZARDWIZARD
   description: BoO-oO!
   components:
   - type: Sprite
     sprite: _Orion/Ghosts/ckey/LIZARDWIZARD.rsi
-    color: "#ffffffe6" # 0.9 alpha
 
 # scituzer2
 - type: customGhost
@@ -101,10 +98,9 @@
   proto: MobObserverscituzer2
 
 - type: entity
-  parent: MobObserver
+  parent: MobObserverCkey
   id: MobObserverscituzer2
   description: Yarr!
   components:
   - type: Sprite
     sprite: _Orion/Ghosts/ckey/scituzer2.rsi
-    color: "#ffffffe6" # 0.9 alpha

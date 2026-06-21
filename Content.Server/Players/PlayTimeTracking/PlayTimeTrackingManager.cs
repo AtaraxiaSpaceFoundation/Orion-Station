@@ -360,7 +360,7 @@ public sealed partial class PlayTimeTrackingManager : ISharedPlaytimeManager, IP
         return GetPlayTimeForTracker(id, PlayTimeTrackingShared.TrackerOverall);
     }
 
-    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out Dictionary<string, TimeSpan>? time)
+    public bool TryGetTrackerTimes(ICommonSession id, [NotNullWhen(true)] out IReadOnlyDictionary<string, TimeSpan>? time)
     {
         time = null;
 
