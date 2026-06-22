@@ -53,7 +53,7 @@ namespace Content.Server.Database
 
         Task SaveAdminOOCColorAsync(NetUserId userId, Color color);
 
-        Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto); // Orion
+        Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto) where TPrototype : class, IPrototype; // Orion
 
         Task SaveConstructionFavoritesAsync(NetUserId userId, List<ProtoId<ConstructionPrototype>> constructionFavorites);
 
@@ -473,7 +473,7 @@ namespace Content.Server.Database
         }
 
         // Orion-Start
-        public Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto)
+        public Task SaveGhostTypeAsync<TPrototype>(NetUserId userId, ProtoId<TPrototype> ghostProto) where TPrototype : class, IPrototype
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SaveGhostTypeAsync(userId, ghostProto.Id));
