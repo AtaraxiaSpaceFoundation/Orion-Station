@@ -477,7 +477,8 @@ namespace Content.Server.Ghost
             var supportsDeathDamageState = true;
             if (mind.Comp.UserId is { } ghostUserId)
             {
-                var ev = new ResolvePlayerGhostPrototypeEvent(ghostUserId, _prefs.GetPreferences(ghostUserId).CustomGhost, ghostPrototype);
+                var ghostStyle = _prefs.GetPreferencesOrNull(ghostUserId)?.CustomGhost ?? "default";
+                var ev = new ResolvePlayerGhostPrototypeEvent(ghostUserId, ghostStyle, ghostPrototype);
                 RaiseLocalEvent(ev);
                 ghostPrototype = ev.GhostPrototype;
                 supportsDeathDamageState = ev.SupportsDeathDamageState;
