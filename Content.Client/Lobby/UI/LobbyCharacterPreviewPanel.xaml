@@ -26,12 +26,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                                   Access="Public" />
             </BoxContainer>
             <controls:VSpacer/>
+            <!-- Orion-Edit-Start -->
             <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" SeparationOverride="4" Margin="0 5 0 0">
                 <Button Name="CharacterSetup" Text="{Loc 'lobby-character-preview-panel-character-setup-button'}" />
                 <!-- Orion-Start -->
                 <Button Name="CustomGhosts" Access="Public" Text="{Loc 'custom-ghosts-window-title'}" />
                 <!-- Orion-End -->
             </BoxContainer>
+            <!-- Orion-Edit-End -->
         </BoxContainer>
         <Label Name="Unloaded" Text="{Loc 'lobby-character-preview-panel-unloaded-preferences-label'}"/>
     </BoxContainer>

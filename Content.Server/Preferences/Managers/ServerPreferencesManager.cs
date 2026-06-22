@@ -51,7 +51,7 @@ namespace Content.Server.Preferences.Managers
         private readonly Dictionary<NetUserId, PlayerPrefData> _cachedPlayerPrefs =
             new();
 
-        private const string DefaultGhostStyle = "default";
+        private const string DefaultGhostStyle = "default"; // Orion
 
         private ISawmill _sawmill = default!;
 
@@ -220,7 +220,7 @@ namespace Content.Server.Preferences.Managers
                 return;
             }
 
-            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, index, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, index, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: CustomGhost
 
             if (ShouldStorePrefs(message.MsgChannel.AuthType))
             {
@@ -260,7 +260,7 @@ namespace Content.Server.Preferences.Managers
                 [slot] = profile
             };
 
-            prefsData.Prefs = new PlayerPreferences(profiles, slot, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            prefsData.Prefs = new PlayerPreferences(profiles, slot, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: CustomGhost
 
             if (ShouldStorePrefs(session.Channel.AuthType))
                 await _db.SaveCharacterSlotAsync(userId, profile, slot);
@@ -275,7 +275,7 @@ namespace Content.Server.Preferences.Managers
             }
 
             var curPrefs = prefsData.Prefs!;
-            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, favorites, curPrefs.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, favorites, curPrefs.CustomGhost); // Orion-Edit: CustomGhost
 
             var session = _playerManager.GetSessionById(userId);
             if (ShouldStorePrefs(session.Channel.AuthType))
@@ -319,7 +319,7 @@ namespace Content.Server.Preferences.Managers
             var arr = new Dictionary<int, HumanoidCharacterProfile>(curPrefs.Characters);
             arr.Remove(slot);
 
-            prefsData.Prefs = new PlayerPreferences(arr, nextSlot ?? curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            prefsData.Prefs = new PlayerPreferences(arr, nextSlot ?? curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, curPrefs.ConstructionFavorites, curPrefs.CustomGhost); // Orion-Edit: CustomGhost
 
             if (ShouldStorePrefs(message.MsgChannel.AuthType))
             {
@@ -360,7 +360,7 @@ namespace Content.Server.Preferences.Managers
             }
 
             var curPrefs = prefsData.Prefs!;
-            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, validatedList, curPrefs.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            prefsData.Prefs = new PlayerPreferences(curPrefs.Characters, curPrefs.SelectedCharacterIndex, curPrefs.AdminOOCColor, validatedList, curPrefs.CustomGhost); // Orion-Edit: CustomGhost
 
             if (ShouldStorePrefs(message.MsgChannel.AuthType))
             {
@@ -379,7 +379,7 @@ namespace Content.Server.Preferences.Managers
                     PrefsLoaded = true,
                     Prefs = new PlayerPreferences(
                         new[] { new KeyValuePair<int, HumanoidCharacterProfile>(0, HumanoidCharacterProfile.Random()) },
-                        0, Color.Transparent, [], "default") // Orion-Edit: Default custom ghost.
+                        0, Color.Transparent, [], "default") // Orion-Edit: CustomGhost
                 };
 
                 _cachedPlayerPrefs[session.UserId] = prefsData;
@@ -499,9 +499,10 @@ namespace Content.Server.Preferences.Managers
             {
                 return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, p.Value.Validated(session, collection));
             }), prefs.SelectedCharacterIndex, prefs.AdminOOCColor, prefs.ConstructionFavorites,
-                NormalizeGhostStyle(prefs.CustomGhost)); // Orion-Edit: Sanitize custom ghost fallback.
+                NormalizeGhostStyle(prefs.CustomGhost)); // Orion
         }
 
+        // Orion-Start
         private static string NormalizeGhostStyle(string? ghostStyle)
         {
             var trimmed = ghostStyle?.Trim();
@@ -509,6 +510,7 @@ namespace Content.Server.Preferences.Managers
                 ? DefaultGhostStyle
                 : trimmed;
         }
+        // Orion-End
 
         public IEnumerable<KeyValuePair<NetUserId, HumanoidCharacterProfile>> GetSelectedProfilesForPlayers(
             List<NetUserId> usernames)

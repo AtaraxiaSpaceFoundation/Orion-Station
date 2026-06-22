@@ -485,7 +485,7 @@ namespace Content.Server.Ghost
             }
             // Orion-End
 
-            var ghost = SpawnAtPosition(ghostPrototype, spawnPosition.Value); // Orion-Edit: Use resolved custom ghost prototype.
+            var ghost = SpawnAtPosition(ghostPrototype, spawnPosition.Value); // Orion-Edit
             var ghostComponent = Comp<GhostComponent>(ghost);
 
             // Orion-Edit: supportsDeathDamageState

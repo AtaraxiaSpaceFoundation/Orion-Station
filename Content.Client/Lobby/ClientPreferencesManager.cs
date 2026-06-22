@@ -56,7 +56,7 @@ namespace Content.Client.Lobby
 
         public void SelectCharacter(int slot)
         {
-            Preferences = new PlayerPreferences(Preferences.Characters, slot, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            Preferences = new PlayerPreferences(Preferences.Characters, slot, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: CustomGhost
             var msg = new MsgSelectCharacter
             {
                 SelectedCharacterIndex = slot
@@ -69,11 +69,11 @@ namespace Content.Client.Lobby
             var collection = IoCManager.Instance!;
             profile.EnsureValid(_playerManager.LocalSession!, collection);
             var characters = new Dictionary<int, HumanoidCharacterProfile>(Preferences.Characters) {[slot] = profile};
-            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: CustomGhost
             var msg = new MsgUpdateCharacter
             {
                 Profile = profile,
-                Slot = slot
+                Slot = slot,
             };
             _netManager.ClientSendMessage(msg);
         }
@@ -92,7 +92,7 @@ namespace Content.Client.Lobby
 
             var l = lowest.Value;
             characters.Add(l, profile);
-            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: CustomGhost
 
             UpdateCharacter(profile, l);
         }
@@ -105,7 +105,7 @@ namespace Content.Client.Lobby
         public void DeleteCharacter(int slot)
         {
             var characters = Preferences.Characters.Where(p => p.Key != slot);
-            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites, Preferences.CustomGhost); // Orion-Edit: CustomGhost
             var msg = new MsgDeleteCharacter
             {
                 Slot = slot
@@ -115,7 +115,7 @@ namespace Content.Client.Lobby
 
         public void UpdateConstructionFavorites(List<ProtoId<ConstructionPrototype>> favorites)
         {
-            Preferences = new PlayerPreferences(Preferences.Characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, favorites, Preferences.CustomGhost); // Orion-Edit: Preserve selected custom ghost.
+            Preferences = new PlayerPreferences(Preferences.Characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, favorites, Preferences.CustomGhost); // Orion-Edit: CustomGhost
             var msg = new MsgUpdateConstructionFavorites
             {
                 Favorites = favorites
@@ -124,8 +124,10 @@ namespace Content.Client.Lobby
         }
 
         // Orion-Start
-        public void SetCustomGhost(string ghostProto) =>
+        public void SetCustomGhost(string ghostProto)
+        {
             Preferences = Preferences.WithCustomGhost(ghostProto);
+        }
         // Orion-End
 
         private void HandlePreferencesAndSettings(MsgPreferencesAndSettings message)
