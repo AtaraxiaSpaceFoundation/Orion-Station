@@ -473,11 +473,11 @@ namespace Content.Server.Ghost
             }
 
             // Orion-Start
-            EntProtoId<GhostComponent> ghostPrototype = GameTicker.ObserverPrototypeName;
+            EntProtoId<GhostComponent> ghostPrototype = GameTicker.ObserverPrototypeName.Id;
             var supportsDeathDamageState = true;
-            if (mind.Comp.UserId is { } userId)
+            if (mind.Comp.UserId is { } ghostUserId)
             {
-                var ev = new ResolvePlayerGhostPrototypeEvent(userId, _prefs.GetPreferences(userId).CustomGhost, ghostPrototype);
+                var ev = new ResolvePlayerGhostPrototypeEvent(ghostUserId, _prefs.GetPreferences(ghostUserId).CustomGhost, ghostPrototype);
                 RaiseLocalEvent(ev);
                 ghostPrototype = ev.GhostPrototype;
                 supportsDeathDamageState = ev.SupportsDeathDamageState;

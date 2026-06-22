@@ -504,9 +504,10 @@ namespace Content.Server.Preferences.Managers
 
         private static string NormalizeGhostStyle(string? ghostStyle)
         {
-            return string.IsNullOrWhiteSpace(ghostStyle)
+            var trimmed = ghostStyle?.Trim();
+            return string.IsNullOrWhiteSpace(trimmed)
                 ? DefaultGhostStyle
-                : ghostStyle;
+                : trimmed;
         }
 
         public IEnumerable<KeyValuePair<NetUserId, HumanoidCharacterProfile>> GetSelectedProfilesForPlayers(

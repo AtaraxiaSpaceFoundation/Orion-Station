@@ -39,7 +39,7 @@ public sealed partial class SetCustomGhostCommand : IConsoleCommand
             return;
         }
 
-        var protoId = args[0];
+        ProtoId<CustomGhostPrototype> protoId = args[0];
 
         if (!_proto.TryIndex<CustomGhostPrototype>(protoId, out var proto) || proto.Abstract)
         {
