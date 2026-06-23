@@ -111,6 +111,10 @@ public sealed partial class GraphicsTab : Control
 
         private const int QualityDefault = QualityMedium;
 
+        // Orion-Start
+        private const string EnableLightsGlowingCVar = "light.light.enable_lights_glowing";
+        // Orion-End
+
         public OptionLightingQuality(OptionsTabControlRow controller, IConfigurationManager cfg, OptionDropDown dropDown) : base(controller)
         {
             _cfg = cfg;
@@ -142,21 +146,25 @@ public sealed partial class GraphicsTab : Control
                     _cfg.SetCVar(CVars.LightResolutionScale, 0.125f);
                     _cfg.SetCVar(CVars.LightSoftShadows, false);
                     _cfg.SetCVar(CVars.LightBlur, false);
+                    _cfg.SetCVar(EnableLightsGlowingCVar, false); // Orion
                     break;
                 case QualityLow:
                     _cfg.SetCVar(CVars.LightResolutionScale, 0.5f);
                     _cfg.SetCVar(CVars.LightSoftShadows, false);
                     _cfg.SetCVar(CVars.LightBlur, true);
+                    _cfg.SetCVar(EnableLightsGlowingCVar, false); // Orion
                     break;
                 default: // = QualityMedium
                     _cfg.SetCVar(CVars.LightResolutionScale, 0.5f);
                     _cfg.SetCVar(CVars.LightSoftShadows, true);
                     _cfg.SetCVar(CVars.LightBlur, true);
+                    _cfg.SetCVar(EnableLightsGlowingCVar, true); // Orion
                     break;
                 case QualityHigh:
                     _cfg.SetCVar(CVars.LightResolutionScale, 1);
                     _cfg.SetCVar(CVars.LightSoftShadows, true);
                     _cfg.SetCVar(CVars.LightBlur, true);
+                    _cfg.SetCVar(EnableLightsGlowingCVar, true); // Orion
                     break;
             }
         }

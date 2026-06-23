@@ -123,8 +123,8 @@
   components:
   - type: LightBulb
     bulb: Bulb
-    color: "#FFD1A3" # 4000K color temp
-    lightEnergy: 1.0
+    color: "#e6d8cb" # 4000K color temp | Orion-Edit: Changed color
+    lightEnergy: 0.8 # Orion-Edit: 1.0 > 0.8
     lightRadius: 6
     lightSoftness: 1.1
   - type: Tag
@@ -233,8 +233,8 @@
   description: A light fixture.
   components:
   - type: LightBulb
-    color: "#FFE4CE" # 5000K color temp
-    lightEnergy: 0.8
+    color: "#dbd1bc" # 5000K color temp | Orion-Edit: Changed color
+    lightEnergy: 1.0 # Orion-Edit: 0.8 > 1.0
     lightRadius: 10
     lightSoftness: 1
     PowerUse: 25
