@@ -1,5 +1,6 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
+using Content.Server._Orion.ServerProtection.Events;
 using Content.Server.Power.Components;
 using Content.Shared.Chat;
 using Content.Shared.Database;
@@ -69,6 +70,11 @@ public sealed partial class RadioSystem : EntitySystem
     /// <param name="radioSource">Entity that picked up the message and will send it, e.g. headset</param>
     public void SendRadioMessage(EntityUid messageSource, string message, RadioChannelPrototype channel, EntityUid radioSource, bool escapeMarkup = true)
     {
+        // Orion-Start
+        if (TryCancelICMessage(message, messageSource))
+            return;
+        // Orion-End
+
         // TODO if radios ever garble / modify messages, feedback-prevention needs to be handled better than this.
         if (!_messages.Add(message))
             return;
@@ -170,4 +176,13 @@ public sealed partial class RadioSystem : EntitySystem
         }
         return false;
     }
+
+    // Orion-Start
+    private bool TryCancelICMessage(string message, EntityUid source)
+    {
+        var ev = new ICChatMessageAttemptEvent(message, source);
+        RaiseLocalEvent(ev);
+        return ev.Cancelled;
+    }
+    // Orion-End
 }

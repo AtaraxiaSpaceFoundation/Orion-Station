@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Content.Server._Orion.ServerProtection.Events;
 using Content.Server.Administration.Managers;
 using Content.Server.Database;
 using Content.Server.EUI;
 using Content.Shared.Administration;
 using Content.Shared.Eui;
 using Robust.Server.Player;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Network;
 using DbAdminRank = Content.Server.Database.AdminRank;
 using static Content.Shared.Administration.PermissionsEuiMsg;
@@ -19,6 +21,7 @@ namespace Content.Server.Administration.UI
         [Dependency] private IServerDbManager _db = default!;
         [Dependency] private IAdminManager _adminManager = default!;
         [Dependency] private ILogManager _logManager = default!;
+        [Dependency] private IEntityManager _entityManager = default!; // Orion
 
         private readonly ISawmill _sawmill;
         private bool _isLoading;
@@ -224,6 +227,10 @@ namespace Content.Server.Administration.UI
 
             await _db.RemoveAdminAsync(ra.UserId);
 
+            // Orion-Start
+            _entityManager.EventBus.RaiseEvent(EventSource.Local, new AdminPermissionRemovalActionEvent(Player.UserId, Player.Name, ra.UserId.ToString(), "remove-admin"));
+            // Orion-End
+
             var record = await _db.GetPlayerRecordByUserId(ra.UserId);
             _sawmill.Info($"{Player} removed admin {record?.LastSeenUserName ?? ra.UserId.ToString()}");
 
@@ -253,6 +260,8 @@ namespace Content.Server.Administration.UI
                 return;
             }
 
+            var permissionReduction = IsPermissionReduction(admin, ua);
+
             admin.Title = ua.Title;
             admin.AdminRankId = ua.RankId;
             admin.Flags = GenAdminFlagList(ua.PosFlags, ua.NegFlags);
@@ -272,6 +281,11 @@ namespace Content.Server.Administration.UI
             var flags = AdminFlagsHelper.PosNegFlagsText(ua.PosFlags, ua.NegFlags);
 
             _sawmill.Info($"{Player} updated admin {name} to {title}/{rankName}/{flags}");
+
+            // Orion-Start
+            if (permissionReduction)
+                _entityManager.EventBus.RaiseEvent(EventSource.Local, new AdminPermissionRemovalActionEvent(Player.UserId, Player.Name, name, "update-admin-restrict"));
+            // Orion-End
 
             if (_playerManager.TryGetSessionById(ua.UserId, out var player))
             {
@@ -400,6 +414,26 @@ namespace Content.Server.Administration.UI
 
             return (false, ret);
         }
+
+
+        // Orion-Start
+        private static bool IsPermissionReduction(Admin oldAdmin, UpdateAdmin update)
+        {
+            var oldPosFlags = AdminFlagsHelper.NamesToFlags(oldAdmin.Flags.Where(f => !f.Negative).Select(f => f.Flag));
+            var oldNegFlags = AdminFlagsHelper.NamesToFlags(oldAdmin.Flags.Where(f => f.Negative).Select(f => f.Flag));
+
+            if (update.Suspended && !oldAdmin.Suspended)
+                return true;
+
+            if (oldAdmin.AdminRankId != null && update.RankId == null)
+                return true;
+
+            var removedPositive = (oldPosFlags & ~update.PosFlags) != 0;
+            var addedNegative = (update.NegFlags & ~oldNegFlags) != 0;
+
+            return removedPositive || addedNegative;
+        }
+        // Orion-End
 
         private async void LoadFromDb()
         {

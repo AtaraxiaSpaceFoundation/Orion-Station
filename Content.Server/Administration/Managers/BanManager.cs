@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Content.Server._Orion.ServerProtection.Events;
 using Content.Server.Chat.Managers;
 using Content.Server.Database;
 using Content.Server.GameTicking;
@@ -16,6 +17,7 @@ using Robust.Shared.Asynchronous;
 using Robust.Shared.Collections;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -38,6 +40,7 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
     [Dependency] private IEntitySystemManager _systems = default!;
     [Dependency] private ITaskManager _taskManager = default!;
     [Dependency] private UserDbDataManager _userDbData = default!;
+    [Dependency] private IEntityManager _entityManager = default!; // Orion
 
     private ISawmill _sawmill = default!;
 
@@ -169,6 +172,11 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
         _chat.SendAdminAlert(logMessage);
 
         KickMatchingConnectedPlayers(banDef, "newly placed ban");
+
+        // Orion-Start
+        if (banInfo.BanningAdmin is { } banningAdmin)
+            _entityManager.EventBus.RaiseEvent(EventSource.Local, new AdminBanActionEvent(banningAdmin, adminName, targetName));
+        // Orion-End
     }
 
     private NoteSeverity GetSeverityForServerBan(CreateBanInfo banInfo, CVarDef<string> defaultCVar)

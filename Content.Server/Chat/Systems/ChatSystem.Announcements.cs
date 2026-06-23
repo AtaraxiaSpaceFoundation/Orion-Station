@@ -70,6 +70,11 @@ public sealed partial class ChatSystem
             return;
         }
 
+        // Orion-Start
+        if (TryCancelICMessage(message, source))
+            return;
+        // Orion-End
+
         if (!TryComp<StationDataComponent>(station, out var stationDataComp)) return;
 
         var filter = _stationSystem.GetInStation(stationDataComp);

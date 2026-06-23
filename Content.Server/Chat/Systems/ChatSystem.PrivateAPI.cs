@@ -197,6 +197,10 @@ public sealed partial class ChatSystem
             ("entity", ent),
             ("message", FormattedMessage.RemoveMarkupOrThrow(action)));
 
+        // Orion-Start
+        RaiseEmoteDetected(source, action, voluntary: true);
+        // Orion-End
+
         if (checkEmote &&
             !TryEmoteChatInput(source, action))
             return;

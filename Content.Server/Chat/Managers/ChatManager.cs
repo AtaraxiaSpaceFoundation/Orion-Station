@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
+using Content.Server.Chat.Systems;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.Players.RateLimiting;
 using Content.Server.Preferences.Managers;
@@ -246,6 +247,11 @@ internal sealed partial class ChatManager : IChatManager
     {
         if (HandleRateLimit(player) != RateLimitStatus.Allowed)
             return;
+
+        // Orion-Start
+        if (_entityManager.System<ChatSystem>().TryCancelOOCMessage(message, player))
+            return;
+        // Orion-End
 
         // Check if message exceeds the character limit
         if (message.Length > MaxMessageLength)
