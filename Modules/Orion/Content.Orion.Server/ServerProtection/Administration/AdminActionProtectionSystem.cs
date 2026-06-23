@@ -60,7 +60,7 @@ public sealed partial class AdminActionProtectionSystem : EntitySystem
         _cfg.OnValueChanged(OrionCCVars.AdminActionProtectionAlertCooldownSeconds, v => _alertCooldownSeconds = v, true);
         _cfg.OnValueChanged(OrionCCVars.AdminActionProtectionAutoDeAdminEnabled, OnAutoDeAdminChanged, true);
         _cfg.OnValueChanged(OrionCCVars.AdminActionProtectionAutoBanEnabled, OnAutoBanChanged, true);
-        _cfg.OnValueChanged(OrionCCVars.AdminActionProtectionAutoBanMinutes, v => _autoBanMinutes = v, true);
+        _cfg.OnValueChanged(OrionCCVars.AdminActionProtectionAutoBanDuration, v => _autoBanMinutes = v, true);
 
         SubscribeLocalEvent<AdminBanActionEvent>(OnAdminBanAction);
         SubscribeLocalEvent<AdminPermissionRemovalActionEvent>(OnAdminPermissionRemovalAction);

@@ -201,13 +201,13 @@ public sealed partial class ChatSystem
             ("entity", ent),
             ("message", FormattedMessage.RemoveMarkupOrThrow(action)));
 
-        // Orion-Start
-        RaiseEmoteDetected(source, action, voluntary: true);
-        // Orion-End
-
         if (checkEmote &&
             !TryEmoteChatInput(source, action))
             return;
+
+        // Orion-Start
+        RaiseEmoteDetected(source, action, voluntary: true);
+        // Orion-End
 
         SendInVoiceRange(ChatChannel.Emotes, action, wrappedMessage, source, range, author);
         if (!hideLog)

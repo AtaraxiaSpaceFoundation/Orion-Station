@@ -83,7 +83,7 @@ public sealed partial class OrionCCVars
     /// Hard threshold for emote spam. If exceeded, immediate action is taken.
     /// </summary>
     public static readonly CVarDef<int> EmoteProtectionHardThreshold =
-        CVarDef.Create("protection.emote_hard_threshold", 400, CVar.SERVERONLY);
+        CVarDef.Create("protection.emote_hard_threshold", 250, CVar.SERVERONLY);
 
     /// <summary>
     /// Variance for soft threshold calculation (random reduction from base threshold).
@@ -165,20 +165,20 @@ public sealed partial class OrionCCVars
      */
 
     /// <summary>
-    /// Duration of the ban in seconds for chat violations. Set to 0 for permanent ban.
+    /// Duration of the ban in minutes for chat violations. Set to 0 for permanent ban.
     /// </summary>
     public static readonly CVarDef<int> ChatProtectionBanDuration =
         CVarDef.Create("protection.chat_ban_duration", 0, CVar.SERVERONLY);
 
     /// <summary>
-    /// Duration of the ban in seconds for emote violations. Set to 0 for permanent ban.
+    /// Duration of the ban in minutes for emote violations. Set to 0 for permanent ban.
     /// </summary>
     public static readonly CVarDef<int> EmoteProtectionBanDuration =
         CVarDef.Create("protection.emote_ban_duration", 0, CVar.SERVERONLY);
 
     /// <summary>
-    /// Duration of the ban in seconds for admin action violations. Set to 0 for permanent ban.
+    /// Duration of the ban in minutes for admin action violations. Set to 0 for permanent ban.
     /// </summary>
-    public static readonly CVarDef<int> AdminActionProtectionAutoBanMinutes =
-        CVarDef.Create("protection.admin_action_auto_ban_minutes", 0, CVar.SERVERONLY);
+    public static readonly CVarDef<int> AdminActionProtectionAutoBanDuration =
+        CVarDef.Create("protection.admin_action_auto_ban_duration", 0, CVar.SERVERONLY);
 }

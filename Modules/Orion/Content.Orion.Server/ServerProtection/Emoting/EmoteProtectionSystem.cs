@@ -142,7 +142,7 @@ public sealed partial class EmoteProtectionSystem : EntitySystem
 
     private void TryHardThresholdViolation(EntityUid uid, int count)
     {
-        if (count >= _hardEmoteThreshold)
+        if (count >= Math.Max(1, _hardEmoteThreshold))
             HandleViolation(uid, "hard", count.ToString());
     }
 
@@ -154,7 +154,7 @@ public sealed partial class EmoteProtectionSystem : EntitySystem
             return;
 
         var steps = count - soft;
-        var chance = steps * _postSoftThresholdProbability;
+        var chance = Math.Clamp(steps * _postSoftThresholdProbability, 0f, 1f);
 
         if (_random.Prob(chance))
             HandleViolation(uid, "soft", count.ToString());
@@ -165,8 +165,8 @@ public sealed partial class EmoteProtectionSystem : EntitySystem
         if (_softThreshold != null && !refresh)
             return _softThreshold.Value;
 
-        var baseThreshold = _hardEmoteThreshold * 3 / 4;
-        var randomReduction = _random.Next(0, _softThresholdVariance);
+        var baseThreshold = Math.Max(1, _hardEmoteThreshold) * 3 / 4;
+        var randomReduction = _random.Next(0, Math.Max(1, _softThresholdVariance));
         _softThreshold = Math.Max(2, baseThreshold - randomReduction);
 
         return _softThreshold.Value;
