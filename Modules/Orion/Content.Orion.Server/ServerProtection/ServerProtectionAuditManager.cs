@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using Content.Server._Orion.ServerProtection.Events;
+using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
@@ -32,7 +33,7 @@ public sealed partial class ServerProtectionAuditManager : EntitySystem
         RecordChange(ev.Name, ev.Actor, ev.OldValue, ev.NewValue);
     }
 
-    public void RecordChange(string cvarName, ICommonSession? actor, object? oldValue, object? newValue)
+    private void RecordChange(string cvarName, ICommonSession? actor, object? oldValue, object? newValue)
     {
         if (Equals(oldValue, newValue))
             return;
