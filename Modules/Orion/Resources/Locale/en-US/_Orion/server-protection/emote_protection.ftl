@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 emote-protection-ban-reason = Automatic ban. Appeal if you believe this was a mistake. Exceeded emote limit: '{ $word }' ({ $count }x)
 emote-protection-admin-announcement-ban-reason = { $player } has been banned for exceeding emote limit: '{ $word }' ({ $count }x)
 
