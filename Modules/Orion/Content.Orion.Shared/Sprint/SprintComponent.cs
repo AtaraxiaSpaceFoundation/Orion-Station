@@ -21,7 +21,7 @@ public sealed partial class SprintComponent : Component
     /// For example, 2.0 means 2x normal speed.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public float SprintMultiplier = 2.0f;
+    public float SprintMultiplier = 1.4f;
 
     /// <summary>
     /// Duration of the cooldown after sprinting ends.

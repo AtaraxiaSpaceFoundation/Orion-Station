@@ -228,4 +228,4 @@
   - type: FireVisuals
     alternateState: Standing
   - type: StunVisuals
-  - type: Sprint
+  - type: Sprint # Orion

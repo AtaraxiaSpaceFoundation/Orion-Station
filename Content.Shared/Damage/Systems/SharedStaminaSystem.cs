@@ -263,7 +263,8 @@ public abstract partial class SharedStaminaSystem : EntitySystem
     }
 
     public void TakeStaminaDamage(EntityUid uid, float value, StaminaComponent? component = null,
-        EntityUid? source = null, EntityUid? with = null, bool visual = true, SoundSpecifier? sound = null, bool ignoreResist = false)
+        EntityUid? source = null, EntityUid? with = null, bool visual = true, SoundSpecifier? sound = null, bool ignoreResist = false,
+        bool log = true) // Orion-Edit: added log param
     {
         if (!Resolve(uid, ref component, false))
             return;
@@ -328,14 +329,20 @@ public abstract partial class SharedStaminaSystem : EntitySystem
 
         if (value <= 0)
             return;
-        if (source != null)
+
+        // Orion-Start: skip admin log when log=false
+        if (log)
         {
-            _adminLogger.Add(LogType.Stamina, $"{ToPrettyString(source.Value):user} caused {value} stamina damage to {ToPrettyString(uid):target}{(with != null ? $" using {ToPrettyString(with.Value):using}" : "")}");
+            if (source != null)
+            {
+                _adminLogger.Add(LogType.Stamina, $"{ToPrettyString(source.Value):user} caused {value} stamina damage to {ToPrettyString(uid):target}{(with != null ? $" using {ToPrettyString(with.Value):using}" : "")}");
+            }
+            else
+            {
+                _adminLogger.Add(LogType.Stamina, $"{ToPrettyString(uid):target} took {value} stamina damage");
+            }
         }
-        else
-        {
-            _adminLogger.Add(LogType.Stamina, $"{ToPrettyString(uid):target} took {value} stamina damage");
-        }
+        // Orion-End
 
         if (visual)
         {

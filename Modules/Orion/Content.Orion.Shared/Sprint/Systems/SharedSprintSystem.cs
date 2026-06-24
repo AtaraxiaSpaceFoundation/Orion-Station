@@ -65,7 +65,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
 
     private void OnSprintMapInit(Entity<SprintComponent> ent, ref MapInitEvent args)
     {
-        _log.Debug($"SprintComponent initialized on entity {ToPrettyString(ent)}");
+        // _log.Debug($"SprintComponent initialized on entity {ToPrettyString(ent)}");
     }
 
     private void UpdateSprint(EntityUid uid, SprintComponent sprint, float frameTime)
@@ -76,14 +76,14 @@ public sealed partial class SharedSprintSystem : EntitySystem
         // Stop sprint if entity can no longer move (stunned, dead, asleep, etc.)
         if (!CanSprintEntity(uid))
         {
-            _log.Info($"Stopping sprint on {ToPrettyString(uid)} - entity cannot move");
+            // _log.Info($"Stopping sprint on {ToPrettyString(uid)} - entity cannot move");
             StopSprint(uid, sprint);
             return;
         }
 
         if (!_staminaQuery.TryGetComponent(uid, out var stamina))
         {
-            _log.Warning($"Stopping sprint on {ToPrettyString(uid)} - missing StaminaComponent");
+            // _log.Warning($"Stopping sprint on {ToPrettyString(uid)} - missing StaminaComponent");
             StopSprint(uid, sprint);
             return;
         }
@@ -93,13 +93,13 @@ public sealed partial class SharedSprintSystem : EntitySystem
         var currentStamina = stamina.CritThreshold - stamina.StaminaDamage;
         if (currentStamina - drainAmount <= 0)
         {
-            _log.Info($"Stopping sprint on {ToPrettyString(uid)} - stamina depleted");
+            // _log.Info($"Stopping sprint on {ToPrettyString(uid)} - stamina depleted");
             StopSprint(uid, sprint);
             return;
         }
 
-        // Drain stamina without visual effects (no aqua flash, no stun overlay)
-        _stamina.TakeStaminaDamage(uid, drainAmount, stamina, visual: false);
+        // Drain stamina without visual effects and without admin log spam
+        _stamina.TakeStaminaDamage(uid, drainAmount, stamina, visual: false, log: false);
     }
 
     private void UpdateCooldown(EntityUid uid, SprintComponent sprint, float frameTime)
@@ -113,7 +113,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
             sprint.IsOnCooldown = false;
             sprint.CooldownRemaining = 0;
             Dirty(uid, sprint);
-            _log.Info($"Cooldown ended for {ToPrettyString(uid)}");
+            // _log.Info($"Cooldown ended for {ToPrettyString(uid)}");
         }
     }
 
@@ -146,23 +146,13 @@ public sealed partial class SharedSprintSystem : EntitySystem
                 return false;
 
             sprint = EnsureComp<SprintComponent>(uid);
-            _log.Debug($"Auto-added SprintComponent to {ToPrettyString(uid)}");
+            // _log.Debug($"Auto-added SprintComponent to {ToPrettyString(uid)}");
         }
 
-        // Check if already sprinting
-        if (sprint.IsSprinting)
-            return false;
-
-        // Check cooldown
-        if (sprint.IsOnCooldown)
-            return false;
-
-        // Check if entity can move (handles stunned, dead, etc.)
-        if (!CanSprintEntity(uid))
-            return false;
-
-        // Check stamina
-        if (!_staminaQuery.Resolve(uid, ref stamina, false))
+        if (sprint.IsSprinting || // Check if already sprinting
+            sprint.IsOnCooldown || // Check cooldown
+            !CanSprintEntity(uid) || // Check if entity can move (handles stunned, dead, etc.)
+            !_staminaQuery.Resolve(uid, ref stamina, false)) //Check stamina
             return false;
 
         var currentStamina = stamina.CritThreshold - stamina.StaminaDamage;
@@ -176,7 +166,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
         // Refresh movement speed to apply the sprint modifier
         _movementSpeed.RefreshMovementSpeedModifiers(uid);
 
-        _log.Info($"Sprint started on {ToPrettyString(uid)}");
+        // _log.Info($"Sprint started on {ToPrettyString(uid)}");
         return true;
     }
 
@@ -185,10 +175,8 @@ public sealed partial class SharedSprintSystem : EntitySystem
     /// </summary>
     public void StopSprint(EntityUid uid, SprintComponent? sprint = null)
     {
-        if (!_sprintQuery.Resolve(uid, ref sprint, false))
-            return;
-
-        if (!sprint.IsSprinting)
+        if (!_sprintQuery.Resolve(uid, ref sprint, false) ||
+            !sprint.IsSprinting)
             return;
 
         sprint.IsSprinting = false;
@@ -199,7 +187,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
         // Refresh movement speed to remove the sprint modifier
         _movementSpeed.RefreshMovementSpeedModifiers(uid);
 
-        _log.Info($"Sprint stopped on {ToPrettyString(uid)}, cooldown {sprint.CooldownTime}s started");
+        // _log.Info($"Sprint stopped on {ToPrettyString(uid)}, cooldown {sprint.CooldownTime}s started");
     }
 
     private bool CanSprintEntity(EntityUid uid)
