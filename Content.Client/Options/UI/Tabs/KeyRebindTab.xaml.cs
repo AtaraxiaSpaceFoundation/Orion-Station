@@ -173,6 +173,7 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.ToggleKnockdown);
 
             AddHeader("ui-options-header-camera");
+            AddButton(ContentKeyFunctions.Sprint); // Orion
             AddButton(EngineKeyFunctions.CameraRotateLeft);
             AddButton(EngineKeyFunctions.CameraRotateRight);
             AddButton(EngineKeyFunctions.CameraReset);
