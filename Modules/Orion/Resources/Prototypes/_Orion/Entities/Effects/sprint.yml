@@ -1,0 +1,7 @@
+- type: entity
+  id: SprintEffect
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Orion/Effects/sprint.rsi
+    state: sprint_cloud_small

@@ -12,6 +12,7 @@ using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Log;
 using Robust.Shared.Player;
+using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 
 namespace Content.Orion.Shared.Sprint.Systems;
@@ -31,6 +32,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
     private EntityQuery<StaminaComponent> _staminaQuery;
     private EntityQuery<MovementSpeedModifierComponent> _moveModQuery;
     private EntityQuery<InputMoverComponent> _moverQuery;
+    private EntityQuery<SprintSpriteComponent> _sprintSpriteQuery;
 
     private ISawmill _log = default!;
 
@@ -44,6 +46,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
         _staminaQuery = GetEntityQuery<StaminaComponent>();
         _moveModQuery = GetEntityQuery<MovementSpeedModifierComponent>();
         _moverQuery = GetEntityQuery<InputMoverComponent>();
+        _sprintSpriteQuery = GetEntityQuery<SprintSpriteComponent>();
 
         SubscribeLocalEvent<SprintComponent, ComponentShutdown>(OnSprintShutdown);
         SubscribeLocalEvent<SprintComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovementSpeed);
@@ -70,6 +73,7 @@ public sealed partial class SharedSprintSystem : EntitySystem
         {
             UpdateCooldown(uid, sprint, frameTime);
             UpdateSprint(uid, sprint, frameTime);
+            UpdateSprintSprite(uid, sprint, frameTime);
         }
     }
 
@@ -173,6 +177,10 @@ public sealed partial class SharedSprintSystem : EntitySystem
         sprint.IsSprinting = true;
         Dirty(uid, sprint);
 
+        // Reset sprite timer so first sprite appears after one full interval
+        var sprintSprite = EnsureComp<SprintSpriteComponent>(uid);
+        sprintSprite.TimeSinceLastSpawn = 0;
+
         // Refresh movement speed to apply the sprint modifier
         _movementSpeed.RefreshMovementSpeedModifiers(uid);
 
@@ -198,6 +206,28 @@ public sealed partial class SharedSprintSystem : EntitySystem
         _movementSpeed.RefreshMovementSpeedModifiers(uid);
 
         // _log.Info($"Sprint stopped on {ToPrettyString(uid)}, cooldown {sprint.CooldownTime}s started");
+    }
+
+    private void UpdateSprintSprite(EntityUid uid, SprintComponent sprint, float frameTime)
+    {
+        if ((!sprint.IsSprinting) ||
+        (!_sprintSpriteQuery.TryGetComponent(uid, out var sprite)))
+            return;
+
+        sprite.TimeSinceLastSpawn += frameTime;
+        if (sprite.TimeSinceLastSpawn < sprite.SpawnInterval)
+            return;
+
+        SpawnSprintSprite(uid, sprite);
+        sprite.TimeSinceLastSpawn = 0;
+    }
+
+    private void SpawnSprintSprite(EntityUid uid, SprintSpriteComponent sprite)
+    {
+        var xform = Transform(uid);
+        var ent = Spawn(sprite.EffectPrototype, xform.Coordinates);
+        var despawn = EnsureComp<TimedDespawnComponent>(ent);
+        despawn.Lifetime = 0.3f;
     }
 
     private bool CanSprintEntity(EntityUid uid)
