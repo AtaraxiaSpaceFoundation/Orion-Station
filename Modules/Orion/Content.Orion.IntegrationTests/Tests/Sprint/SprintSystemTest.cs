@@ -77,8 +77,8 @@ public sealed partial class SprintSystemTest : GameTest
             var sprint = SEntMan.GetComponent<SprintComponent>(ent);
             var stamina = SEntMan.GetComponent<StaminaComponent>(ent);
 
-            // Set stamina close to depletion
-            stamina.StaminaDamage = stamina.CritThreshold - 1;
+            // Set stamina to minimum threshold
+            stamina.StaminaDamage = stamina.CritThreshold - sprint.MinStaminaToSprint;
 
             // Start sprint - should succeed since stamina >= MinStaminaToSprint (50)
             Assert.That(sSystem.TryStartSprint(ent, sprint, stamina), Is.True);

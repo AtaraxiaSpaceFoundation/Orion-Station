@@ -55,6 +55,12 @@ public sealed partial class SharedSprintSystem : EntitySystem
             .Register<SharedSprintSystem>();
     }
 
+    public override void Shutdown()
+    {
+        base.Shutdown();
+        CommandBinds.Unregister<SharedSprintSystem>();
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
