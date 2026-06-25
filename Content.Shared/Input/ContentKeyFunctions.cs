@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 ReWAFFlution <rockstarfly65@gmail.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Robust.Shared.Input;
 
 namespace Content.Shared.Input
@@ -6,6 +10,7 @@ namespace Content.Shared.Input
     public static class ContentKeyFunctions
     {
         public static readonly BoundKeyFunction ToggleKnockdown = "ToggleKnockdown";
+        public static readonly BoundKeyFunction Sprint = "Sprint"; // Orion
         public static readonly BoundKeyFunction UseItemInHand = "ActivateItemInHand";
         public static readonly BoundKeyFunction AltUseItemInHand = "AltActivateItemInHand";
         public static readonly BoundKeyFunction ActivateItemInWorld = "ActivateItemInWorld";
